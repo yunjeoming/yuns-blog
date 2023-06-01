@@ -1,0 +1,55 @@
+name: Merge to main
+on:
+  push:
+    branches:
+      - feature/*
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Merge with main
+      uses: github-script@6.3.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { owner, repo } = context.repo;
+          const branch = context.ref.replace('refs/heads/', '');
+          const baseBranch = 'main';
+
+          const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+
+          const pullRequests = await octokit.pulls.list({
+            owner,
+            repo,
+            state: 'open',
+            head: `${owner}:${branch}`,
+            base: baseBranch
+          });
+
+          if (pullRequests.data.length > 0) {
+            console.log('Pull request already exists for this branch.');
+            return;
+          }
+
+          const createPullRequest = await octokit.pulls.create({
+            owner,
+            repo,
+            title: `Merge ${branch} to ${baseBranch}`,
+            head: branch,
+            base: baseBranch,
+            draft: false,
+            maintainer_can_modify: true
+          });
+
+          const mergePullRequest = await octokit.pulls.merge({
+            owner,
+            repo,
+            pull_number: createPullRequest.data.number
+          });
+
+          console.log('Pull request merged successfully.');
