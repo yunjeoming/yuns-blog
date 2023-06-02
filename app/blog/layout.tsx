@@ -6,7 +6,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Aside />
-      {children}
+      <main className="flex-grow">{children}</main>
       <Index />
     </>
   );

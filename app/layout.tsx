@@ -1,5 +1,6 @@
 import Footer from './component/Footer';
-import Header from './component/Header';
+import MainHeader from './component/MainHeader';
+import SubHeader from './component/SubHeader';
 import './globals.css';
 
 export const metadata = {
@@ -11,8 +12,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body>
-        <div className="flex flex-col justify-center items-center pt-14 sm:pt-16">
-          <Header />
+        <div className="flex flex-col justify-center items-center min-h-screen">
+          <MainHeader />
+          <SubHeader />
           <div className="flex flex-grow w-full xl:max-w-7xl">{children}</div>
           <Footer />
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const page = () => {
   return (
-    <main className="flex-grow border">
+    <>
       blog page Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio laudantium exercitationem, excepturi
       facere aspernatur tempora architecto rem, quas labore quia odio modi, pariatur autem. Expedita obcaecati ullam
       incidunt quasi facere! Laudantium quisquam ducimus magni possimus ipsa suscipit neque sint, nulla, ullam
@@ -65,7 +65,7 @@ const page = () => {
       tempore maiores. Nobis, repudiandae veniam? Odio animi, illum a optio eos ducimus, impedit porro quos, repellendus
       in perferendis mollitia. Accusantium, molestias ea. Optio, suscipit esse. Laudantium ab neque nemo perferendis,
       illo ipsam doloremque aspernatur quisquam.
-    </main>
+    </>
   );
 };
 

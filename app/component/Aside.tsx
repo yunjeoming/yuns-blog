@@ -49,7 +49,7 @@ const Aside = () => {
     },
   ];
   return (
-    <aside className="max-lg:hidden lg:text-yellow-400 basis-60 flex-shrink-0 p-4 border [&>ul>li]:mb-4">
+    <aside className="max-lg:hidden lg:text-yellow-400 basis-60 h-fit flex-shrink-0 p-4 pl-2 mt-6 [&>ul>li]:mb-4 border-r-2">
       <ul>
         {category.map((c) => (
           <OuterCategory key={c.name} category={c} />

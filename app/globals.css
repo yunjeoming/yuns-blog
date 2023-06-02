@@ -9,3 +9,20 @@
 main {
   padding: 1rem;
 }
+
+.sub-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 200ms ease-in
+}
+
+.inner-category {
+  display: none;
+}
+
+.inner-category.show {
+  display: block;
+}
