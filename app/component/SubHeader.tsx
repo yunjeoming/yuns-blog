@@ -8,9 +8,11 @@ import { throttle } from '@/utils/throttle';
 
 const SubHeader = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const prevScrollPos = useRef(window.pageYOffset);
+  const prevScrollPos = useRef(typeof window !== 'undefined' ? window.pageYOffset : 0);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handler = throttle(() => {
       if (!headerRef.current) return;
       let currentScrollPos = window.pageYOffset;
@@ -31,7 +33,7 @@ const SubHeader = () => {
 
   return (
     <div className="sub-header flex-shrink-0 w-full text-base sm:text-lg border-b bg-white" ref={headerRef}>
-      <div className="flex justify-between items-center h-14 sm:h-16 px-4 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center h-14 sm:h-16 px-4 max-w-6xl mx-auto">
         <Menu className="sm:hidden cursor-pointer" />
         <Link href="/">윤로그:dev</Link>
         <Navbar />

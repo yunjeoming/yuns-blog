@@ -3,8 +3,15 @@ export interface Category {
   children?: Category[];
 }
 
+export interface Post {
+  title: string;
+  description: string;
+  date: number;
+  tags?: string[];
+}
+
 export interface PageProps {
   params: {
-    category: string;
+    tagName: string;
   };
 }

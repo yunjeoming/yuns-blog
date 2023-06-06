@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="flex flex-col justify-center items-center min-h-screen">
           <MainHeader />
           <SubHeader />
-          <div className="flex flex-grow w-full xl:max-w-7xl">{children}</div>
+          <main className="flex flex-col flex-grow w-full xl:max-w-6xl px-6 lg:flex-row ">{children}</main>
           <Footer />
         </div>
       </body>

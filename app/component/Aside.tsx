@@ -1,60 +1,10 @@
-'use client';
-import React, { useRef } from 'react';
-import OuterCategory from './OuterCategory';
+import React from 'react';
+import TagList from './TagList';
 
 const Aside = () => {
-  const ulRef = useRef<HTMLUListElement>(null);
-  const clickOuterCategory = () => {
-    console.log('click');
-    if (ulRef.current) {
-      console.log(ulRef.current);
-      ulRef.current.classList.toggle('category__open');
-    }
-  };
-
-  const category = [
-    {
-      name: 'Error',
-    },
-    {
-      name: 'JavaScript & TypeScript',
-    },
-    {
-      name: '운영체제',
-    },
-    {
-      name: '알고리즘',
-    },
-    {
-      name: 'Frontend',
-      children: [
-        {
-          name: 'React',
-        },
-        {
-          name: 'CSS',
-        },
-      ],
-    },
-    {
-      name: 'Backend',
-      children: [
-        {
-          name: 'Spring',
-        },
-        {
-          name: 'Sample',
-        },
-      ],
-    },
-  ];
   return (
-    <aside className="max-lg:hidden lg:text-yellow-400 basis-60 h-fit flex-shrink-0 p-4 pl-2 mt-6 [&>ul>li]:mb-4 border-r-2">
-      <ul>
-        {category.map((c) => (
-          <OuterCategory key={c.name} category={c} />
-        ))}
-      </ul>
+    <aside className="text-stone-600 flex-grow-0 flex-shrink-0 mt-6 lg:basis-60 lg:py-4 lg:px-2 lg:mr-6 lg:h-fit">
+      <TagList />
     </aside>
   );
 };

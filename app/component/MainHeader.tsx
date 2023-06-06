@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export const Header = () => {
   return (
-    <div className="flex justify-between items-center h-14 sm:h-16 px-4 max-w-7xl mx-auto">
+    <div className="flex justify-between items-center h-14 sm:h-16 px-4 max-w-6xl mx-auto">
       <Menu className="sm:hidden cursor-pointer" />
       <Link href="/">윤로그:dev</Link>
       <Navbar />

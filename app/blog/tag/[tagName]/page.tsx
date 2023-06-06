@@ -2,10 +2,10 @@ import { PageProps } from '@/types/Blog';
 import React from 'react';
 
 const page = ({ params }: PageProps) => {
-  const { category } = params;
+  const { tagName } = params;
   return (
     <>
-      <div>{decodeURIComponent(category)}</div>
+      <div>{decodeURIComponent(tagName)}</div>
     </>
   );
 };

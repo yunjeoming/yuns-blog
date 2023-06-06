@@ -6,10 +6,6 @@
   box-sizing: border-box;
 }
 
-main {
-  padding: 1rem;
-}
-
 .sub-header {
   position: fixed;
   top: 0;
