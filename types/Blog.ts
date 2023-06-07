@@ -15,3 +15,10 @@ export interface PageProps {
     tagName: string;
   };
 }
+
+export type Theme = 'dark' | 'light';
+
+export interface HeaderProps {
+  theme: Theme | undefined;
+  changeTheme: () => void;
+}
