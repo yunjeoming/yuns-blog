@@ -16,11 +16,11 @@ const PostItem: React.FC<Props> = ({ post: { title, description, date, tags } })
   }, []);
 
   return (
-    <div className="py-4 my-4" onClick={handleClick}>
+    <div className="pt-4 pb-8 px-2 my-4" onClick={handleClick}>
       <div className="sm:relative sm:pr-36">
-        <h3 className="text-xl font-semibold">{title}</h3>
-        <div className="flex justify-between my-2 max-sm:text-sm">
-          <p className="line-clamp-3 text-stone-700 mr-4 overflow-hidden sm:line-clamp-2 sm:mr-0">{description}</p>
+        <h3 className="text-xl font-bold">{title}</h3>
+        <div className="flex justify-between my-3 max-sm:text-sm">
+          <p className="line-clamp-3 mr-4 overflow-hidden sm:line-clamp-2 sm:mr-0">{description}</p>
           <div className="basis-20 flex-shrink-0 border h-14 sm:absolute sm:top-0 sm:right-0 sm:w-28 sm:h-24">
             <span>이미지</span>
           </div>

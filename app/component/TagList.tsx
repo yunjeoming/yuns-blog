@@ -23,7 +23,7 @@ const TagList = () => {
   ];
   return (
     <>
-      <div className="mb-2 lg:mb-4">Tag</div>
+      <div className="mb-2 lg:mb-4 dark:text-[#ececec]">Tag</div>
       <div className="flex flex-wrap gap-1">
         {tag.map((t) => (
           <TagItem key={t} name={t} />
