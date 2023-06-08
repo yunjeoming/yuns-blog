@@ -1,0 +1,40 @@
+name: Merge to Main and Delete Branch
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+      - 'bugfix/*'
+
+jobs:
+  merge_and_delete:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Merge branches
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+          base_branch="${GITHUB_REF/refs\/heads\//}"
+          branch_name="${base_branch#*/}"
+
+          git fetch origin "+refs/heads/${base_branch}"
+          merge_output=$(git merge --no-ff --no-edit "${base_branch}" 2>&1)
+
+          if [[ $merge_output == *"CONFLICT"* ]]; then
+            echo "Merge conflict occurred."
+            exit 1
+          fi
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete branch
+        run: |
+          git push origin --delete "${GITHUB_REF}"
