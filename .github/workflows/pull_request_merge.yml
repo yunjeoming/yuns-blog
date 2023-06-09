@@ -1,0 +1,41 @@
+name: Merge to Main and Delete Branch
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  merge_and_delete:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Check for conflicts
+        id: check-conflicts
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git diff --quiet ${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}
+          echo "::set-output name=conflict::${{ env.OUTPUT }}"
+          
+      - name: Merge Pull Request
+        if: steps.check-conflicts.outputs.conflict != 'true'
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git merge --no-ff --no-commit ${{ github.event.pull_request.head.ref }}
+          git checkout HEAD -- .
+          git commit -m "Auto merge pull request"
+          
+      - name: Delete Branch
+        if: steps.check-conflicts.outputs.conflict != 'true' && steps.merge.result == 'success'
+        run: |
+          git push origin --delete ${{ github.event.pull_request.head.ref }}
+          
+      - name: Handle Conflict
+        if: steps.check-conflicts.outputs.conflict == 'true'
+        run: |
+          echo "Conflict occurred, automatic merge canceled"
