@@ -13,13 +13,6 @@
   visibility: hidden;
   opacity: 0;
   z-index: 1;
-  transition: opacity 200ms ease-in
-}
-
-.inner-category {
-  display: none;
-}
-
-.inner-category.show {
-  display: block;
+  transition: opacity 200ms ease-in;
+  background-color: #ffffff;
 }

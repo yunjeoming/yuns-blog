@@ -1,13 +1,23 @@
+import { JSXElementConstructor, ReactElement } from 'react';
+
 export interface Category {
   name: string;
   children?: Category[];
 }
 
+export type PostContent = ReactElement<any, string | JSXElementConstructor<any>>;
+
 export interface Post {
+  meta: PostMeta;
+  content: PostContent;
+}
+
+export interface PostMeta {
   title: string;
-  description: string;
-  date: number;
-  tags?: string[];
+  description?: string;
+  date: string;
+  tags: string[];
+  baseName: string;
 }
 
 export interface PageProps {
