@@ -1,28 +1,20 @@
 import React from 'react';
 import PostItem from '../component/PostItem';
+import TagList from '../component/TagList';
+import { Blog } from '@/lib/mdx/blog';
 
-const page = () => {
-  const post = {
-    title: '안녕하세요.반갑습니다람쥐~~',
-    description: '이건 설명입니다.',
-    date: Date.now(),
-    tags: ['javascript', 'react'],
-  };
-
-  const post2 = {
-    title: '안녕하세요.반갑습니다람쥐~~ 안녕하세요',
-    description:
-      '이건 설명입니다. 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~ 안녕하세요.반갑습니다람쥐~~',
-    date: Date.now(),
-  };
-
-  const posts = [post, post2, post2, post2];
+const page = async () => {
+  const postsMetas = await Blog.getAllPostsMeta();
+  const tags = await Blog.getAllTags();
   return (
-    <div className="flex-grow min-w-0 [&>div:not(:last-child)]:border-b">
-      {posts.map((p, i) => (
-        <PostItem key={p.title + p.date + i} post={p} />
-      ))}
-    </div>
+    <>
+      <TagList tags={tags} />
+      <div className="flex-grow min-w-0 [&>div:not(:last-child)]:border-b">
+        {postsMetas.map((meta, i) => (
+          <PostItem key={meta.title + meta.date + i} meta={meta} />
+        ))}
+      </div>
+    </>
   );
 };
 

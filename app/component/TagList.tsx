@@ -1,35 +1,20 @@
-import Link from 'next/link';
 import React from 'react';
 import TagItem from './TagItem';
 
-const TagList = () => {
-  const tag = [
-    'react',
-    'javascript',
-    'typescript',
-    'dom',
-    'cors',
-    'closure',
-    'class',
-    'web apis',
-    'nextjs',
-    'threejs',
-    '디자인패턴',
-    '렌더링',
-    '운영체제',
-    '자바스크립트',
-    '타입스크립트',
-    'mdn',
-  ];
+interface Props {
+  tags: string[];
+}
+
+const TagList = ({ tags }: Props) => {
   return (
-    <>
-      <div className="mb-2 lg:mb-4 dark:text-[#ececec]">Tag</div>
+    <aside className="flex-grow-0 flex-shrink-0 mt-6 lg:basis-60 lg:py-4 lg:px-2 lg:mr-6 lg:h-fit">
+      <div className="mb-2 lg:mb-4 dark:text-tag-dark">Tag</div>
       <div className="flex flex-wrap gap-1">
-        {tag.map((t) => (
+        {tags.map((t) => (
           <TagItem key={t} name={t} />
         ))}
       </div>
-    </>
+    </aside>
   );
 };
 

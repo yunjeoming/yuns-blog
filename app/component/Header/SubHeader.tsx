@@ -34,7 +34,7 @@ const SubHeader: React.FC<HeaderProps> = (props) => {
 
   return (
     <div
-      className="sub-header flex-shrink-0 w-full text-base sm:text-lg border-b dark:bg-[#202123] dark:text-[#ececec] dark:border-b-[#898989]"
+      className="sub-header flex-shrink-0 w-full text-base sm:text-lg border-b dark:bg-main-dark dark:text-main-dark dark:border-b-dark-header"
       ref={headerRef}
     >
       <HeaderContent {...props} />
