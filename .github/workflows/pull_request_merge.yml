@@ -17,8 +17,10 @@ jobs:
       - name: Check for conflicts
         id: check-conflicts
         run: |
+          git fetch
           git fetch origin ${{ github.event.pull_request.base.ref }}
-          git diff --quiet ${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}
+          git diff ${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}
+          echo "${{ github.event.pull_request.base.ref }} <-> ${{ github.event.pull_request.head.ref }}"
           echo "::set-output name=conflict::${{ env.OUTPUT }}"
           
       - name: Merge Pull Request
