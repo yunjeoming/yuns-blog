@@ -1,10 +1,10 @@
-import { Post } from '@/types/Blog';
-import { convertDateFormat } from '@/utils/date';
 import React from 'react';
-import LinkTagItem from './Tag/LinkTagItem';
+import { IPost } from '@/types/Blog';
+import { convertDateFormat } from '@/utils/date';
+import { Tag } from './Tag';
 
 interface Props {
-  post: Post;
+  post: IPost;
 }
 
 const MDXComponent = ({ post }: Props) => {
@@ -22,7 +22,7 @@ const MDXComponent = ({ post }: Props) => {
       <hr className="xs:my-3 md:my-6" />
       <div className="not-prose">
         {tags.map((t) => (
-          <LinkTagItem key={t} name={t} size="md" className="mr-2" />
+          <Tag key={t} name={t} size="md" className="mr-2" />
         ))}
       </div>
     </>

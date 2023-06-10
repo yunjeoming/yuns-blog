@@ -1,7 +1,7 @@
 'use client';
 
-import { HeaderProps } from '@/types/Blog';
 import React from 'react';
+import { HeaderProps } from '@/types/Blog';
 import { Moon, Sun } from 'react-feather';
 
 const ThemeMode: React.FC<HeaderProps> = ({ theme, changeTheme }) => {

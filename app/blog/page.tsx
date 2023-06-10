@@ -1,15 +1,15 @@
 import React from 'react';
-import TagList from '../component/TagList';
-import { Blog } from '@/lib/mdx/blog';
-import PostList from '../component/PostList';
+import { BlogUtil } from '@/utils/mdx/blog';
+import { Tags } from '../component/Tag';
+import { Posts } from '../component/Post';
 
 const page = async () => {
-  const postMetas = await Blog.getAllPostsMeta();
-  const tags = await Blog.getAllTags();
+  const postMetas = await BlogUtil.getAllPostsMeta();
+  const tags = await BlogUtil.getAllTags();
   return (
     <>
-      <TagList tags={tags} selectedTag='ALL' />
-      <PostList postMetas={postMetas} />
+      <Tags tags={tags} selectedTag='ALL' />
+      <Posts postMetas={postMetas} />
     </>
   );
 };

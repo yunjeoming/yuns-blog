@@ -1,23 +1,21 @@
 import { JSXElementConstructor, ReactElement } from 'react';
 
-export interface Category {
+export interface ICategory {
   name: string;
-  children?: Category[];
+  children?: ICategory[];
 }
 
-export type PostContent = ReactElement<any, string | JSXElementConstructor<any>>;
-
-export interface Post {
-  meta: PostMeta;
-  content: PostContent;
+export interface IPost {
+  meta: IPostMeta;
+  content: ReactElement<any, string | JSXElementConstructor<any>>;
 }
 
-export interface PostMeta {
+export interface IPostMeta {
   title: string;
   description?: string;
   date: string;
   tags: string[];
-  baseName: string;
+  slug: string;
 }
 
 export interface PageProps {
@@ -31,4 +29,11 @@ export type Theme = 'dark' | 'light';
 export interface HeaderProps {
   theme: Theme | undefined;
   changeTheme: () => void;
+}
+
+export interface TagProps {
+  name: string;
+  className?: string;
+  size?: 'xs' | 'sm' | 'md' | '0.5em';
+  selected?: boolean;
 }

@@ -1,8 +1,8 @@
 import Footer from './component/Footer';
-import { Header } from './component/Header';
 import './globals.css';
 import { cookies } from 'next/dist/client/components/headers';
 import { Theme } from '@/types/Blog';
+import { Header } from './component/Header';
 
 export const metadata = {
   title: "Yun's blog",

@@ -41,21 +41,17 @@ module.exports = {
       },
       height: {
         'header-pc': 'var(--height-header-pc)',
+        'header-mo': 'var(--height-header-mo)',
         'main-pc': 'calc(100vh - var(--height-header-pc))',
-        'header-tablet': 'var(--height-header-tablet)',
-        'main-tablet': 'calc(100vh - var(--height-header-tablet))',
-      },
-      top: {
-        'header-pc': 'var(--height-header-pc)',
-        'header-tablet': 'var(--height-header-tablet)',
+        'main-mo': 'calc(100vh - var(--height-header-mo))',
       },
       textColor: {
         'main-dark': '#ececec',
+        'navbar-hover': '#8f8f8f',
         tag: '#6a6a6a',
         'tag-dark': '#ececec',
         'tag-selected': '#ffffff',
         'tag-selected-dark': '#ffffff',
-        'tag-hover': '#dcdcdc',
       },
       backgroundColor: {
         main: '#ffffff',

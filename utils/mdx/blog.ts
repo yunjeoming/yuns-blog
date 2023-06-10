@@ -1,21 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 import { compileMDX } from 'next-mdx-remote/rsc';
-import { Post, PostMeta } from '@/types/Blog';
+import { IPost, IPostMeta } from '@/types/Blog';
 
-const blogDirectoryInClient = path.join(process.env.PUBLIC_URL || '', '/posts/blog');
 const blogDirectory = path.join(process.cwd(), '/posts/blog');
-let posts: Post[] | null = null;
+let posts: IPost[] | null = null;
 let tags: string[] | null = null;
 
-export const Blog = {
+export const BlogUtil = {
   /**
    * 모든 게시물 불러오기
-   * @returns posts: Post[]
+   * @returns posts: IPost[]
    */
   getAllPosts: async () => {
     if (!posts) {
-      posts = await Blog.readAndGetAllPosts();
+      posts = await BlogUtil.readAndGetAllPosts();
     }
     return posts;
   },
@@ -26,18 +25,18 @@ export const Blog = {
    */
   getAllTags: async () => {
     if (!tags) {
-      tags = await Blog.getAllTagsFromPosts();
+      tags = await BlogUtil.getAllTagsFromPosts();
     }
     return tags;
   },
 
   /**
    * 블로그 디렉토리 내 모든 게시물 읽고 가져오기
-   * @returns posts: Post[]
+   * @returns posts: IPost[]
    */
   readAndGetAllPosts: async () => {
     let files;
-    let posts: Post[] = [];
+    let posts: IPost[] = [];
 
     try {
       files = fs.readdirSync(blogDirectory);
@@ -48,7 +47,7 @@ export const Blog = {
     if (!files || !files.length) return posts;
 
     for (let file of files) {
-      const post = await Blog.getPostByFileName(file);
+      const post = await BlogUtil.getPostByFileName(file);
       post && posts.push(post);
     }
 
@@ -58,11 +57,11 @@ export const Blog = {
   /**
    * 파일명(*.mdx)으로 파일 한 개 가져오기
    * @param fileName 파일명(*.mdx)
-   * @returns post: Post | null
+   * @returns post: IPost | null
    */
-  getPostByFileName: async (fileName: string): Promise<Post | null> => {
-    const baseName = fileName.replace(/\.mdx$/, '');
-    const filePath = path.join(blogDirectory, `${baseName}.mdx`);
+  getPostByFileName: async (fileName: string): Promise<IPost | null> => {
+    const slug = fileName.replace(/\.mdx$/, '');
+    const filePath = path.join(blogDirectory, `${slug}.mdx`);
     let file;
 
     try {
@@ -80,21 +79,21 @@ export const Blog = {
     const post = {
       meta: {
         ...frontmatter,
-        baseName,
-      } as PostMeta,
+        slug,
+      } as IPostMeta,
       content,
     };
     return post;
   },
 
   /**
-   * 사전에 loaded된 post에서 baseName으로 하나의 post 가져옴
-   * @param baseName 파일명에서 확장자 제거된 이름(*)
-   * @returns post: Post | null
+   * 사전에 loaded된 post에서 slug으로 하나의 post 가져옴
+   * @param slug 파일명에서 확장자 제거된 이름(*)
+   * @returns post: IPost | null
    */
-  getPostByBaseName: async (baseName: string) => {
-    const posts = await Blog.getAllPosts();
-    return posts.filter((post) => post.meta.baseName === baseName)[0] || null;
+  getPostBySlug: async (slug: string) => {
+    const posts = await BlogUtil.getAllPosts();
+    return posts.filter((post) => post.meta.slug === slug)[0] || null;
   },
 
   /**
@@ -102,7 +101,7 @@ export const Blog = {
    * @returns postMetas: PostMeta[]
    */
   getAllPostsMeta: async () => {
-    const posts = await Blog.getAllPosts();
+    const posts = await BlogUtil.getAllPosts();
     return posts.map((post) => post.meta);
   },
 
@@ -112,7 +111,7 @@ export const Blog = {
    * @returns postMetas: PostMeta[]
    */
   getPostMetasByTag: async (tag: string) => {
-    const posts = await Blog.getAllPosts();
+    const posts = await BlogUtil.getAllPosts();
     return posts.filter((post) => post.meta.tags?.includes(tag)).map((post) => post.meta);
   },
 
@@ -121,7 +120,7 @@ export const Blog = {
    * @returns tags: Tag[]
    */
   getAllTagsFromPosts: async () => {
-    const posts = await Blog.getAllPosts();
+    const posts = await BlogUtil.getAllPosts();
     const tagsSet = new Set<string>();
     for (let post of posts) {
       post.meta.tags?.forEach((tag) => {

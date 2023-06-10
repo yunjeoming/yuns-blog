@@ -1,6 +1,6 @@
 import React from 'react';
-import HeaderContent from './HeaderContent';
 import { HeaderProps } from '@/types/Blog';
+import { HeaderContent } from './';
 
 const MainHeader: React.FC<HeaderProps> = (props) => {
   return (
