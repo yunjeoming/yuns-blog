@@ -35,6 +35,17 @@ module.exports = {
           },
         },
       },
+      maxWidth: {
+        header: 'var(--max-width-header)',
+        content: 'var(--max-width-header)',
+      },
+      height: {
+        header: 'var(--height-header)',
+        main: 'calc(100vh - var(--height-header))',
+      },
+      top: {
+        header: 'var(--height-header)',
+      },
       textColor: {
         'main-dark': '#ececec',
         tag: '#6a6a6a',
@@ -44,6 +55,7 @@ module.exports = {
         'tag-hover': '#dcdcdc',
       },
       backgroundColor: {
+        main: '#ffffff',
         'main-dark': '#202123',
         tag: '#f2f2f2',
         'tag-dark': '#3c3c3c',
