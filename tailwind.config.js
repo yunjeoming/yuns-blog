@@ -37,13 +37,20 @@ module.exports = {
       },
       textColor: {
         'main-dark': '#ececec',
-        'tag': '#6a6a6a',
+        tag: '#6a6a6a',
         'tag-dark': '#ececec',
+        'tag-selected': '#ffffff',
+        'tag-selected-dark': '#ffffff',
+        'tag-hover': '#dcdcdc',
       },
       backgroundColor: {
         'main-dark': '#202123',
-        'tag': '#f2f2f2',
-        'tag-dark': '#706c6c',
+        tag: '#f2f2f2',
+        'tag-dark': '#3c3c3c',
+        'tag-selected': '#3c3c3c',
+        'tag-selected-dark': '#8f8f8f',
+        'tag-hover': '#dadada',
+        'tag-hover-dark': '#5e5e5e',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

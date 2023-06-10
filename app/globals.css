@@ -16,3 +16,7 @@
   transition: opacity 200ms ease-in;
   background-color: #ffffff;
 }
+
+.tag {
+  @apply rounded-md px-2 py-1 max-sm:text-xs dark:text-tag-dark dark:bg-tag-dark
+}

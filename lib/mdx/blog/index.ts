@@ -111,7 +111,7 @@ export const Blog = {
    * @param tag 태그이름
    * @returns postMetas: PostMeta[]
    */
-  getPostsMetaByTag: async (tag: string) => {
+  getPostMetasByTag: async (tag: string) => {
     const posts = await Blog.getAllPosts();
     return posts.filter((post) => post.meta.tags?.includes(tag)).map((post) => post.meta);
   },
@@ -129,6 +129,6 @@ export const Blog = {
       });
     }
     const tags = Array.from(tagsSet);
-    return tags;
+    return ['ALL', ...tags];
   },
 };
