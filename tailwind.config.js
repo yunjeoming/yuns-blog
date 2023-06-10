@@ -37,14 +37,17 @@ module.exports = {
       },
       maxWidth: {
         header: 'var(--max-width-header)',
-        content: 'var(--max-width-header)',
+        post: 'var(--max-width-post)',
       },
       height: {
-        header: 'var(--height-header)',
-        main: 'calc(100vh - var(--height-header))',
+        'header-pc': 'var(--height-header-pc)',
+        'main-pc': 'calc(100vh - var(--height-header-pc))',
+        'header-tablet': 'var(--height-header-tablet)',
+        'main-tablet': 'calc(100vh - var(--height-header-tablet))',
       },
       top: {
-        header: 'var(--height-header)',
+        'header-pc': 'var(--height-header-pc)',
+        'header-tablet': 'var(--height-header-tablet)',
       },
       textColor: {
         'main-dark': '#ececec',

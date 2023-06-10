@@ -10,13 +10,15 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const theme = cookies().get('theme')?.value as Theme || 'light';
+  const theme = (cookies().get('theme')?.value as Theme) || 'light';
   return (
     <html lang="ko" className={`${theme === 'dark' ? 'dark' : ''}`}>
       <body>
         <div className="flex flex-col justify-center items-center min-h-screen text-stone-800 dark:text-main-dark dark:bg-main-dark">
           <Header theme={theme} />
-          <main className="flex flex-col lg:justify-center flex-grow w-full xl:max-w-6xl px-6 lg:flex-row ">{children}</main>
+          <main className="flex flex-col lg:flex-row lg:justify-center items-center lg:items-baseline flex-grow w-full xl:max-w-header px-6">
+            {children}
+          </main>
           <Footer />
         </div>
       </body>

@@ -17,7 +17,7 @@ const PostItem: React.FC<Props> = ({ meta: { title, description, date, tags, bas
   }, []);
 
   return (
-    <div className="pt-4 pb-8 px-2 my-4">
+    <div className="pt-4 pb-8 px-2 mb-4">
       <div className="sm:relative sm:pr-36 cursor-pointer" onClick={handleClick}>
         <h3 className="text-xl font-bold">{title}</h3>
         <div className="flex justify-between my-3 max-sm:text-sm">

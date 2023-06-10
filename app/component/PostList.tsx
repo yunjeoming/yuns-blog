@@ -8,7 +8,7 @@ interface Props {
 
 const PostList: React.FC<Props> = ({ postMetas }) => {
   return (
-    <div className="flex-grow min-w-0 [&>div:not(:last-child)]:border-b">
+    <div className="flex-grow min-w-0 w-full [&>div:not(:last-child)]:border-b">
       {postMetas.map((meta, i) => (
         <PostItem key={meta.title + meta.date + i} meta={meta} />
       ))}

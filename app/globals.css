@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --height-header: 3.5rem;
+  --height-header-pc: 4rem;
+  --height-header-tablet: 3.5rem;
   --max-width-header: 72rem;
+  --max-width-post: 72rem;
 }
 
 * {

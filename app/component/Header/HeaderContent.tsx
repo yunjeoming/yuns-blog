@@ -29,7 +29,7 @@ const HeaderContent: React.FC<HeaderProps> = (props) => {
 
   return (
     <>
-      <div className="flex justify-between items-center h-14 sm:h-16 px-4 max-w-6xl mx-auto" ref={ref}>
+      <div className="flex justify-between items-center h-header-tablet sm:h-header-pc px-4 max-w-header mx-auto" ref={ref}>
         <MenuIcon className="sm:hidden cursor-pointer" onClick={handleClickMenu} />
         <Link href="/">윤로그:dev</Link>
         <HeaderNavbar />

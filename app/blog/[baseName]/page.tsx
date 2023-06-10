@@ -11,7 +11,7 @@ interface Props {
 const page = async ({ params: { baseName } }: Props) => {
   const post = await Blog.getPostByBaseName(baseName);
   return (
-    <div className="flex flex-col flex-grow w-full prose max-w-none prose- dark:prose-invert dark:prose-pre:bg-main-dark dark:prose-pre:border">
+    <div className="flex flex-col flex-grow w-full prose max-sm:prose-sm max-w-4xl prose- dark:prose-invert dark:prose-pre:bg-main-dark dark:prose-pre:border">
       <MDXComponent post={post} />
     </div>
   );
