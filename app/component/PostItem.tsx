@@ -2,7 +2,7 @@
 
 import { PostMeta } from '@/types/Blog';
 import React, { useCallback } from 'react';
-import TagItem from './TagItem';
+import TagItem from './Tag/TagItem';
 import { useRouter } from 'next/navigation';
 import { convertDateFormat } from '@/utils/date';
 
