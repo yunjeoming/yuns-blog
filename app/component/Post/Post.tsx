@@ -1,23 +1,23 @@
 'use client';
 
-import { PostMeta } from '@/types/Blog';
 import React, { useCallback } from 'react';
-import TagItem from './Tag/TagItem';
 import { useRouter } from 'next/navigation';
 import { convertDateFormat } from '@/utils/date';
+import { IPostMeta } from '@/types/Blog';
+import { Tag } from '../Tag';
 
 interface Props {
-  meta: PostMeta;
+  meta: IPostMeta;
 }
 
-const PostItem: React.FC<Props> = ({ meta: { title, description, date, tags, baseName } }) => {
+const Post: React.FC<Props> = ({ meta: { title, description, date, tags, slug } }) => {
   const router = useRouter();
   const handleClick = useCallback(() => {
-    router.push(`/blog/${baseName}`);
+    router.push(`/blog/${slug}`);
   }, []);
 
   return (
-    <div className="pt-4 pb-8 px-2 my-4">
+    <div className="pt-4 pb-8 px-2 mb-4">
       <div className="sm:relative sm:pr-36 cursor-pointer" onClick={handleClick}>
         <h3 className="text-xl font-bold">{title}</h3>
         <div className="flex justify-between my-3 max-sm:text-sm">
@@ -32,7 +32,7 @@ const PostItem: React.FC<Props> = ({ meta: { title, description, date, tags, bas
         {tags && (
           <div className="flex gap-1">
             {tags.map((t) => (
-              <TagItem key={t} name={t} size="xs" />
+              <Tag key={t} name={t} size="xs" />
             ))}
           </div>
         )}
@@ -41,4 +41,4 @@ const PostItem: React.FC<Props> = ({ meta: { title, description, date, tags, bas
   );
 };
 
-export default PostItem;
+export default Post;

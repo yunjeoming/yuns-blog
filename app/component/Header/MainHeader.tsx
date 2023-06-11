@@ -1,10 +1,10 @@
 import React from 'react';
-import HeaderContent from './HeaderContent';
 import { HeaderProps } from '@/types/Blog';
+import { HeaderContent } from './';
 
 const MainHeader: React.FC<HeaderProps> = (props) => {
   return (
-    <header className="flex-shrink-0 w-full text-base sm:text-lg border-b">
+    <header className="flex-shrink-0 w-full text-base sm:text-lg border-b mb-8">
       <HeaderContent {...props} />
     </header>
   );

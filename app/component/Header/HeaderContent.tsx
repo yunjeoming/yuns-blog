@@ -1,10 +1,11 @@
-import Link from 'next/link';
+'use client'
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { Menu as MenuIcon } from 'react-feather';
 import { HeaderProps } from '@/types/Blog';
 import ThemeMode from '../ThemeMode';
-import Menu from '../Menu';
-import HeaderNavbar from '../Navbar/HeaderNavbar';
+import { SideNavbar, TopNavbar } from '../Navbar';
 
 const HeaderContent: React.FC<HeaderProps> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -29,13 +30,13 @@ const HeaderContent: React.FC<HeaderProps> = (props) => {
 
   return (
     <>
-      <div className="flex justify-between items-center h-14 sm:h-16 px-4 max-w-6xl mx-auto" ref={ref}>
+      <div className="flex justify-between items-center h-header-mo sm:h-header-pc px-4 max-w-header mx-auto" ref={ref}>
         <MenuIcon className="sm:hidden cursor-pointer" onClick={handleClickMenu} />
         <Link href="/">윤로그:dev</Link>
-        <HeaderNavbar />
+        <TopNavbar />
         <ThemeMode {...props} />
       </div>
-      {openMenu && <Menu closeMenu={closeMenu} />}
+      {openMenu && <SideNavbar closeMenu={closeMenu} />}
     </>
   );
 };

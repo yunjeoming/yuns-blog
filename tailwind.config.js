@@ -37,22 +37,21 @@ module.exports = {
       },
       maxWidth: {
         header: 'var(--max-width-header)',
-        content: 'var(--max-width-header)',
+        post: 'var(--max-width-post)',
       },
       height: {
-        header: 'var(--height-header)',
-        main: 'calc(100vh - var(--height-header))',
-      },
-      top: {
-        header: 'var(--height-header)',
+        'header-pc': 'var(--height-header-pc)',
+        'header-mo': 'var(--height-header-mo)',
+        'main-pc': 'calc(100vh - var(--height-header-pc))',
+        'main-mo': 'calc(100vh - var(--height-header-mo))',
       },
       textColor: {
         'main-dark': '#ececec',
+        'navbar-hover': '#8f8f8f',
         tag: '#6a6a6a',
         'tag-dark': '#ececec',
         'tag-selected': '#ffffff',
         'tag-selected-dark': '#ffffff',
-        'tag-hover': '#dcdcdc',
       },
       backgroundColor: {
         main: '#ffffff',
