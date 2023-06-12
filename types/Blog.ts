@@ -1,5 +1,3 @@
-import { JSXElementConstructor, ReactElement } from 'react';
-
 export interface ICategory {
   name: string;
   children?: ICategory[];
@@ -7,7 +5,7 @@ export interface ICategory {
 
 export interface IPost {
   meta: IPostMeta;
-  content: ReactElement<any, string | JSXElementConstructor<any>>;
+  content: string;
 }
 
 export interface IPostMeta {

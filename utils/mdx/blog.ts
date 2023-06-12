@@ -1,133 +1,127 @@
-import fs from 'fs';
-import path from 'path';
-import { compileMDX } from 'next-mdx-remote/rsc';
-import { IPost, IPostMeta } from '@/types/Blog';
+import { IPostMeta, IPost } from '@/types/Blog';
+import { allPosts, Post } from 'contentlayer/generated';
+import { compareDesc } from 'date-fns';
 
-const blogDirectory = path.join(process.cwd(), '/posts/blog');
-let posts: IPost[] | null = null;
 let tags: string[] | null = null;
+let blogPosts = allPosts;
 
 export const BlogUtil = {
   /**
    * 모든 게시물 불러오기
    * @returns posts: IPost[]
    */
-  getAllPosts: async () => {
-    if (!posts) {
-      posts = await BlogUtil.readAndGetAllPosts();
-    }
-    return posts;
+  getAllPosts: () => {
+    return blogPosts;
   },
 
   /**
    * 모든 태그 불러오기
    * @returns tags: string[]
    */
-  getAllTags: async () => {
+  getAllTags: () => {
     if (!tags) {
-      tags = await BlogUtil.getAllTagsFromPosts();
+      tags = BlogUtil.getAllTagsFromPosts();
     }
     return tags;
   },
 
   /**
-   * 블로그 디렉토리 내 모든 게시물 읽고 가져오기
-   * @returns posts: IPost[]
-   */
-  readAndGetAllPosts: async () => {
-    let files;
-    let posts: IPost[] = [];
-
-    try {
-      files = fs.readdirSync(blogDirectory);
-    } catch (err) {
-      console.error(`Can not get files, check your path -> ${blogDirectory}`);
-    }
-
-    if (!files || !files.length) return posts;
-
-    for (let file of files) {
-      const post = await BlogUtil.getPostByFileName(file);
-      post && posts.push(post);
-    }
-
-    return posts;
-  },
-
-  /**
-   * 파일명(*.mdx)으로 파일 한 개 가져오기
-   * @param fileName 파일명(*.mdx)
-   * @returns post: IPost | null
-   */
-  getPostByFileName: async (fileName: string): Promise<IPost | null> => {
-    const slug = fileName.replace(/\.mdx$/, '');
-    const filePath = path.join(blogDirectory, `${slug}.mdx`);
-    let file;
-
-    try {
-      file = fs.readFileSync(filePath, 'utf-8');
-    } catch (err) {
-      console.error(`fs loading error, path -> ${filePath}`);
-    }
-
-    if (!file) return null;
-
-    const { frontmatter, content } = await compileMDX({
-      source: file || '',
-      options: { parseFrontmatter: true },
-    });
-    const post = {
-      meta: {
-        ...frontmatter,
-        slug,
-      } as IPostMeta,
-      content,
-    };
-    return post;
-  },
-
-  /**
-   * 사전에 loaded된 post에서 slug으로 하나의 post 가져옴
+   * slug으로 하나의 게시물 가져옴
    * @param slug 파일명에서 확장자 제거된 이름(*)
    * @returns post: IPost | null
    */
-  getPostBySlug: async (slug: string) => {
-    const posts = await BlogUtil.getAllPosts();
-    return posts.filter((post) => post.meta.slug === slug)[0] || null;
+  getPostBySlug: (slug: string) => {
+    return blogPosts.filter((post) => post._raw.flattenedPath === slug)[0] || null;
   },
 
   /**
-   * 게시물들의 메타 정보가 담긴 배열
+   * contentlayer에서 제공하는 기존 Post 타입을 블로그 IPost 타입으로 변환
+   * @param post 기존 Post 타입의 게시글
+   * @return post: IPost
+   */
+  convertPostTypeByPost: (post: Post) => {
+    const meta = BlogUtil.getPostMetaByOnePost(post);
+    const content = post.body.html;
+    return {
+      meta,
+      content,
+    } as IPost;
+  },
+
+  /**
+   * 특정 게시물의 메타 정보
+   * @param post 특정 게시물
+   * @returns postMeta: IPostMeta
+   */
+  getPostMetaByOnePost: (post: Post) => {
+    const {
+      title,
+      description,
+      tags,
+      date,
+      _raw: { flattenedPath },
+    } = post;
+
+    return {
+      title,
+      description,
+      tags,
+      date,
+      slug: flattenedPath,
+    } as IPostMeta;
+  },
+
+  /**
+   * 모든 게시물들의 메타 정보가 담긴 배열
    * @returns postMetas: PostMeta[]
    */
-  getAllPostsMeta: async () => {
-    const posts = await BlogUtil.getAllPosts();
-    return posts.map((post) => post.meta);
+  getAllPostMetas: () => {
+    const allPosts = blogPosts.map((post) => BlogUtil.getPostMetaByOnePost(post));
+    return BlogUtil.compareDescDateByPostMetas(allPosts);
   },
 
   /**
-   * 태그이름으로 게시물 메타 정보 가져오기
+   * 특정 게시물들의 메타 정보가 담긴 배열
+   * @returns postMetas: IPostMeta[]
+   */
+  getPostMetasByPosts: (posts: Post[]) => {
+    const postMetas = posts.map((post) => BlogUtil.getPostMetaByOnePost(post));
+    return BlogUtil.compareDescDateByPostMetas(postMetas);
+  },
+
+  /**
+   * 태그에 해당하는 게시물들의 메타 정보 가져오기
    * @param tag 태그이름
-   * @returns postMetas: PostMeta[]
+   * @returns postMetas: IPostMeta[]
    */
-  getPostMetasByTag: async (tag: string) => {
-    const posts = await BlogUtil.getAllPosts();
-    return posts.filter((post) => post.meta.tags?.includes(tag)).map((post) => post.meta);
+  getPostMetasByTag: (tag: string) => {
+    const tagPosts = blogPosts
+      .filter((post) => post.tags?.includes(tag))
+      .map((post) => BlogUtil.getPostMetaByOnePost(post));
+    return BlogUtil.compareDescDateByPostMetas(tagPosts);
   },
 
   /**
-   * 포스트에 작성된 모든 tags 가져오기
-   * @returns tags: Tag[]
+   * 모든 게시물에 작성된 모든 tags 가져오기
+   * @returns tags: string[]
    */
-  getAllTagsFromPosts: async () => {
-    const posts = await BlogUtil.getAllPosts();
+  getAllTagsFromPosts: () => {
     const tagsSet = new Set<string>();
-    for (let post of posts) {
-      post.meta.tags?.forEach((tag) => {
+    for (let post of blogPosts) {
+      post.tags?.forEach((tag) => {
         tagsSet.add(tag);
       });
     }
     const tags = Array.from(tagsSet);
     return ['ALL', ...tags];
+  },
+
+  /**
+   * 특정 메타 정보들을 날짜 내림차순으로 정렬
+   * @param postMetas 특정 메타정보의 배열
+   * @returns postMetas: IPostMeta[]
+   */
+  compareDescDateByPostMetas: (postMetas: IPostMeta[]) => {
+    return postMetas.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   },
 };
