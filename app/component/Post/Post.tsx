@@ -2,8 +2,8 @@
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { convertDateFormat } from '@/utils/date';
 import { IPostMeta } from '@/types/Blog';
+import { DateUtil } from '@/utils/date';
 import { Tag } from '../Tag';
 
 interface Props {
@@ -28,7 +28,9 @@ const Post: React.FC<Props> = ({ meta: { title, description, date, tags, slug } 
         </div>
       </div>
       <div className="flex items-baseline text-sm text-stone-500 max-sm:flex-wrap max-sm:gap-1">
-        <span className="flex-shrink-0 mr-2">{convertDateFormat(date)}</span>
+        <time dateTime={date} className="flex-shrink-0 mr-2">
+          {DateUtil.convertDateFormat(date)}
+        </time>
         {tags && (
           <div className="flex flex-wrap gap-1">
             {tags.map((t) => (

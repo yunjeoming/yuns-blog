@@ -3,12 +3,12 @@ import { BlogUtil } from '@/utils/mdx/blog';
 import { Tags } from '../component/Tag';
 import { Posts } from '../component/Post';
 
-const page = async () => {
-  const postMetas = await BlogUtil.getAllPostsMeta();
-  const tags = await BlogUtil.getAllTags();
+const page = () => {
+  const postMetas = BlogUtil.getAllPostMetas();
+  const tags = BlogUtil.getAllTags();
   return (
     <>
-      <Tags tags={tags} selectedTag='ALL' />
+      <Tags tags={tags} selectedTag="ALL" />
       <Posts postMetas={postMetas} />
     </>
   );

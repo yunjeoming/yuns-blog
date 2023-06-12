@@ -1,1 +1,7 @@
-export const convertDateFormat = (date: string) => new Date(date).toLocaleDateString().slice(0, -1);
+import { format, parseISO } from 'date-fns';
+
+export const DateUtil = {
+  convertDateFormat: (date: string) => {
+    return format(parseISO(date), 'LLLL d, yyyy');
+  }
+};
