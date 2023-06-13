@@ -1,4 +1,4 @@
-import { IPostMeta, IPost } from '@/types/Blog';
+import { IPostMeta, IPost } from '@/types/Post';
 import { allPosts, Post } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
 

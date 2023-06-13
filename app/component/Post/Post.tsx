@@ -2,15 +2,11 @@
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { IPostMeta } from '@/types/Blog';
 import { DateUtil } from '@/utils/date';
 import { Tag } from '../Tag';
+import { PostMetaProps } from '@/types/Post';
 
-interface Props {
-  meta: IPostMeta;
-}
-
-const Post: React.FC<Props> = ({ meta: { title, description, date, tags, slug } }) => {
+const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, tags, slug } }) => {
   const router = useRouter();
   const handleClick = useCallback(() => {
     router.push(`/blog/${slug}`);
