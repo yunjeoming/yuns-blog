@@ -13,6 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const theme = (cookies().get('theme')?.value as Theme) || 'light';
   return (
     <html lang="ko" className={`${theme === 'dark' ? 'dark' : ''}`}>
+      <head>
+        <link rel="icon" href="/static/favicon.ico" />
+      </head>
       <body>
         <div className="flex flex-col justify-center items-center min-h-screen text-stone-800 dark:text-main-dark dark:bg-main-dark">
           <Header theme={theme} />
