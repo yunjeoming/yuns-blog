@@ -1,7 +1,7 @@
 import Footer from './component/Footer';
 import './globals.css';
 import { cookies } from 'next/dist/client/components/headers';
-import { Theme } from '@/types/Blog';
+import { Theme } from '@/types/Common';
 import { Header } from './component/Header';
 
 export const metadata = {
@@ -19,9 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="flex flex-col justify-center items-center min-h-screen text-stone-800 dark:text-main-dark dark:bg-main-dark">
           <Header theme={theme} />
-          <main className="flex flex-col lg:flex-row lg:justify-center items-center lg:items-baseline flex-grow w-full xl:max-w-header px-6">
-            {children}
-          </main>
+          <main className="flex-grow flex flex-col items-center w-full px-6">{children}</main>
           <Footer />
         </div>
       </body>

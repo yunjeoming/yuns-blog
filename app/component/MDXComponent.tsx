@@ -1,6 +1,5 @@
 import React from 'react';
-import { format, parseISO } from 'date-fns';
-import { IPost } from '@/types/Blog';
+import { IPost } from '@/types/Post';
 import { DateUtil } from '@/utils/date';
 import { Tag } from './Tag';
 
@@ -22,12 +21,16 @@ const MDXComponent = ({ post }: Props) => {
       {description && <p className="text-center xs:m-1">{description}</p>}
       <hr className="xs:mt-3 xs:mb-6 md:mt-6 md:mb-8" />
       <div className="[&>*]:mb-3 [&>*:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: post.content }} />
-      <hr className="xs:my-3 md:my-6" />
-      <div className="not-prose">
-        {tags.map((t) => (
-          <Tag key={t} name={t} size="md" className="mr-2" />
-        ))}
-      </div>
+      {tags && (
+        <>
+          <hr className="xs:my-3 md:my-6" />
+          <div className="not-prose">
+            {tags.map((t) => (
+              <Tag key={t} name={t} size="md" className="mr-2" />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

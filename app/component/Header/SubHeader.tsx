@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { throttle } from '@/utils/throttle';
-import { HeaderProps } from '@/types/Blog';
+import { HeaderProps } from '@/types/Common';
 import { HeaderContent } from './';
 
 const SubHeader: React.FC<HeaderProps> = (props) => {

@@ -9,8 +9,12 @@ const links = [
     href: '/blog',
   },
   {
-    name: 'Archive',
-    href: '/archive',
+    name: 'Memo',
+    href: '/memo',
+  },
+  {
+    name: 'Error',
+    href: '/error',
   },
   {
     name: 'Resume',

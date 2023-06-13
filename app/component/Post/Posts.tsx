@@ -1,16 +1,12 @@
 import React from 'react';
-import { IPostMeta } from '@/types/Blog';
+import { PostMetasProps } from '@/types/Post';
 import { Post } from './';
 
-interface Props {
-  postMetas: IPostMeta[];
-}
-
-const Posts: React.FC<Props> = ({ postMetas }) => {
+const Posts: React.FC<PostMetasProps> = ({ postMetas }) => {
   return (
     <div className="flex-grow min-w-0 w-full [&>div:not(:last-child)]:border-b">
       {postMetas.map((meta, i) => (
-        <Post key={meta.title + meta.date + i} meta={meta} />
+        <Post key={meta.title + meta.date + i} postMeta={meta} />
       ))}
     </div>
   );
