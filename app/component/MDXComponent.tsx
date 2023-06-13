@@ -14,7 +14,7 @@ const MDXComponent = ({ post }: Props) => {
     content,
   } = post;
   return (
-    <div className="flex flex-col flex-grow w-full prose max-sm:prose-sm max-w-4xl prose- dark:prose-invert dark:prose-pre:bg-main-dark dark:prose-pre:border">
+    <div className="flex flex-col flex-grow w-full prose max-sm:prose-sm max-w-post prose- dark:prose-invert dark:prose-pre:bg-main-dark dark:prose-pre:border">
       <h1 className="text-center my-6 max-md:mb-4">{title}</h1>
       <time dateTime={date} className="text-sm text-stone-500 text-center">
         {DateUtil.convertDateFormat(date)}

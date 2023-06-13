@@ -6,7 +6,7 @@
   --height-header-pc: 4rem;
   --height-header-mo: 3.5rem;
   --max-width-header: 72rem;
-  --max-width-post: 72rem;
+  --max-width-post: 56rem;
 }
 
 * {
@@ -22,6 +22,24 @@
   z-index: 1;
   transition: opacity 200ms ease-in;
   background-color: #ffffff;
+}
+
+.contact li {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contact label {
+  width: 5rem;
+  font-weight: 600;
+}
+
+.contact a {
+  @apply text-blue-500
+}
+
+.contact a:hover {
+  @apply underline
 }
 
 .tag {
