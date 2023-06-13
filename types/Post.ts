@@ -18,3 +18,11 @@ export interface PostMetasProps {
 export interface PostMetaProps {
   postMeta: IPostMeta;
 }
+
+export interface PostsProps {
+  posts: IPost[];
+}
+
+export interface PostProps {
+  post: IPost;
+}

@@ -6,7 +6,8 @@ export interface NavbarProps {
 
 export interface PageProps {
   params: {
-    tagName: string;
+    tagName?: string;
+    slug?: string;
   };
 }
 

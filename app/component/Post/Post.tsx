@@ -2,14 +2,14 @@
 
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { DateUtil } from '@/utils/date';
 import { Tag } from '../Tag';
 import { PostMetaProps } from '@/types/Post';
+import TimeStamp from '../TimeStamp';
 
 const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, tags, slug } }) => {
   const router = useRouter();
   const handleClick = useCallback(() => {
-    router.push(`/blog/${slug}`);
+    router.push(`/${slug}`);
   }, []);
 
   return (
@@ -24,9 +24,7 @@ const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, t
         </div>
       </div>
       <div className="flex items-baseline text-sm text-stone-500 max-sm:flex-wrap max-sm:gap-1">
-        <time dateTime={date} className="flex-shrink-0 mr-2">
-          {DateUtil.convertDateFormat(date)}
-        </time>
+        <TimeStamp date={date} className="flex-shrink-0 mr-2" />
         {tags && (
           <div className="flex flex-wrap gap-1">
             {tags.map((t) => (

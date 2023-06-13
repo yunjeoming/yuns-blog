@@ -7,12 +7,12 @@ export const Post = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     description: { type: 'string', required: false },
-    tags: { type: 'list', of: { type: 'string' }, required: true },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
     date: { type: 'date', required: true },
   },
   computedFields: {
-    url: { type: 'string', resolve: (post) => `/posts/blog/${post._raw.flattenedPath}` },
+    url: { type: 'string', resolve: (post) => `${post._raw.flattenedPath}` },
   },
 }));
 
-export default makeSource({ contentDirPath: 'posts/blog', documentTypes: [Post] });
+export default makeSource({ contentDirPath: 'posts', documentTypes: [Post] });
