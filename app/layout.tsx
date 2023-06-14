@@ -3,10 +3,17 @@ import './globals.css';
 import { cookies } from 'next/dist/client/components/headers';
 import { Theme } from '@/types/Common';
 import { Header } from './component/Header';
+import { Metadata } from 'next';
 
-export const metadata = {
-  title: "Yun's blog",
+export const metadata:Metadata = {
+  title: {
+    template: "%s | Yun's blog",
+    default: "Yun's blog"
+  },
   description: '생각하고 기록하는 공간',
+  authors: {
+    name: 'yunjeoming'
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

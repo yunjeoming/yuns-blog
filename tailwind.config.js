@@ -32,6 +32,10 @@ module.exports = {
                 display: 'none',
               },
             },
+            img: {
+              maxWidth: '40rem',
+              margin: '2rem auto 4rem'
+            }
           },
         },
       },

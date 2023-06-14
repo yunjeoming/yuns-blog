@@ -1,3 +1,4 @@
+import MdxPage from './MdxPage';
 import SelectedTagPage from './SelectedTagPage';
 
-export { SelectedTagPage };
+export { SelectedTagPage, MdxPage };

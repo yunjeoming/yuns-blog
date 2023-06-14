@@ -1,6 +1,7 @@
 import { IPostMeta, IPost } from '@/types/Post';
 import { allPosts, Post } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
+import { Metadata } from 'next';
 
 const BLOG_PATH = 'blog';
 const MEMO_PATH = 'memo';
@@ -80,13 +81,24 @@ export const PostUtil = {
   },
 
   /**
-   * slug으로 하나의 게시물 가져옴
+   * slug으로 하나의 게시물(contentlayer의 Post) 가져옴
    * @param slug 파일명에서 확장자 제거된 이름(*)
-   * @returns post: IPost | null
+   * @returns post: Post
    */
-  getPostBySlug: (slug: string) => {
+  getOriginPostBySlug: (slug: string) => {
     const decodedSlug = decodeURIComponent(slug);
-    return posts.filter((post) => post._raw.flattenedPath.split('/')[1] === decodedSlug)[0] || null;
+    return posts.filter((post) => post._raw.flattenedPath.split('/')[1] === decodedSlug)[0];
+  },
+
+  /**
+   * slug으로 하나의 게시물(게시물의 IPost) 가져옴
+   * @param slug 파일명에서 확장자 제거된 이름(*)
+   * @returns post: IPost
+   */
+  getIPostBySlug: (slug: string) => {
+    const decodedSlug = decodeURIComponent(slug);
+    const post = PostUtil.getOriginPostBySlug(decodedSlug);
+    return PostUtil.convertPostTypeByPost(post);
   },
 
   /**
@@ -100,6 +112,7 @@ export const PostUtil = {
       description,
       tags,
       date,
+      imgUrl,
       _raw: { flattenedPath },
     } = post;
 
@@ -108,8 +121,54 @@ export const PostUtil = {
       description,
       tags,
       date,
+      imgUrl,
       slug: flattenedPath,
     } as IPostMeta;
+  },
+
+  /**
+   * 특정 게시물의 메타 데이터 정보
+   * @param post 특정 게시물
+   * @returns metadata: Metadata
+   */
+  getMetadataBySlug: (slug: string): Metadata => {
+    const post = PostUtil.getOriginPostBySlug(slug);
+    const {
+      title,
+      description,
+      imgUrl,
+      tags,
+      _raw: { flattenedPath },
+    } = post;
+
+    return {
+      title,
+      description,
+      keywords: tags,
+      openGraph: {
+        title,
+        description,
+        url: `/${flattenedPath}`,
+        siteName: "Yun's blog",
+        images: {
+          url: imgUrl || '',
+          alt: 'Post Image',
+        },
+        locale: 'ko_KR',
+        type: 'article',
+        tags,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        creator: "yunjeoming",
+        title,
+        description,
+        images: {
+          url: imgUrl || '',
+          alt: 'Post Image',
+        },
+      },
+    };
   },
 
   /**
