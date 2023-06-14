@@ -2,20 +2,20 @@ import React from 'react';
 import { PostUtil } from '@/utils/mdx/post';
 import { Tags } from '../component/Tag';
 import { Posts } from '../component/Post';
-import BlogLayout from '../component/Layout/BlogLayout';
-import PageTitle from '../component/PageTitle';
+import { BasicLayout } from '../component/Layout';
+import { NextPage } from 'next';
+import { PageConstants } from '@/constants/page';
 
-const page = async () => {
+const page: NextPage = () => {
   const blogPosts = PostUtil.getAllBlogPosts();
   const postMetas = PostUtil.getPostMetasByPosts(blogPosts);
   const tags = PostUtil.getAllBlogTags();
   return (
     <>
-      <PageTitle title="생각하고 기록하는 공간" />
-      <BlogLayout>
-        <Tags tags={tags} selectedTag="ALL" />
+      <BasicLayout title={PageConstants.BLOG_TITLE}>
+        <Tags tags={tags} selectedTag="ALL" pageName="blog" />
         <Posts postMetas={postMetas} />
-      </BlogLayout>
+      </BasicLayout>
     </>
   );
 };

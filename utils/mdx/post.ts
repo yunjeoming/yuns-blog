@@ -122,12 +122,24 @@ export const PostUtil = {
   },
 
   /**
-   * 태그에 해당하는 게시물들의 메타 정보 가져오기
+   * 태그에 해당하는 블로그 게시물들의 메타 정보 가져오기
    * @param tag 태그이름
    * @returns postMetas: IPostMeta[]
    */
-  getPostMetasByTag: (tag: string) => {
-    const tagPosts = posts
+  getBlogPostMetasByTag: (tag: string) => {
+    const tagPosts = PostUtil.getAllBlogPosts()
+      .filter((post) => post.tags?.includes(tag))
+      .map((post) => PostUtil.getPostMetaByOnePost(post));
+    return PostUtil.compareDescDateByPostMetas(tagPosts);
+  },
+
+  /**
+   * 태그에 해당하는 에러 게시물들의 메타 정보 가져오기
+   * @param tag 태그이름
+   * @returns postMetas: IPostMeta[]
+   */
+  getErrorPostMetasByTag: (tag: string) => {
+    const tagPosts = PostUtil.getAllErrorPosts()
       .filter((post) => post.tags?.includes(tag))
       .map((post) => PostUtil.getPostMetaByOnePost(post));
     return PostUtil.compareDescDateByPostMetas(tagPosts);

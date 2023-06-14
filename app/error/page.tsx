@@ -1,23 +1,23 @@
-import React from 'react'
+import React from 'react';
+import { NextPage } from 'next';
 import { PostUtil } from '@/utils/mdx/post';
-import PageTitle from '../component/PageTitle';
-import BlogLayout from '../component/Layout/BlogLayout';
+import { BasicLayout } from '../component/Layout';
 import { Tags } from '../component/Tag';
 import { Posts } from '../component/Post';
+import { PageConstants } from '@/constants/page';
 
-const page = () => {
+const page: NextPage = () => {
   const errorPosts = PostUtil.getAllErrorPosts();
   const postMetas = PostUtil.getPostMetasByPosts(errorPosts);
   const tags = PostUtil.getAllErrorTags();
   return (
     <>
-      <PageTitle title="에러를 다루는 공간" />
-      <BlogLayout>
-        <Tags tags={tags} selectedTag="ALL" />
+      <BasicLayout title={PageConstants.ERROR_TITLE}>
+        <Tags tags={tags} selectedTag="ALL" pageName="error" />
         <Posts postMetas={postMetas} />
-      </BlogLayout>
+      </BasicLayout>
     </>
   );
-}
+};
 
-export default page
+export default page;

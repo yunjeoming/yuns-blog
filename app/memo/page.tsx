@@ -1,14 +1,16 @@
 import React from 'react';
+import { NextPage } from 'next';
 import { PostUtil } from '@/utils/mdx/post';
 import { Memos } from '../component/Memo';
 import PageTitle from '../component/PageTitle';
+import { PageConstants } from '@/constants/page';
 
-const page = () => {
+const page: NextPage = () => {
   const memoPosts = PostUtil.getAllMemoPosts();
   const posts = PostUtil.convertPostsTypeByPosts(memoPosts);
   return (
     <div className="flex flex-col items-center w-full max-w-post">
-      <PageTitle title="정리되지 않은 생각을 적어놓는 공간" />
+      <PageTitle title={PageConstants.MEMO_TITLE} />
       <Memos posts={posts} />
     </div>
   );
