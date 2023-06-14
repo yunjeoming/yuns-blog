@@ -18,9 +18,12 @@ export interface HeaderProps {
   changeTheme: () => void;
 }
 
+export type PostPage = 'blog' | 'error';
+
 export interface TagProps {
   name: string;
   className?: string;
   size?: 'xs' | 'sm' | 'md' | '0.5em';
   selected?: boolean;
+  pageName: PostPage;
 }

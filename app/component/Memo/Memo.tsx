@@ -10,18 +10,20 @@ const Memo: React.FC<PostProps> = ({
   },
 }) => {
   return (
-    <Link href={`/${slug}`} className="flex-grow-0 basis-full sm:basis-[48%] border rounded-md p-4">
-      <h3 className="font-semibold">{title}</h3>
-      <TimeStamp date={date} />
-      {content && (
-        <div className="p-2">
-          <div
-            className="line-clamp-5 overflow-hidden [&>*]:mb-3 [&>*:last-child]:mb-0"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </div>
-      )}
-    </Link>
+    <article className="flex-grow-0 basis-full sm:basis-[48%] border rounded-md p-4">
+      <Link href={`/${slug}`}>
+        <h3 className="font-semibold">{title}</h3>
+        <TimeStamp date={date} />
+        {content && (
+          <div className="p-2">
+            <div
+              className="line-clamp-5 overflow-hidden [&>*]:mb-3 [&>*:last-child]:mb-0"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          </div>
+        )}
+      </Link>
+    </article>
   );
 };
 

@@ -23,7 +23,7 @@ const links = [
 ];
 
 const NavbarContent: React.FC<NavbarProps> = ({ closeMenu }) => {
-  const pathname = usePathname();
+  const pathname = '/' + usePathname().split('/')[1];
   const handleClick = useCallback(() => {
     closeMenu && closeMenu();
   }, []);

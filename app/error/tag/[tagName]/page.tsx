@@ -7,8 +7,8 @@ import { PageConstants } from '@/constants/page';
 
 const page: NextPage<PageProps> = ({ params: { tagName } }) => {
   return (
-    <BasicLayout title={PageConstants.BLOG_TITLE}>
-      <SelectedTagPage tagName={tagName} pageName="blog" />;
+    <BasicLayout title={PageConstants.ERROR_TITLE}>
+      <SelectedTagPage tagName={tagName} pageName="error" />;
     </BasicLayout>
   );
 };

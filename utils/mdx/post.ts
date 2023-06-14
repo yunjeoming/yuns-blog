@@ -4,11 +4,14 @@ import { compareDesc } from 'date-fns';
 
 const BLOG_PATH = 'blog';
 const MEMO_PATH = 'memo';
+const ERROR_PATH = 'error';
 
-let blogTags: string[] | null = null;
 let posts = allPosts;
 let blogPosts: Post[] | null = null;
 let memoPosts: Post[] | null = null;
+let errorPosts: Post[] | null = null;
+let blogTags: string[] | null = null;
+let errorTags: string[] | null = null;
 
 export const PostUtil = {
   /**
@@ -42,6 +45,17 @@ export const PostUtil = {
   },
 
   /**
+   * 모든 에러 게시물 불러오기
+   * @returns posts: Post[]
+   */
+  getAllErrorPosts: () => {
+    if (!errorPosts) {
+      errorPosts = posts.filter((post) => post.url.startsWith(ERROR_PATH));
+    }
+    return errorPosts;
+  },
+
+  /**
    * 모든 블로그 태그 불러오기
    * @returns tags: string[]
    */
@@ -51,6 +65,18 @@ export const PostUtil = {
       blogTags = PostUtil.getAllTagsByPosts(blogPosts);
     }
     return blogTags;
+  },
+
+  /**
+   * 모든 에러 태그 불러오기
+   * @returns tags: string[]
+   */
+  getAllErrorTags: () => {
+    if (!errorTags) {
+      const errorPosts = PostUtil.getAllErrorPosts();
+      errorTags = PostUtil.getAllTagsByPosts(errorPosts);
+    }
+    return errorTags;
   },
 
   /**
@@ -96,19 +122,31 @@ export const PostUtil = {
   },
 
   /**
-   * 태그에 해당하는 게시물들의 메타 정보 가져오기
+   * 태그에 해당하는 블로그 게시물들의 메타 정보 가져오기
    * @param tag 태그이름
    * @returns postMetas: IPostMeta[]
    */
-  getPostMetasByTag: (tag: string) => {
-    const tagPosts = posts
+  getBlogPostMetasByTag: (tag: string) => {
+    const tagPosts = PostUtil.getAllBlogPosts()
       .filter((post) => post.tags?.includes(tag))
       .map((post) => PostUtil.getPostMetaByOnePost(post));
     return PostUtil.compareDescDateByPostMetas(tagPosts);
   },
 
   /**
-   * 모든 블로그 게시물에 작성된 모든 tags 가져오기
+   * 태그에 해당하는 에러 게시물들의 메타 정보 가져오기
+   * @param tag 태그이름
+   * @returns postMetas: IPostMeta[]
+   */
+  getErrorPostMetasByTag: (tag: string) => {
+    const tagPosts = PostUtil.getAllErrorPosts()
+      .filter((post) => post.tags?.includes(tag))
+      .map((post) => PostUtil.getPostMetaByOnePost(post));
+    return PostUtil.compareDescDateByPostMetas(tagPosts);
+  },
+
+  /**
+   * 특정 게시물들에 작성된 모든 tags 가져오기
    * @returns tags: string[]
    */
   getAllTagsByPosts: (posts: Post[]) => {
@@ -132,7 +170,7 @@ export const PostUtil = {
   },
 
   /**
-   * contentlayer에서 제공하는 기존 Post 타입을 블로그 IPost 타입으로 변환
+   * contentlayer에서 제공하는 기존 Post 타입을 프로젝트의 IPost 타입으로 변환
    * @param post 기존 Post 타입의 게시글
    * @return post: IPost
    */
