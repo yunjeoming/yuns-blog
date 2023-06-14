@@ -4,10 +4,15 @@ export interface NavbarProps {
   closeMenu?: () => void;
 }
 
-export interface PageProps {
+export interface PageTagProps {
   params: {
-    tagName?: string;
-    slug?: string;
+    tagName: string;
+  };
+}
+
+export interface PageSlugProps {
+  params: {
+    slug: string;
   };
 }
 

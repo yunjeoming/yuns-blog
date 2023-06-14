@@ -9,6 +9,7 @@ export interface IPostMeta {
   date: string;
   tags: string[];
   slug: string;
+  imgUrl?: string;
 }
 
 export interface PostMetasProps {

@@ -1,10 +1,16 @@
 import React from 'react';
-import { PageProps } from '@/types/Common';
-import { NextPage } from 'next';
-import { MdxPage } from '@/app/component/Mdx';
+import { PageSlugProps } from '@/types/Common';
+import { Metadata, NextPage } from 'next';
+import { PostUtil } from '@/utils/post';
+import { MdxPage } from '@/app/component/Page';
 
-const page: NextPage<PageProps> = ({ params: { slug } }) => {
-  return <MdxPage slug={slug} />;
+export function generateMetadata({ params: { slug } }: PageSlugProps): Metadata {
+  return PostUtil.getMetadataBySlug(slug);
+}
+
+const page: NextPage<PageSlugProps> = ({ params: { slug } }) => {
+  const post = PostUtil.getIPostBySlug(slug);
+  return <MdxPage post={post} />;
 };
 
 export default page;
