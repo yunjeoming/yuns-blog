@@ -1,7 +1,7 @@
 import React from 'react';
 import MDXComponent from '@/app/component/MDXComponent';
-import { PostUtil } from '@/utils/mdx/post';
 import { PageProps } from '@/types/Common';
+import { PostUtil } from '@/utils/mdx/post';
 import { NextPage } from 'next';
 
 const page: NextPage<PageProps> = ({ params: { slug } }) => {

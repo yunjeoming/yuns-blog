@@ -1,0 +1,36 @@
+---
+title: contentlayer.config.ts에서 경로 변경 시 파일 생성되지 않는 문제
+description: /posts 폴더에 여러 하위 폴더 생성 후 각각 mdx 파일을 추가
+date: 2023-06-13
+tags: [contentlayer, nextjs, nextjs블로그]
+---
+
+## 기존 구조
+
+```
+- posts
+|- blog
+```
+
+```js
+// contentlayer.config.ts
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `**/*.mdx`,
+  fields: {
+    title: { type: 'string', required: true },
+    description: { type: 'string', required: false },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
+    date: { type: 'date', required: true },
+  },
+  computedFields: {
+    url: { type: 'string', resolve: (post) => `/posts/blog/${post._raw.flattenedPath}` },
+  },
+}));
+
+export default makeSource({ contentDirPath: 'posts/blog', documentTypes: [Post] });
+```
+
+위 코드는 Contentlayer 공식 홈페이지에서 그대로 가져온 후 경로만 **posts/blog**를 추가했다.
+
+

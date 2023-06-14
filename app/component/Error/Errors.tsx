@@ -1,17 +1,15 @@
 import React from 'react'
 import { PostUtil } from '@/utils/mdx/post';
-import PageTitle from '../component/PageTitle';
-import BlogLayout from '../component/Layout/BlogLayout';
-import { Tags } from '../component/Tag';
-import { Posts } from '../component/Post';
+import BlogLayout from '../Layout/BlogLayout';
+import { Tags } from '../Tag';
+import { Posts } from '../Post';
 
-const page = () => {
+const Errors = async () => {
   const errorPosts = PostUtil.getAllErrorPosts();
   const postMetas = PostUtil.getPostMetasByPosts(errorPosts);
-  const tags = PostUtil.getAllErrorTags();
+  const tags = PostUtil.getAllBlogTags();
   return (
     <>
-      <PageTitle title="에러를 다루는 공간" />
       <BlogLayout>
         <Tags tags={tags} selectedTag="ALL" />
         <Posts postMetas={postMetas} />
@@ -20,4 +18,4 @@ const page = () => {
   );
 }
 
-export default page
+export default Errors

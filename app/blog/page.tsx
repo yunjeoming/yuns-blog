@@ -3,6 +3,7 @@ import { PostUtil } from '@/utils/mdx/post';
 import { Tags } from '../component/Tag';
 import { Posts } from '../component/Post';
 import BlogLayout from '../component/Layout/BlogLayout';
+import PageTitle from '../component/PageTitle';
 
 const page = async () => {
   const blogPosts = PostUtil.getAllBlogPosts();
@@ -10,7 +11,7 @@ const page = async () => {
   const tags = PostUtil.getAllBlogTags();
   return (
     <>
-      <h2 className="mb-8">생각하고 기록하는 공간</h2>
+      <PageTitle title="생각하고 기록하는 공간" />
       <BlogLayout>
         <Tags tags={tags} selectedTag="ALL" />
         <Posts postMetas={postMetas} />
