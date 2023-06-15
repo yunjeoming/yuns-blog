@@ -151,7 +151,7 @@ export const PostUtil = {
         url: `/${flattenedPath}`,
         siteName: "Yun's blog",
         images: {
-          url: imgUrl || '',
+          url: imgUrl || '/static/default-thumbnail.png',
           alt: 'Post Image',
         },
         locale: 'ko_KR',
@@ -160,11 +160,11 @@ export const PostUtil = {
       },
       twitter: {
         card: 'summary_large_image',
-        creator: "yunjeoming",
+        creator: 'yunjeoming',
         title,
         description,
         images: {
-          url: imgUrl || '',
+          url: imgUrl || '/static/default-thumbnail.png',
           alt: 'Post Image',
         },
       },
