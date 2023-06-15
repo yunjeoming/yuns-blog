@@ -1,8 +1,8 @@
 ---
 title: Next.js 블로그에 SEO 적용하기
-description: Next.js로 만든 블로그에 SEO를 적용해보자!
+description: Next.js(13.4.4버전)로 만든 블로그에 SEO를 적용해보자!
 date: 2023-06-14
-tags: [next.js, next.js블로그, next.js13, seo, metadata]
+tags: [next.js, next.js블로그, next.js13, seo, metadata, sitemap, robots]
 ---
 
 블로그가 얼추 다 만들어졌다.🎉
@@ -65,15 +65,7 @@ export default page;
 
 ```ts
 getMetadataBySlug: (slug: string): Metadata => {
-  const post = PostUtil.getOriginPostBySlug(slug);
-  const {
-    title,
-    description,
-    imgUrl,
-    tags,
-    _raw: { flattenedPath },
-  } = post;
-
+  //...
   return {
     title,
     description,
@@ -178,11 +170,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 }
 ```
 
+브라우저 주소창에 `블로그주소/sitemap.xml` 을 검색해서 아래와 같은 화면이 뜨는지 확인해보자.
+
+![/sitemap.xml 검색시 뜨는 화면](../posts/blog/set-seo/sitemap.png)
+
 ## robots.txt 설정
 
 robots.txt는 검색 엔진 크롤러에게 웹 사이트의 url 별 접근을 결정하는 파일이다. 모든 책의 **목차**에서 원하는 페이지를 바로 볼 수 있듯이, robots.txt는 어느 페이지를 방문하고, 방문하지 않을 지 결정하도록 도와준다.
 
-[Next.js 공식문서 - robots.txt](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots)는 다른 Next 블로그들과 달리 /app 폴더에 robots.txt 파일을 생성하라고 한다. sitemap.ts와 통일성을 주기 위해 robots.ts로 생성했다.
+[Next.js 공식문서 - robots.txt](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots)는 /app 폴더에 robots.txt 파일을 생성하라고 한다. sitemap.ts와 통일성을 주기 위해 robots.ts로 생성했다.
 
 작성 내용은 아래와 같다.
 
@@ -199,6 +195,10 @@ export default function robots(): MetadataRoute.Robots {
   };
 }
 ```
+
+브라우저 주소창에 `블로그주소/robots.txt` 를 검색해서 아래와 같은 화면이 뜨는지 확인해보자.
+
+![/robots.txt 검색시 뜨는 화면](../posts/blog/set-seo/robots.png)
 
 ## 캐노니컬(Canonical) 태그 설정
 

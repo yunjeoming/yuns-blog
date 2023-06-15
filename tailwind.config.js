@@ -33,6 +33,7 @@ module.exports = {
               },
             },
             img: {
+              width: '100%',
               maxWidth: '40rem',
               margin: '2rem auto 4rem'
             }
