@@ -16,10 +16,10 @@ const links = [
     name: 'Error',
     href: '/error',
   },
-  {
-    name: 'Resume',
-    href: '/resume',
-  },
+  // {
+  //   name: 'Resume',
+  //   href: '/resume',
+  // },
 ];
 
 const NavbarContent: React.FC<NavbarProps> = ({ closeMenu }) => {
