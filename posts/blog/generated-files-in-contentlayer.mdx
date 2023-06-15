@@ -1,0 +1,60 @@
+---
+title: contentlayer.config.ts에서 여러 폴더 생성할 경우 경로 변경하는 방법
+description: /posts 폴더에 여러 하위 폴더 생성 후 각각 mdx 파일을 추가할 때 contentlayer.config.ts를 어떻게 설정해야할까?
+date: 2023-06-13
+tags: [contentlayer, nextjs, nextjs블로그, contentlayer.config.ts]
+---
+
+## 기존 구조
+
+```
+posts
+└─ blog
+```
+
+```js
+// contentlayer.config.ts
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `**/*.mdx`,
+  computedFields: {
+    url: { type: 'string', resolve: (post) => `/posts/blog/${post._raw.flattenedPath}` },
+  },
+}));
+
+export default makeSource({ contentDirPath: 'posts/blog', documentTypes: [Post] });
+```
+
+위 코드는 Contentlayer 공식문서에서 그대로 가져온 후 경로에 **posts/blog**만 추가했다.
+
+근데 게시글을 보여줄 각 탭이 blog, memo, error 3개였고 추후에 다른 것이 추가되거나 삭제될 수 있기에 경로를 수정 해야했다.
+
+## 변경 후 구조
+
+```
+posts
+├─ blog
+├─ memo
+└─ error
+```
+
+```js
+// contentlayer.config.ts
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `**/*.mdx`,
+  computedFields: {
+    url: { type: 'string', resolve: (post) => `${post._raw.flattenedPath}` },
+  },
+}));
+
+export default makeSource({ contentDirPath: 'posts', documentTypes: [Post] });
+```
+
+*contentDirPath*는 contentlayer가 탐색(?)을 시작할 폴더이다. 시작폴더를 posts로 설정하면 posts 폴더 내부에 `filePathPattern: "**/*.mdx"`로 생성된 모든 파일들이 generated 된다.
+
+이 때 생성되는 파일들의 post._raw.flattenedPath는 filePathPattern의 확장자를 제거한 full 경로다.
+
+예를 들어 blog 폴더에 sample1.mdx 파일을 생성하면 이 파일의 flattenedPath는 **blog/sample1**이다.
+
+만약 더 복잡한 폴더 구조를 가질 경우 filePathPattern를 잘 활용해야 할 것 같다. 다양한 파일을 생성하기 위해 makeSource()를 여러 개 만들고, path도 변경하고 했는데 위 방법이 제일 심플해서 (사실 다른 방법을 아직 못 찾았다..^,^) 큰 변경사항이 없는 한 위 구조를 계속 사용할 것 같다.
