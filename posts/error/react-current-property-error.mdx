@@ -1,0 +1,28 @@
+---
+title: useRef의 'current' 속성의 형식이 호환되지 않습니다.
+description: useRef.current의 타입 에러
+date: 2023-06-15
+tags: [useRef, current, 타입에러]
+imgUrl: react-current-property-error.jpeg
+---
+
+특정 라이브러리 사용 중 발생한 에러인데 타입이 안 맞아서 ref에 값을 넣을 수 없었다.
+
+💡 아래와 같이 button의 ref에서 바로 ref.current 값을 할당해주면 에러가 해결된다.
+
+```tsx
+const ref = useRef<HTMLButtonElement | null>(null);
+
+// 보통의 ref 사용법
+<button ref={ref}>버튼</button>
+
+// ✨ 에러를 없앤 ref 사용법
+<button ref={elem => ref.current = elem}>버튼</button>
+
+// 그 외의 ref 사용법
+<button ref={(abc) => {console.log(abc); return ref;}>버튼</button>
+```
+
+저 `elem`이 무엇인지 궁금하여 콘솔에 찍어 봤는데 button element가 찍혔다. 이름은 꼭 elem이 아니어도 되는데, 마치 onClick, onChange 등의 이벤트가 발생하면 첫 인자로 event가 무조건 넘어오듯이 ref에서도 첫 인자는 무조건 해당 element가 넘어온다.  
+
+다만, ref의 초기값은 null이기 때문에 초기엔 null이 콘솔에 출력되고 이후 해당 element가 다시 출력된다.
