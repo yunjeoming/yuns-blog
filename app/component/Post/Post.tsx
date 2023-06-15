@@ -25,7 +25,7 @@ const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, t
           <p className="line-clamp-3 mr-4 overflow-hidden sm:line-clamp-2 sm:mr-0">{description}</p>
           <div className="basis-20 flex-shrink-0 h-auto sm:absolute sm:top-0 sm:right-0 sm:w-36 sm:h-auto">
             <Image
-              src={imgUrl || '/static/default-thumbnail.png'}
+              src={imgUrl}
               alt="게시글 이미지"
               width={'200'}
               height={'120'}

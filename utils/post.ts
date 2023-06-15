@@ -121,7 +121,7 @@ export const PostUtil = {
       description,
       tags,
       date,
-      imgUrl,
+      imgUrl: `/posts/thumbnail/${imgUrl || 'default-thumbnail.jpeg'}`,
       slug: flattenedPath,
     } as IPostMeta;
   },
@@ -141,6 +141,8 @@ export const PostUtil = {
       _raw: { flattenedPath },
     } = post;
 
+    const url = `/posts/thumbnail/${imgUrl || 'default-thumbnail.jpeg'}`;
+
     return {
       title,
       description,
@@ -151,7 +153,7 @@ export const PostUtil = {
         url: `/${flattenedPath}`,
         siteName: "Yun's blog",
         images: {
-          url: imgUrl || '/static/default-thumbnail.png',
+          url,
           alt: 'Post Image',
         },
         locale: 'ko_KR',
@@ -164,7 +166,7 @@ export const PostUtil = {
         title,
         description,
         images: {
-          url: imgUrl || '/static/default-thumbnail.png',
+          url,
           alt: 'Post Image',
         },
       },
