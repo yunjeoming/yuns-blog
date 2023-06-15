@@ -10,7 +10,7 @@ const BasicLayout: React.FC<Props> = ({ title, children }) => {
   return (
     <>
       {title && <PageTitle title={title} />}
-      <div className="flex flex-col lg:flex-row lg:justify-center items-center lg:items-baseline xl:max-w-header">
+      <div className="w-full flex flex-col lg:flex-row lg:justify-center items-center lg:items-baseline xl:max-w-header">
         {children}
       </div>
     </>
