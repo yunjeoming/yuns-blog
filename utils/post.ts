@@ -138,7 +138,7 @@ export const PostUtil = {
       _raw: { flattenedPath },
     } = post;
 
-    const url = `/posts/thumbnail/${imgUrl || 'default-thumbnail.jpeg'}`;
+    const url = `https://yunjeoming.dev/posts/thumbnail/${imgUrl || 'default-thumbnail.jpeg'}`;
 
     return {
       title,
@@ -147,7 +147,7 @@ export const PostUtil = {
       openGraph: {
         title,
         description,
-        url: `/${flattenedPath}`,
+        url: `https://yunjeoming.dev/${flattenedPath}`,
         siteName: "Yun's blog",
         images: {
           url,
