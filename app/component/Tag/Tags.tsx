@@ -33,7 +33,7 @@ const Tags: React.FC<Props> = ({ tags, selectedTag, pageName }) => {
   return (
     <aside className="flex-grow-0 flex-shrink-0 w-full lg:w-auto lg:basis-60 lg:py-4 lg:px-2 lg:mr-6 lg:h-fit max-lg:mb-8">
       <div className="mb-2 lg:mb-4 dark:text-tag-dark">Tag</div>
-      <div className="flex flex-wrap overflow-hidden gap-2 max-h-7 sm:max-h-8 lg:max-h-44" ref={tagsRef}>
+      <div className="flex flex-wrap overflow-hidden gap-2 max-h-7 sm:max-h-8 lg:max-h-[14rem]" ref={tagsRef}>
         {tags.map((t) =>
           t == selectedTag ? (
             <SelectedTag key={t} name={t} pageName={pageName} />
