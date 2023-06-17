@@ -4,15 +4,15 @@ import { PostUtil } from '@/utils/post';
 import { BasicLayout } from '../component/Layout';
 import { Tags } from '../component/Tag';
 import { Posts } from '../component/Post';
-import { PageConstants } from '@/constants/page';
+import { Constants } from '@/constants';
 
 const page: NextPage = () => {
-  const errorPosts = PostUtil.getAllErrorPosts();
-  const postMetas = PostUtil.getPostMetasByPosts(errorPosts);
-  const tags = PostUtil.getAllErrorTags();
+  const issuePosts = PostUtil.getAllIssuePosts();
+  const postMetas = PostUtil.getPostMetasByPosts(issuePosts);
+  const tags = PostUtil.getAllIssueTags();
   return (
-    <BasicLayout title={PageConstants.ERROR_DESCRIPTION}>
-      <Tags tags={tags} selectedTag="ALL" pageName="error" />
+    <BasicLayout title={Constants.ISSUE_DESCRIPTION}>
+      <Tags tags={tags} selectedTag="ALL" pageName="issue" />
       <Posts postMetas={postMetas} />
     </BasicLayout>
   );

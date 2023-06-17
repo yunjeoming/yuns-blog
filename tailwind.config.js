@@ -35,8 +35,8 @@ module.exports = {
             img: {
               width: '100%',
               maxWidth: '40rem',
-              margin: '2rem auto 4rem'
-            }
+              margin: '2rem auto 4rem',
+            },
           },
         },
       },
@@ -53,20 +53,19 @@ module.exports = {
       textColor: {
         'main-dark': '#ececec',
         'navbar-hover': '#8f8f8f',
-        tag: '#6a6a6a',
-        'tag-dark': '#ececec',
-        'tag-selected': '#ffffff',
-        'tag-selected-dark': '#ffffff',
+        tag: 'var(--tag-color)',
+        'tag-dark': 'var(--dark-tag-color)',
+        'tag-selected': 'var(--tag-color-selected)',
+        'tag-selected-dark': 'var(--dark-tag-color-selected)',
+        'tag-hover': 'var(--tag-color-hover)',
       },
       backgroundColor: {
         main: '#ffffff',
         'main-dark': '#202123',
-        tag: '#f2f2f2',
-        'tag-dark': '#3c3c3c',
-        'tag-selected': '#3c3c3c',
-        'tag-selected-dark': '#8f8f8f',
-        'tag-hover': '#dadada',
-        'tag-hover-dark': '#5e5e5e',
+        'tag-selected': 'var(--tag-bgc-selected)',
+        'tag-selected-dark': 'var(--dark-tag-bgc-selected)',
+        'tag-hover': 'var(--tag-bgc-hover)',
+        'tag-hover-dark': 'var(--dark-tag-bgc-hover)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -74,6 +73,7 @@ module.exports = {
       },
       borderColor: {
         'dark-header': '#898989',
+        tag: 'var(--tag-border-color)',
       },
     },
   },

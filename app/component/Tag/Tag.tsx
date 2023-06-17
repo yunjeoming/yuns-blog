@@ -7,7 +7,7 @@ const Tag: React.FC<TagProps> = ({ name, className = '', size = 'sm', pageName }
   return (
     <Link
       href={href}
-      className={`tag bg-tag text-tag text-${size} hover:bg-tag-hover dark:hover:bg-tag-hover-dark ${className}`}
+      className={`tag text-tag text-${size} border border-tag hover:text-tag-hover ${className}`}
     >
       {name}
     </Link>

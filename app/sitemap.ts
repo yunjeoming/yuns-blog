@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://../blog',
     },
     {
-      url: 'https://../error',
+      url: 'https://../issue',
     },
   ];
 }

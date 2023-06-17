@@ -13,8 +13,8 @@ const links = [
     href: '/memo',
   },
   {
-    name: 'Error',
-    href: '/error',
+    name: 'Issue',
+    href: '/issue',
   },
   // {
   //   name: 'Resume',
@@ -36,7 +36,12 @@ const NavbarContent: React.FC<NavbarProps> = ({ closeMenu }) => {
             {link.name}
           </Link>
         ) : (
-          <Link key={link.name} className="text-center hover:text-navbar-hover" href={link.href} onClick={handleClick}>
+          <Link
+            key={link.name}
+            className="text-center hover:text-navbar-hover"
+            href={link.href}
+            onClick={handleClick}
+          >
             {link.name}
           </Link>
         ),

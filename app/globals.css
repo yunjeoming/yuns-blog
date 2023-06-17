@@ -7,6 +7,20 @@
   --height-header-mo: 3.5rem;
   --max-width-header: 72rem;
   --max-width-post: 56rem;
+
+  --tag-color: #6a6a6a;
+  --tag-color-selected: #ffffff;
+  --tag-color-hover: #8f8f8f;
+  
+  --tag-bgc-selected: #68baee; /* #3c3c3c*/
+  --tag-bgc-hover: #dadada;
+
+  --tag-border-color: #d3d3d3;
+
+  --dark-tag-color: #ececec;
+  --dark-tag-color-selected: #ffffff;
+
+  --dark-tag-bgc-selected: #68baee; /* #8f8f8f*/
 }
 
 * {
@@ -43,7 +57,7 @@
 }
 
 .tag {
-  @apply rounded-md px-2 py-1 max-sm:text-xs dark:text-tag-dark dark:bg-tag-dark;
+  @apply rounded-md px-2 py-1 max-sm:text-xs dark:text-tag-dark;
 }
 
 .opened-tags.tags {

@@ -2,7 +2,7 @@
 title: 블로그에 mdx 적용하기
 description: Nextjs로 만든 블로그에 mdx 적용하기
 date: 2023-06-09
-tags: [nextjs, nextjs블로그, prose, contentlayer, contentlayer/generated]
+tags: [nextjs, nextjs블로그, prose, contentlayer, contentlayer.generated]
 imgUrl: make-blog-post-with-mdx.jpeg
 ---
 
@@ -50,7 +50,7 @@ Contentlayer의 공식문서와 모든 걸 똑같이 했는데 contentlayer/gene
 import { allPosts, Post } from 'contentlayer/generated'
 ```
 
-위의 allPosts에는 설정 경로로부터 생성된 mdx 파일들이 배열 구조로 담겨있는데, 나는 blog, memo, error 각각의 게시글이 있기에 3개의 게시글을 별도로 나눴다.
+위의 allPosts에는 설정 경로로부터 생성된 mdx 파일들이 배열 구조로 담겨있는데, 나는 blog, memo, issue 각각의 게시글이 있기에 3개의 게시글을 별도로 나눴다.
 
 게시글 목록에선 게시글의 metadata만 보여주면 되기에 util 함수를 별도로 만들어 metadata를 배열로 받아와 목록에 뿌려준다.
 

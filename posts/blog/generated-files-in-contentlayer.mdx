@@ -28,7 +28,7 @@ export default makeSource({ contentDirPath: 'posts/blog', documentTypes: [Post] 
 
 위 코드는 Contentlayer 공식문서에서 그대로 가져온 후 경로에 **posts/blog**만 추가했다.
 
-근데 게시글을 보여줄 각 탭이 blog, memo, error 3개였고 추후에 다른 것이 추가되거나 삭제될 수 있기에 경로를 수정 해야했다.
+근데 게시글을 보여줄 각 탭이 blog, memo, issue 3개였고 추후에 다른 것이 추가되거나 삭제될 수 있기에 경로를 수정 해야했다.
 
 ## 변경 후 구조
 
@@ -36,7 +36,7 @@ export default makeSource({ contentDirPath: 'posts/blog', documentTypes: [Post] 
 posts
 ├─ blog
 ├─ memo
-└─ error
+└─ issue
 ```
 
 ```js
