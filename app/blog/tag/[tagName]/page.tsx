@@ -8,7 +8,7 @@ import { Constants } from '@/constants';
 const page: NextPage<PageTagProps> = ({ params: { tagName } }) => {
   return (
     <BasicLayout title={Constants.BLOG_DESCRIPTION}>
-      <SelectedTagPage tagName={tagName} pageName="blog" />;
+      <SelectedTagPage tagName={tagName} pageName="blog" />
     </BasicLayout>
   );
 };
