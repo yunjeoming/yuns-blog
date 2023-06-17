@@ -32,7 +32,7 @@ const HeaderContent: React.FC<HeaderProps> = (props) => {
     <>
       <div className="flex justify-between items-center h-header-mo sm:h-header-pc px-4 max-w-header mx-auto" ref={ref}>
         <MenuIcon className="sm:hidden cursor-pointer" onClick={handleClickMenu} />
-        <Link href="/">윤로그</Link>
+        <Link href="/" className='font-medium'>윤로그</Link>
         <TopNavbar />
         <ThemeMode {...props} />
       </div>
