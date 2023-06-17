@@ -13,8 +13,8 @@ const links = [
     href: '/memo',
   },
   {
-    name: 'Error',
-    href: '/error',
+    name: 'Issue',
+    href: '/issue',
   },
   // {
   //   name: 'Resume',

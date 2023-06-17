@@ -1,18 +1,15 @@
+import { Metadata } from 'next';
 import { IPostMeta, IPost } from '@/types/Post';
 import { allPosts, Post } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
-import { Metadata } from 'next';
-
-const BLOG_PATH = 'blog';
-const MEMO_PATH = 'memo';
-const ERROR_PATH = 'error';
+import { Constants } from '@/constants';
 
 let posts = allPosts;
 let blogPosts: Post[] | null = null;
 let memoPosts: Post[] | null = null;
-let errorPosts: Post[] | null = null;
+let issuePosts: Post[] | null = null;
 let blogTags: string[] | null = null;
-let errorTags: string[] | null = null;
+let issueTags: string[] | null = null;
 
 export const PostUtil = {
   /**
@@ -29,7 +26,7 @@ export const PostUtil = {
    */
   getAllBlogPosts: () => {
     if (!blogPosts) {
-      blogPosts = posts.filter((post) => post.url.startsWith(BLOG_PATH));
+      blogPosts = posts.filter((post) => post.url.startsWith(Constants.BLOG_PATH));
     }
     return blogPosts;
   },
@@ -40,7 +37,7 @@ export const PostUtil = {
    */
   getAllMemoPosts: () => {
     if (!memoPosts) {
-      memoPosts = posts.filter((post) => post.url.startsWith(MEMO_PATH));
+      memoPosts = posts.filter((post) => post.url.startsWith(Constants.MEMO_PATH));
     }
     return memoPosts;
   },
@@ -49,11 +46,11 @@ export const PostUtil = {
    * 모든 에러 게시물 불러오기
    * @returns posts: Post[]
    */
-  getAllErrorPosts: () => {
-    if (!errorPosts) {
-      errorPosts = posts.filter((post) => post.url.startsWith(ERROR_PATH));
+  getAllIssuePosts: () => {
+    if (!issuePosts) {
+      issuePosts = posts.filter((post) => post.url.startsWith(Constants.ISSUE_PATH));
     }
-    return errorPosts;
+    return issuePosts;
   },
 
   /**
@@ -72,12 +69,12 @@ export const PostUtil = {
    * 모든 에러 태그 불러오기
    * @returns tags: string[]
    */
-  getAllErrorTags: () => {
-    if (!errorTags) {
-      const errorPosts = PostUtil.getAllErrorPosts();
-      errorTags = PostUtil.getAllTagsByPosts(errorPosts);
+  getAllIssueTags: () => {
+    if (!issueTags) {
+      const issuePosts = PostUtil.getAllIssuePosts();
+      issueTags = PostUtil.getAllTagsByPosts(issuePosts);
     }
-    return errorTags;
+    return issueTags;
   },
 
   /**
@@ -199,8 +196,8 @@ export const PostUtil = {
    * @param tag 태그이름
    * @returns postMetas: IPostMeta[]
    */
-  getErrorPostMetasByTag: (tag: string) => {
-    const tagPosts = PostUtil.getAllErrorPosts()
+  getIssuePostMetasByTag: (tag: string) => {
+    const tagPosts = PostUtil.getAllIssuePosts()
       .filter((post) => post.tags?.includes(tag))
       .map((post) => PostUtil.getPostMetaByOnePost(post));
     return PostUtil.compareDescDateByPostMetas(tagPosts);

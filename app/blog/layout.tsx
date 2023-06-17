@@ -1,9 +1,9 @@
-import { PageConstants } from '@/constants/page';
 import { Metadata } from 'next';
+import { Constants } from '@/constants';
 
 export const metadata: Metadata = {
-  title: 'Blog',
-  description: PageConstants.BLOG_DESCRIPTION,
+  title: Constants.BLOG_TITLE,
+  description: Constants.BLOG_DESCRIPTION,
 };
 
 const layout = ({ children }: { children: React.ReactNode }) => {

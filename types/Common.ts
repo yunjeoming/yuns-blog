@@ -23,7 +23,7 @@ export interface HeaderProps {
   changeTheme: () => void;
 }
 
-export type PostPage = 'blog' | 'error';
+export type PostPage = 'blog' | 'issue';
 
 export interface TagProps {
   name: string;

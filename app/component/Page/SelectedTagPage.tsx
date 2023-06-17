@@ -11,9 +11,9 @@ interface Props {
 
 const SelectedTagPage: React.FC<Props> = ({ tagName, pageName }) => {
   const decodedTag = decodeURIComponent(tagName);
-  const tags = pageName === 'blog' ? PostUtil.getAllBlogTags() : PostUtil.getAllErrorTags();
+  const tags = pageName === 'blog' ? PostUtil.getAllBlogTags() : PostUtil.getAllIssueTags();
   const postMetas =
-    pageName === 'blog' ? PostUtil.getBlogPostMetasByTag(decodedTag) : PostUtil.getErrorPostMetasByTag(decodedTag);
+    pageName === 'blog' ? PostUtil.getBlogPostMetasByTag(decodedTag) : PostUtil.getIssuePostMetasByTag(decodedTag);
   return (
     <>
       <Tags tags={tags} selectedTag={decodedTag} pageName={pageName} />
