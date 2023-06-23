@@ -25,7 +25,7 @@ const MdxPage: React.FC<Props> = ({ post }) => {
         <div className="[&>*]:mb-3 [&>*:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: content }} />
         {tags && (
           <>
-            <hr className="xs:my-3 md:my-6" />
+            <hr className="xs:mt-12 xs:mb-6 max-xl:mt-12 max-xl: mb-6" />
             <div className="not-prose">
               {tags.map((t) => (
                 <Tag key={t} name={t} size="md" className="mr-2" pageName={rootName} />
