@@ -1,0 +1,63 @@
+---
+title: Next.js에서 Image 태그 사용시 이미지가 흐릿하게 보이는 문제
+description: 크기는 제대로 보여지는데 왜 흐릿하게 보이는걸까?
+date: 2023-07-01
+tags: [next.js, image태그]
+imgUrl: nextjs-image-tag-displayed-blurrly.jpeg
+isPublished: true
+---
+
+블로그 이미지를 sm 사이즈 이하에서 크게 보여주기 위해 스타일을 수정했다.
+
+기존에는 오른쪽에 조그맣게 보여줬는데 sm 사이즈 이하에서는 이미지가 상단에 위치하게 되어 width를 가득 채워 보여주도록 했다.
+
+이미지를 어떻게 꽉 채우나 구글링을 해보니 스택오버플로우에 관련된 질문이 하나 있어서 코드를 아래와 같이 수정했다.
+
+```tsx
+// 수정 전
+<Image
+  src={imgUrl}
+  alt="게시글 썸네일"
+  width={200}
+  height={120}
+  className="rounded-md"
+/>
+
+// 수정 후 (임시)
+<Image
+  src={imgUrl}
+  alt="게시글 썸네일"
+  width={0}
+  height={0}
+  className="w-full h-auto rounded-md"
+/>
+```
+
+그런데 이렇게 수정을 하니 이미지가 아래와 같이 흐릿하게 출력되었다.
+
+![흐릿한 이미지](/posts/blog/nextjs-image-tag-displayed-blurrly/blur-image.jpeg)
+
+이유가 뭘까 싶어 기존 코드에 w-full h-auto만 추가해주니 아직도 흐릿하지만 글자가 전과는 다르게 보였다. 이걸 통해 이미지가 흐릿하게 나오는 이유를 알아냈다.
+
+**❗️ 수정 후 코드에서 Image 태그에 width, height를 0으로 준 것이 이미지를 흐릿하게 만드는 원인이었다.**
+
+이미지 크기가 0, 0으로 작아지고 기본 크기가 최소 100에서 500까지 늘어나니 내부 픽셀이 깨졌던 것이다. Image 태그를 사용할 때는 원래 이미지에 맞는 사이즈를 width, height에 부여하고 이미지의 비율은 style로 조정한다는 것을 알게됐다. ^ㅁ^/
+
+아래와 같이 코드를 수정하니 원래의 이미지가 잘 나오는 것을 확인할 수 있다.🎉
+
+```tsx
+// 최종 수정
+<Image
+  src={imgUrl}
+  alt="게시글 썸네일"
+  width={600}
+  height={400}
+  className="w-full h-auto rounded-md"
+/>
+```
+
+![선명한 이미지](/posts/blog/nextjs-image-tag-displayed-blurrly/clear-image.jpeg)
+
+## 출처
+
+[https://stackoverflow.com/questions/65169431/how-to-set-the-next-image-component-to-100-height](https://stackoverflow.com/questions/65169431/how-to-set-the-next-image-component-to-100-height)
