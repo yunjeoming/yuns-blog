@@ -20,18 +20,18 @@ const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, t
   return (
     <article className="pt-4 pb-8 px-2 mb-4 sm:[&>div]:pr-40">
       <div className="sm:relative cursor-pointer" onClick={handleClick}>
+        <div className="mb-4 sm:absolute sm:top-0 sm:right-0 sm:w-36 sm:h-auto sm:mb-0">
+          <Image
+            src={imgUrl}
+            alt="게시글 이미지"
+            width={600}
+            height={400}
+            className="w-full h-auto rounded-md"
+          />
+        </div>
         <h3 className="text-xl font-bold">{title}</h3>
         <div className="flex justify-between my-3 max-sm:text-sm">
           <p className="line-clamp-3 mr-4 overflow-hidden sm:line-clamp-2 sm:mr-0">{description}</p>
-          <div className="basis-20 flex-shrink-0 h-auto sm:absolute sm:top-0 sm:right-0 sm:w-36 sm:h-auto">
-            <Image
-              src={imgUrl}
-              alt="게시글 이미지"
-              width={'200'}
-              height={'120'}
-              className="rounded-md"
-            />
-          </div>
         </div>
       </div>
       <div className="flex items-baseline text-sm text-stone-500 max-sm:flex-wrap max-sm:gap-1">
