@@ -1,4 +1,6 @@
 export const Constants = {
+  URL: 'https://yunjeoming.dev',
+
   BLOG_TITLE: 'Blog',
   MEMO_TITLE: 'Memo',
   ISSUE_TITLE: 'Issue',
