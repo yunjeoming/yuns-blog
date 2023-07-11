@@ -1,15 +1,17 @@
 import { MetadataRoute } from 'next';
+import { Constants } from '@/constants';
+import { PostUtil } from '@/utils/post';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: 'https://yunjeoming.dev',
-    },
-    {
-      url: 'https://yunjeoming.dev/blog',
-    },
-    {
-      url: 'https://yunjeoming.dev/issue',
-    },
-  ];
+  const blogPosts = PostUtil.getAllBlogPosts();
+  const issuePosts = PostUtil.getAllIssuePosts();
+  const navUrl = [Constants.BLOG_PATH, Constants.ISSUE_PATH];
+  const slugs = PostUtil.getPostMetasByPosts([...blogPosts, ...issuePosts]).map((p) => p.slug);
+  const urls = [...navUrl, ...slugs].map((url) => {
+    return {
+      url: `${Constants.URL}/${url}`,
+    };
+  });
+
+  return urls;
 }
