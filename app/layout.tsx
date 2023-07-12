@@ -1,7 +1,5 @@
 import Footer from './component/Footer';
 import './globals.css';
-import { cookies } from 'next/dist/client/components/headers';
-import { Theme } from '@/src/types/Common';
 import { Header } from './component/Header';
 import { Metadata } from 'next';
 
@@ -17,18 +15,28 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const theme = (cookies().get('theme')?.value as Theme) || 'light';
   return (
-    <html lang="ko" className={`${theme === 'dark' ? 'dark' : ''}`}>
+    <html lang="ko">
       <head>
         <link rel="icon" href="/static/favicon.ico" />
       </head>
       <body>
         <div className="flex flex-col justify-center items-center min-h-screen text-stone-800 dark:text-main-dark dark:bg-main-dark">
-          <Header theme={theme} />
+          <Header />
           <main className="flex-grow flex flex-col items-center w-full px-6">{children}</main>
           <Footer />
         </div>
+        <script
+          async={true}
+          dangerouslySetInnerHTML={{
+            __html: `
+            const localStorageTheme = localStorage.getItem("theme");
+            const theme = localStorageTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (theme === 'dark') {
+              document.body.classList.add(theme)
+            }`,
+          }}
+        ></script>
       </body>
     </html>
   );

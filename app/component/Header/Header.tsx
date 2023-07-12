@@ -1,25 +1,11 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
-import { Theme } from '@/src/types/Common';
+import React from 'react';
 import { MainHeader, SubHeader } from './';
+import useLocalStorage from '@/src/hooks/useLocalStorage';
 
-interface Props {
-  theme: string;
-}
-
-const Header: React.FC<Props> = ({ theme: cookieTheme }) => {
-  const [theme, setTheme] = useState<Theme>(cookieTheme as Theme);
-
-  const changeTheme = useCallback(() => {
-    document.documentElement.classList.toggle('dark');
-    setTheme((state) => (state === 'dark' ? 'light' : 'dark'));
-    if (theme === 'dark') {
-      document.cookie = 'theme=light;';
-    } else {
-      document.cookie = 'theme=dark;';
-    }
-  }, []);
+const Header = () => {
+  const { theme, changeTheme } = useLocalStorage();
 
   return (
     <>
