@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { Theme } from '@/types/Common';
+import { Theme } from '@/src/types/Common';
 import { MainHeader, SubHeader } from './';
 
 interface Props {

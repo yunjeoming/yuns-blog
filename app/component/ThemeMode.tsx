@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { HeaderProps } from '@/types/Common';
+import { HeaderProps } from '@/src/types/Common';
 import { Moon, Sun } from 'react-feather';
 
 const ThemeMode: React.FC<HeaderProps> = ({ theme, changeTheme }) => {

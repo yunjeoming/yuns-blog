@@ -1,5 +1,5 @@
 import React from 'react';
-import { PostProps } from '@/types/Post';
+import { PostProps } from '@/src/types/Post';
 import TimeStamp from '../TimeStamp';
 import Link from 'next/link';
 

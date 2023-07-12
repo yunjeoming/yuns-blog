@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Constants } from '@/constants';
+import { Constants } from '@/src/constants';
 
 export const metadata: Metadata = {
   title: Constants.ISSUE_TITLE,

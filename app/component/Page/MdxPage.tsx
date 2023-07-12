@@ -1,9 +1,9 @@
 import React from 'react';
-import { IPost } from '@/types/Post';
-import { DateUtil } from '@/utils/date';
+import { IPost } from '@/src/types/Post';
+import { DateUtil } from '@/src/utils/date';
 import { Tag } from '../Tag';
-import { PathUtil } from '@/utils/path';
-import { PostPage } from '@/types/Common';
+import { PathUtil } from '@/src/utils/path';
+import { PostPage } from '@/src/types/Common';
 
 interface Props {
   post: IPost;

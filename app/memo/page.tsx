@@ -1,9 +1,9 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { PostUtil } from '@/utils/post';
+import { PostUtil } from '@/src/utils/post';
 import { Memos } from '../component/Memo';
 import PageTitle from '../component/PageTitle';
-import { Constants } from '@/constants';
+import { Constants } from '@/src/constants';
 
 const page: NextPage = () => {
   const memoPosts = PostUtil.getAllMemoPosts();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderProps } from '@/types/Common';
+import { HeaderProps } from '@/src/types/Common';
 import { HeaderContent } from './';
 
 const MainHeader: React.FC<HeaderProps> = (props) => {

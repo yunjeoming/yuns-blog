@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { throttle } from '@/utils/throttle';
-import { HeaderProps } from '@/types/Common';
+import { throttle } from '@/src/utils/throttle';
+import { HeaderProps } from '@/src/types/Common';
 import { HeaderContent } from './';
 
 const SubHeader: React.FC<HeaderProps> = (props) => {
