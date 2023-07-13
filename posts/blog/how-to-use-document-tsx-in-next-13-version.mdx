@@ -1,0 +1,63 @@
+---
+title: Next.js 13에서 _document.tsx 적용하는 방법
+description: 12 버전 이하에서는 _document.tsx를 사용했는데, 13 버전부터는 어떻게 해야할까?
+date: 2023-07-13
+tags: [next.js, next.js13, next13버전, _document.tsx, layout.tsx]
+imgUrl: how-to-use-document-tsx-in-next-13-version.jpeg
+isPublished: true
+---
+
+초반 블로그의 테마를 설정할 때 cookie를 사용하여 테마를 저장했다.
+하지만, cookie보다 localStorage가 더 나은 선택임을 알기에 언제 바꾸지, 언제 바꾸지 하다가
+이번에 드디어 바꾸게 되었다.🎉
+
+cookie 대신 localStorage를 사용할 경우,
+다크 모드에서 화면을 새로고침 할 때 라이트 모드 -> (깜박임) -> 다크 모드 순서로 전환이 된다.
+즉, 나는 이 깜박임이 싫어서 처음에 cookie를 사용했던 것 😓
+
+서버로부터 받아온 페이지는 초기에 다크 모드 적용이 안 되어있다. 이후 useEffect에서 class="dark"를 동적으로 추가하게 되어 다크 모드가 뒤늦게 적용되는 것이다.
+
+이를 해결하기 위해선 페이지가 화면에 렌더링 되기 전에 태그에 class="dark"를 추가해야 한다.
+Next.js 12에서는 `_document.tsx` 파일에서 html 태그를 사전에 수정할 수 있었으나, 13부터는 app 폴더에 _document.tsx 파일을 추가해도 해당 내용이 적용되지 않는다. 난 현재 13버전을 사용하고 있기 때문에 되도록 모든 코드는 app 폴더에서 작성하려고 한다. 따라서 `_document.tsx`는 사용하지 않을 것이다.
+
+만약 _document.tsx를 그대로 사용하고 싶으면 어떻게 해야할까? 사실, 테스트 해본 적은 없으나 조심스레 짐작해보면 될 것으로 예상한다. 왜냐?! 전에 app/not-found.tsx 대신 pages/404.tsx를 작성한 적 있는데 제대로 생성되는 것을 확인했기에 pages/_document.tsx도 되지 않을까 생각해본다.
+
+**그러면 Next.js 13에서는 어느 파일에서 내용을 수정 해야할까?** 천천히 생각해보았다. Next.js가 12에서 13으로 바뀌면서 layout.tsx, page.tsx가 새로 생겼는데 최상위 layout.tsx에 html 태그가 있으니 여기서 수정하면 되지 않을까? 싶었다. 공식 문서를 찾아보니 layout.tsx를 수정하는게 맞았다. [Next.js 공식문서에서 확인하기](https://nextjs.org/docs/app/building-your-application/optimizing/scripts)
+
+[인라인 스크립트](https://nextjs.org/docs/app/building-your-application/optimizing/scripts#inline-scripts)에 어떻게 script 태그를 작성해야하는지 친절하게 나와있다. next/script의 \<Script> 태그를 사용하여 내부 중괄호를 사용하거나 이전 버전에서 주로 사용되는 dangerouslySetInnerHTML={{__html:``}}를 사용하면 된다. 아래와 같이 사용 가능하다.
+
+```
+import Script from 'next/script';
+
+<Script id="show-banner">
+  {`document.getElementById('banner').classList.remove('hidden')`}
+</Script>
+
+<Script
+  id="show-banner"
+  dangerouslySetInnerHTML={{
+    __html: `document.getElementById('banner').classList.remove('hidden')`,
+  }}
+/>
+```
+
+그러나, 위 next/script의 \<Script> 태그를 사용하면 \<Script> 태그를 \<head>에 위치시켜도 내부 코드가 나중에 실행된다. 확인을 위해 alert을 사용했는데 화면이 렌더링 된 이후 alert창이 떴다. 프로퍼티를 바꿔볼까 싶어서 strategy="beforeInteractive"로 바꿔보았지만 소용 없었다. \<Script> 태그는 여전히 렌더링 이후 실행 되었다.
+
+공식문서에서는 \<Script> 태그를 사용하라고 되어있지만 내부 코드의 실행시점이 parsing 이전에 되길 원했기에 나는 기존의 \<script> 태그를 사용하기로 결정했다. 공식문서에서는 \<script> 태그 내부에 코드를 직접 작성하는 것보다 dangerouslySetInnerHTML 프로퍼티에 코드를 작성하는 것을 권장하기 때문에 (다만 XSS 공격에 취약하다는 단점이 있다. 적용 사항을 잘 고려하여 프로퍼티를 사용하자) 내 최종 코드는 아래와 같이 수정되었다. 이제 다크 모드에서 새로고침 해도 화면이 깜박이지 않는다. 👏
+
+```
+<body>
+  {/* ... */}
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `
+        const localStorageTheme = localStorage.getItem("theme");
+        const theme = localStorageTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') {
+          document.body.classList.add(theme);
+        }
+      `,
+      }}
+    ></script>
+</body>
+```
