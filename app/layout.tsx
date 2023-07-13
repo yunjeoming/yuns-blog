@@ -30,11 +30,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           async={true}
           dangerouslySetInnerHTML={{
             __html: `
-            const localStorageTheme = localStorage.getItem("theme");
-            const theme = localStorageTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            if (theme === 'dark') {
-              document.body.classList.add(theme)
-            }`,
+              const localStorageTheme = localStorage.getItem("theme");
+              const theme = localStorageTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+              if (theme === 'dark') {
+                document.body.classList.add(theme);
+              }
+              if (document.body.getAttribute("class") === "") {
+                document.body.removeAttribute("class");
+              }
+            `,
           }}
         ></script>
       </body>

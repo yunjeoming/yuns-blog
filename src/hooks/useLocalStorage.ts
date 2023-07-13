@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { Theme } from '../types/Common';
 
 const useLocalStorage = () => {
-  const [theme, setTheme] = useState<Theme>(
-    (localStorage.getItem('theme') as Theme) ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
-  );
+  const [theme, setTheme] =
+    useState<Theme>(window.localStorage.getItem('theme') as Theme) ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
   const changeTheme = useCallback(() => {
     const currTheme = localStorage.getItem('theme');
@@ -18,7 +17,7 @@ const useLocalStorage = () => {
     setTheme((state) => (state === 'dark' ? 'light' : 'dark'));
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (theme === 'dark') {
       document.body.classList.add(theme);
     }
