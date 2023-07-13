@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SelectedTag, Tag } from './';
 import { ChevronUp, ChevronDown } from 'react-feather';
-import { PostPage } from '@/types/Common';
+import { PostPage } from '@/src/types/Common';
 
 interface Props {
   tags: string[];

@@ -2,8 +2,8 @@ import React from 'react';
 import { NextPage } from 'next';
 import { SelectedTagPage } from '@/app/component/Page';
 import { BasicLayout } from '@/app/component/Layout';
-import { PageTagProps } from '@/types/Common';
-import { Constants } from '@/constants';
+import { PageTagProps } from '@/src/types/Common';
+import { Constants } from '@/src/constants';
 
 const page: NextPage<PageTagProps> = ({ params: { tagName } }) => {
   return (

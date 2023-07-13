@@ -1,10 +1,10 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { PostUtil } from '@/utils/post';
+import { PostUtil } from '@/src/utils/post';
 import { BasicLayout } from '../component/Layout';
 import { Tags } from '../component/Tag';
 import { Posts } from '../component/Post';
-import { Constants } from '@/constants';
+import { Constants } from '@/src/constants';
 
 const page: NextPage = () => {
   const issuePosts = PostUtil.getAllIssuePosts();

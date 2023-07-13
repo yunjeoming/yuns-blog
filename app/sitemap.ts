@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
-import { Constants } from '@/constants';
-import { PostUtil } from '@/utils/post';
+import { Constants } from '@/src/constants';
+import { PostUtil } from '@/src/utils/post';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const blogPosts = PostUtil.getAllBlogPosts();

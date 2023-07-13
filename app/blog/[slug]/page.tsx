@@ -1,7 +1,7 @@
 import React from 'react';
-import { PageSlugProps } from '@/types/Common';
+import { PageSlugProps } from '@/src/types/Common';
 import { Metadata, NextPage } from 'next';
-import { PostUtil } from '@/utils/post';
+import { PostUtil } from '@/src/utils/post';
 import { MdxPage } from '@/app/component/Page';
 
 export function generateMetadata({ params: { slug } }: PageSlugProps): Metadata {

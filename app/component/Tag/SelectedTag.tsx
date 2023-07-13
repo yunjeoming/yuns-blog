@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { TagProps } from '@/types/Common';
+import { TagProps } from '@/src/types/Common';
 
 const SelectedTag: React.FC<TagProps> = ({ name, className = '', size = 'sm', pageName }) => {
   const href = name === 'ALL' ? `/${pageName}` : `/${pageName}/tag/${name}`;

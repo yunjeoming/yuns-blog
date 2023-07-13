@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import { IPostMeta, IPost } from '@/types/Post';
+import { IPostMeta, IPost } from '@/src/types/Post';
 import { allPosts, Post } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
-import { Constants } from '@/constants';
+import { Constants } from '@/src/constants';
 
 let posts = allPosts.filter(p => p.isPublished);
 let blogPosts: Post[] | null = null;

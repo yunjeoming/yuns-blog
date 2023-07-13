@@ -1,6 +1,4 @@
 import Header from './Header';
-import HeaderContent from './HeaderContent';
-import MainHeader from './MainHeader';
-import SubHeader from './SubHeader';
+import ThemeMode from './ThemeMode';
 
-export { Header, HeaderContent, MainHeader, SubHeader };
+export { Header, ThemeMode };

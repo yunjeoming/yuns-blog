@@ -3,10 +3,10 @@
 import React, { useCallback } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Tag } from '../Tag';
-import { PostMetaProps } from '@/types/Post';
+import { PostMetaProps } from '@/src/types/Post';
 import TimeStamp from '../TimeStamp';
-import { PathUtil } from '@/utils/path';
-import { PostPage } from '@/types/Common';
+import { PathUtil } from '@/src/utils/path';
+import { PostPage } from '@/src/types/Common';
 import Image from 'next/image';
 
 const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, tags, slug, imgUrl } }) => {
