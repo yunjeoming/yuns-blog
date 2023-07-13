@@ -2,6 +2,7 @@ import Footer from './component/Footer';
 import './globals.css';
 import { Header } from './component/Header';
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: {
@@ -34,9 +35,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               const theme = localStorageTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
               if (theme === 'dark') {
                 document.body.classList.add(theme);
-              }
-              if (document.body.getAttribute("class") === "") {
-                document.body.removeAttribute("class");
               }
             `,
           }}
