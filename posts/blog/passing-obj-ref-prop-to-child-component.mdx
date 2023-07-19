@@ -99,12 +99,10 @@ export const Child = forWardRef<RefObjType, Props>((props, ref) => {
 });
 ```
 
-`as React.MutableRefObject\<RefObjType>`로 타입 단언을 해주어 current만 구조분해 할당으로 빼오자. 원래의 ref의 value를 가져오기 위해선 ref.current.value를 사용해야 하는 것을 잊지말자.
+`as React.MutableRefObject<RefObjType>`로 타입 단언을 해주어 current만 구조분해 할당으로 빼오자. 원래의 ref의 value를 가져오기 위해선 ref.current.value를 사용해야 하는 것을 잊지말자.
 
-위 ❌의 예시에서 ref에 바로 current.ref1을 넣어주는 것을 볼 수 있는데 이렇게 바로 넣어줄 경우,
+위 ❌의 예시에서 ref에 바로 current.ref1을 넣어주는 것을 볼 수 있는데 이렇게 바로 넣어줄 경우, 아래와 같은 타입 에러가 발생한다.
 
 > 'HTMLInputElement | null' 형식은 'LegacyRef<HTMLInputElement> | undefined' 형식에 할당할 수 없습니다.
-
-위 타입 에러가 발생한다.
 
 나는 이 에러를 해결하기 위해 ref의 elem을 받아 current.ref1에 바로 넣어줬다.
