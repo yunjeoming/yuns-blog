@@ -2,7 +2,6 @@ import Footer from './component/Footer';
 import './globals.css';
 import { Header } from './component/Header';
 import { Metadata } from 'next';
-import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: {
