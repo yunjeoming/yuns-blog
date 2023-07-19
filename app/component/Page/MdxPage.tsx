@@ -4,6 +4,7 @@ import { DateUtil } from '@/src/utils/date';
 import { Tag } from '../Tag';
 import { PathUtil } from '@/src/utils/path';
 import { PostPage } from '@/src/types/Common';
+import { Comments } from '../Comments';
 
 interface Props {
   post: IPost;
@@ -34,6 +35,7 @@ const MdxPage: React.FC<Props> = ({ post }) => {
           </>
         )}
       </div>
+      <Comments />
     </>
   );
 };
