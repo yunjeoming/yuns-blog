@@ -18,6 +18,9 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
+            pre: {
+              whiteSpace: 'pre-wrap',
+            },
             code: {
               color: '#d83707',
               fontWeight: 400,
