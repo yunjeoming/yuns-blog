@@ -4,11 +4,9 @@ import { Moon, Sun } from 'react-feather';
 const ThemeMode = () => {
   const changeTheme = useCallback(() => {
     const currTheme = localStorage.getItem('theme');
-    if (currTheme === 'light') {
-      localStorage.setItem('theme', 'dark');
-    } else {
-      localStorage.setItem('theme', 'light');
-    }
+    const otherTheme = currTheme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', otherTheme);
+    window.dispatchEvent(new StorageEvent('storage', { key: otherTheme }));
     document.body.classList.toggle('dark');
   }, []);
 
