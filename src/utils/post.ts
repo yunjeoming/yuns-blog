@@ -234,7 +234,7 @@ export const PostUtil = {
    */
   convertPostTypeByPost: (post: Post) => {
     const meta = PostUtil.getPostMetaByOnePost(post);
-    const content = post.body.html;
+    const content = post.body.code;
     return {
       meta,
       content,

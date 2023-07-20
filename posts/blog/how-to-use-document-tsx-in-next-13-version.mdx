@@ -24,9 +24,9 @@ Next.js 12에서는 `_document.tsx` 파일에서 html 태그를 사전에 수정
 
 **그러면 Next.js 13에서는 어느 파일에서 내용을 수정 해야할까?** 천천히 생각해보았다. Next.js가 12에서 13으로 바뀌면서 layout.tsx, page.tsx가 새로 생겼는데 최상위 layout.tsx에 html 태그가 있으니 여기서 수정하면 되지 않을까? 싶었다. 공식 문서를 찾아보니 layout.tsx를 수정하는게 맞았다. [Next.js 공식문서에서 확인하기](https://nextjs.org/docs/app/building-your-application/optimizing/scripts)
 
-[인라인 스크립트](https://nextjs.org/docs/app/building-your-application/optimizing/scripts#inline-scripts)에 어떻게 script 태그를 작성해야하는지 친절하게 나와있다. next/script의 \<Script> 태그를 사용하여 내부 중괄호를 사용하거나 이전 버전에서 주로 사용되는 dangerouslySetInnerHTML={{__html:``}}를 사용하면 된다. 아래와 같이 사용 가능하다.
+[인라인 스크립트](https://nextjs.org/docs/app/building-your-application/optimizing/scripts#inline-scripts)에 어떻게 script 태그를 작성해야하는지 친절하게 나와있다. next/script의 \<Script> 태그를 사용하여 내부 중괄호를 사용하거나 이전 버전에서 주로 사용되는 dangerouslySetInnerHTML=\{\{__html:``\}\}를 사용하면 된다. 아래와 같이 사용 가능하다.
 
-```
+```tsx
 import Script from 'next/script';
 
 <Script id="show-banner">
@@ -45,7 +45,7 @@ import Script from 'next/script';
 
 공식문서에서는 \<Script> 태그를 사용하라고 되어있지만 내부 코드의 실행시점이 parsing 이전에 되길 원했기에 나는 기존의 \<script> 태그를 사용하기로 결정했다. 공식문서에서는 \<script> 태그 내부에 코드를 직접 작성하는 것보다 dangerouslySetInnerHTML 프로퍼티에 코드를 작성하는 것을 권장하기 때문에 (다만 XSS 공격에 취약하다는 단점이 있다. 적용 사항을 잘 고려하여 프로퍼티를 사용하자) 내 최종 코드는 아래와 같이 수정되었다. 이제 다크 모드에서 새로고침 해도 화면이 깜박이지 않는다. 👏
 
-```
+```html
 <body>
   {/* ... */}
     <script
