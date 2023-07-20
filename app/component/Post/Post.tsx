@@ -28,16 +28,14 @@ const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, t
           <p className="line-clamp-3 mr-4 overflow-hidden sm:line-clamp-2 sm:mr-0">{description}</p>
         </div>
       </div>
-      <div className="flex items-baseline text-sm text-stone-500 max-sm:flex-wrap max-sm:gap-1">
-        <TimeStamp date={date} className="flex-shrink-0 mr-2" />
-        {tags && (
-          <div className="flex flex-wrap gap-1">
-            {tags.map((t) => (
-              <Tag key={t} name={t} size="xs" pageName={rootName} />
-            ))}
-          </div>
-        )}
-      </div>
+      {tags && (
+        <div className="flex flex-wrap gap-1">
+          {tags.map((t) => (
+            <Tag key={t} name={t} size="xs" pageName={rootName} />
+          ))}
+        </div>
+      )}
+      <TimeStamp date={date} className="flex-shrink-0 mr-2" />
     </article>
   );
 };
