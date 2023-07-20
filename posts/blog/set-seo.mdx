@@ -30,7 +30,7 @@ isPublished: true
 
 난 내부 태그 페이지에서도 metadata를 함께 적용시키기 위해 layout.tsx에 정의했다.
 
-```tsx
+```js
 export const metadata: Metadata = {
   title: 'Blog',
   description: PageConstants.BLOG_DESCRIPTION,
@@ -47,7 +47,7 @@ export default layout;
 
 layout.tsx에서는 테스트 해 볼 생각은 하지 않아서 모르겠다만, page.tsx에서만 generateMetadata()가 실행된다. 내 경우 \[slug\]/page.tsx에서는 무조건 MdxPage 컴포넌트를 렌더링 하게 해놨는데, MdxPage에서는 위 generateMetadata()가 호출되지 않는다. \<head> 태그를 바꿔줄 페이지 상단에 generateMetadata()를 모두 호출해줬고 slug로부터 특정 Metadata를 얻게해주는 유틸함수를 만들어서 함수 내부에서 같은 내용을 호출하도록 했다.
 
-```tsx
+```javascript
 import { Metadata, NextPage } from 'next';
 
 export function generateMetadata({ params: { slug } }: PageSlugProps): Metadata {
@@ -184,7 +184,7 @@ robots.txt는 검색 엔진 크롤러에게 웹 사이트의 url 별 접근을 �
 
 작성 내용은 아래와 같다.
 
-```robots.ts
+```ts
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
