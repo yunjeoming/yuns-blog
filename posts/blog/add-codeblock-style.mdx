@@ -1,0 +1,95 @@
+---
+title: mdx 내부 codeblock 스타일링 하기 (feat. rehype-pretty-code)
+description: 거무튀튀하고 못생긴 기본 codeblock 대신 예쁜 codeblock을 사용해볼까?
+date: 2023-07-20
+tags: [next.js, mdx, codeblock, rehype-pretty-code]
+isPublished: true
+imgUrl: add-codeblock-style.jpeg
+---
+
+밋밋한 코드 블럭에 드디어 예쁜 스타일을 추가했다.
+
+나는 `rehype-pretty-code`을 사용했는데, 요 아이를 사용하기 위해서는 다른 라이브러리도 추가로 같이 설치해줘야 한다.
+
+### 라이브러리 설치 및 설정 파일 수정
+
+```shell
+> yarn add rehype rehype-pretty-code shiki
+```
+
+`rehype-pretty-code`이 `rehype`와 `shiki`를 기본으로 만들어졌기 때문에 요 세개 라이브러리를 같이 설치해야 한다. 설치 후 기존 mdx 파일에 적용하기 위해 `contentlayer.config.ts`에서 플러그인에 추가한다.
+(참고: [contentlayer 공식문서](https://www.contentlayer.dev/docs/sources/files/mdx-d747e46d#mdx-plugins-remarkrehype))
+
+난 highlight.js 대신 rehypePrettyCode를 사용중이었기 때문에 아래와 같이 수정했다.
+
+```js
+import remarkGfm from 'remark-gfm';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+//...
+
+export default makeSource({
+  //..
+  mdx: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [[rehypePrettyCode, rehypeoptions]],
+  },
+});
+```
+
+📌 참고로 remarkGfm를 사용하면, mdx에서 table이 적용된다!
+
+나는 코드를 위처럼 수정했을 때 codeblock의 스타일이 적용되지 않았다. 이유를 알 수 없어 별의별 쇼를 다 했는데, 나중에 다른 분들의 코드를 보니 나의 Post는 contentType이 markdown이었던 것...^^... (allPost의 Post 타입을 확인해보니 body가 Markdown 타입이었다.)
+
+markdown -> mdx로 수정하기 위해 contentlayer.config.ts에서 contentType을 추가했다. (기본값은 markdown인 듯 하다.)
+
+```js
+// contentlayer.config.ts
+
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `**/*.mdx`,
+  contentType: 'mdx', // 💡 추가한다.
+  fields: {
+    title: { type: 'string', required: true },
+    description: { type: 'string', required: false },
+    tags: { type: 'list', of: { type: 'string' }, required: false },
+    date: { type: 'date', required: true },
+    isPublished: { type: 'boolean', required: true },
+    imgUrl: { type: 'string', required: false },
+  },
+  computedFields: {
+    url: { type: 'string', resolve: (post) => `${post._raw.flattenedPath}` },
+  },
+}));
+```
+
+### 기존 코드 수정
+
+contentType을 mdx로 바꾸면 코드를 수정해야 할 부분이 생긴다.
+
+1. post 내용은 post.body.html가 아닌 post.body.code에서 가져와야 한다.
+2. 이전에는 post.body.html를 일반 \<div\> 태그 내 dangerouslySetInnerHTML=\{\{__html: post.body.html\}\}에 바로 적용시켰다면 mdx 타입은 아래와 같이 적용해야 한다.
+
+```tsx
+import { useMDXComponent } from 'next-contentlayer/hooks';
+
+const Post = ({ post }: Props) => {
+  // ...
+  const MDXContent = useMDXComponent(post.body.code);
+
+  return (
+    <div>
+      //...
+      <MDXContent />
+      //...
+    </div>
+  )
+}
+```
+
+### 바뀐 스타일링 확인
+
+![적용 전](../posts/blog/add-codeblock-style/before.png)
+
+![적용 후](../posts/blog/add-codeblock-style/after.png)

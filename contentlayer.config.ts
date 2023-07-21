@@ -2,7 +2,6 @@
 import { defineDocumentType, makeSource } from '@contentlayer/source-files';
 import remarkGfm from 'remark-gfm';
 import rehypePrettyCode from 'rehype-pretty-code';
-rehypePrettyCode;
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
