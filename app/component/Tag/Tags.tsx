@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Tags: React.FC<Props> = ({ tags, selectedTag, pageName }) => {
-  const { handleClick, isOverHeight, showAllTags, tagsRef } = useMoreAndHide(selectedTag);
+  const { handleClick, showAllTags, tagsRef } = useMoreAndHide(selectedTag);
 
   return (
     <aside className="flex-grow-0 flex-shrink-0 w-full lg:w-auto lg:basis-60 lg:py-4 lg:px-2 lg:mr-6 lg:h-fit max-lg:mb-8">
@@ -23,21 +23,19 @@ const Tags: React.FC<Props> = ({ tags, selectedTag, pageName }) => {
           <Tag key={t} name={t} pageName={pageName} selected={t === selectedTag} />
         ))}
       </div>
-      {isOverHeight ? (
-        <button className="flex justify-center items-center w-full p-2 text-sm sm:text-base" onClick={handleClick}>
-          {showAllTags ? (
-            <>
-              <span>Hide</span>
-              <ChevronUp size={'1rem'} />
-            </>
-          ) : (
-            <>
-              <span>More</span>
-              <ChevronDown size={'1rem'} />
-            </>
-          )}
-        </button>
-      ) : null}
+      <button className="flex justify-center items-center w-full p-2 text-sm" onClick={handleClick}>
+        {showAllTags ? (
+          <>
+            <span>Hide</span>
+            <ChevronUp size={'1rem'} />
+          </>
+        ) : (
+          <>
+            <span>More</span>
+            <ChevronDown size={'1rem'} />
+          </>
+        )}
+      </button>
     </aside>
   );
 };
