@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Tags: React.FC<Props> = ({ tags, selectedTag, pageName }) => {
-  const { handleClick, isOverHeight, showAllTags, tagsRef } = useMoreAndHide();
+  const { handleClick, isOverHeight, showAllTags, tagsRef } = useMoreAndHide(selectedTag);
 
   return (
     <aside className="flex-grow-0 flex-shrink-0 w-full lg:w-auto lg:basis-60 lg:py-4 lg:px-2 lg:mr-6 lg:h-fit max-lg:mb-8">
