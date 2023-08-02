@@ -1,17 +1,17 @@
 import React, { useCallback } from 'react';
-import Link from 'next/link';
 import { NavbarProps } from '@/src/types/Common';
 import { usePathname } from 'next/navigation';
+import { NavbarLink } from '../Link';
 
 const links = [
   {
     name: 'Blog',
     href: '/blog',
   },
-  {
-    name: 'Memo',
-    href: '/memo',
-  },
+  // {
+  //   name: 'Memo',
+  //   href: '/memo',
+  // },
   {
     name: 'Issue',
     href: '/issue',
@@ -30,22 +30,9 @@ const NavbarContent: React.FC<NavbarProps> = ({ closeMenu }) => {
 
   return (
     <>
-      {links.map((link) =>
-        link.href == pathname ? (
-          <Link key={link.name} className="text-center font-bold" href={link.href} onClick={handleClick}>
-            {link.name}
-          </Link>
-        ) : (
-          <Link
-            key={link.name}
-            className="text-center hover:text-navbar-hover"
-            href={link.href}
-            onClick={handleClick}
-          >
-            {link.name}
-          </Link>
-        ),
-      )}
+      {links.map((link) => (
+        <NavbarLink key={link.name} link={link} onClick={handleClick} selected={link.href == pathname} />
+      ))}
     </>
   );
 };
