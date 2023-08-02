@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { SelectedTag, Tag } from './';
 import { ChevronUp, ChevronDown } from 'react-feather';
 import { PostPage } from '@/src/types/Common';
+import useMoreAndHide from '@/src/hooks/useMoreAndHide';
 
 interface Props {
   tags: string[];
@@ -12,23 +13,7 @@ interface Props {
 }
 
 const Tags: React.FC<Props> = ({ tags, selectedTag, pageName }) => {
-  const [showAllTags, setShowAllTags] = useState(false);
-  const tagsRef = useRef<HTMLDivElement>(null);
-
-  const handleClick = useCallback(() => {
-    setShowAllTags((state) => !state);
-  }, []);
-
-  useEffect(() => {
-    if (!tagsRef.current) return;
-    const tags = tagsRef.current as HTMLElement;
-
-    if (showAllTags) {
-      tags.classList.add('opened-tags', 'tags');
-    } else {
-      tags.classList.remove('opened-tags', 'tags');
-    }
-  }, [showAllTags]);
+  const { handleClick, isOverHeight, showAllTags, tagsRef } = useMoreAndHide();
 
   return (
     <aside className="flex-grow-0 flex-shrink-0 w-full lg:w-auto lg:basis-60 lg:py-4 lg:px-2 lg:mr-6 lg:h-fit max-lg:mb-8">
@@ -42,19 +27,21 @@ const Tags: React.FC<Props> = ({ tags, selectedTag, pageName }) => {
           ),
         )}
       </div>
-      <button className="flex justify-center items-center w-full p-2 text-sm sm:text-base" onClick={handleClick}>
-        {showAllTags ? (
-          <>
-            <span>Hide</span>
-            <ChevronUp size={'1rem'} />
-          </>
-        ) : (
-          <>
-            <span>More</span>
-            <ChevronDown size={'1rem'} />
-          </>
-        )}
-      </button>
+      {isOverHeight ? (
+        <button className="flex justify-center items-center w-full p-2 text-sm sm:text-base" onClick={handleClick}>
+          {showAllTags ? (
+            <>
+              <span>Hide</span>
+              <ChevronUp size={'1rem'} />
+            </>
+          ) : (
+            <>
+              <span>More</span>
+              <ChevronDown size={'1rem'} />
+            </>
+          )}
+        </button>
+      ) : null}
     </aside>
   );
 };
