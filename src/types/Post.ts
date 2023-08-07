@@ -12,6 +12,12 @@ export interface IPostMeta {
   imgUrl: string;
 }
 
+export interface ISeries {
+  title: string;
+  description: string;
+  total?: number;
+}
+
 export interface PostMetasProps {
   postMetas: IPostMeta[];
 }

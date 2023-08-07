@@ -8,6 +8,7 @@ let posts = allPosts.filter(p => p.isPublished);
 let blogPosts: Post[] | null = null;
 let memoPosts: Post[] | null = null;
 let issuePosts: Post[] | null = null;
+let serieses: Post[] | null = null;
 let blogTags: string[] | null = null;
 let issueTags: string[] | null = null;
 
