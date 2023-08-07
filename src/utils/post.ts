@@ -1,13 +1,14 @@
 import { Metadata } from 'next';
-import { IPostMeta, IPost } from '@/src/types/Post';
+import { IPostMeta, IPost } from '@/types/Post';
 import { allPosts, Post } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
-import { Constants } from '@/src/constants';
+import { Constants } from '@/constants';
 
 let posts = allPosts.filter(p => p.isPublished);
 let blogPosts: Post[] | null = null;
 let memoPosts: Post[] | null = null;
 let issuePosts: Post[] | null = null;
+let serieses: Post[] | null = null;
 let blogTags: string[] | null = null;
 let issueTags: string[] | null = null;
 
