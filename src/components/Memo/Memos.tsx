@@ -4,7 +4,7 @@ import { Memo } from '.';
 
 const Memos: React.FC<PostsProps> = ({ posts }) => {
   return (
-    <div className="flex flex-wrap w-full gap-4">
+    <div className="grid md:grid-cols-2 w-full gap-4">
       {posts.map((post, i) => (
         <Memo key={post.meta.title + post.meta.date + i} post={post} />
       ))}

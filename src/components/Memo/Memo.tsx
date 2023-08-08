@@ -13,7 +13,7 @@ const Memo: React.FC<PostProps> = ({
 }) => {
   const MDXContent = useMDXComponent(content);
   return (
-    <article className="flex-grow-0 basis-full sm:basis-[48%] border rounded-md p-4">
+    <article className="border rounded-md p-4">
       <Link href={`/${slug}`}>
         <H3 thickness='semibold'>{title}</H3>
         <TimeStamp date={date} />
