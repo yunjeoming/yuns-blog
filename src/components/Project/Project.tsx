@@ -2,7 +2,6 @@
 
 import { FC, MouseEvent } from 'react';
 import { IProject } from '@/types/Project';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 const Project: FC<IProject> = ({ image, title, description, tools, link }) => {
@@ -19,7 +18,7 @@ const Project: FC<IProject> = ({ image, title, description, tools, link }) => {
     <div className="min-h-[20rem] flex flex-col border rounded-md cursor-pointer" onClick={handleClickSection}>
       <div className="flex-shrink-0 basis-1/2 bg-slate-100">{image}</div>
       <div className="flex-shrink-0 basis-1/2 flex flex-col p-2">
-        <div className="font-semibold mb-2">{title}</div>
+        <div className="font-medium mb-2">{title}</div>
         <div className="flex-grow">
           <div className="mb-2 text-sm">{description}</div>
           <div className="flex flex-wrap gap-1">

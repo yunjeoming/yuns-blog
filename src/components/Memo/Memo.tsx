@@ -15,7 +15,7 @@ const Memo: React.FC<PostProps> = ({
   return (
     <article className="border rounded-md p-4">
       <Link href={`/${slug}`}>
-        <H3 thickness='semibold'>{title}</H3>
+        <H3 thickness='medium'>{title}</H3>
         <TimeStamp date={date} />
         {content && (
           <div className="p-2">

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme.js';
+
 module.exports = {
   darkMode: 'class',
   content: [
@@ -13,6 +15,9 @@ module.exports = {
       md: '768px',
       lg: '1024px',
       xl: '1280px',
+    },
+    fontFamily: {
+      sans: ['NotoSans', 'NotoSans-KR', ...defaultTheme.fontFamily.sans],
     },
     extend: {
       typography: {

@@ -11,8 +11,8 @@ type Props = {
 };
 
 const NavbarLink: FC<Props> = ({ link: { name, href }, onClick, selected = false }) => {
-  const selectedStyle = 'font-bold';
-  const defaultStyle = 'hover:text-navbar-hover';
+  const selectedStyle = 'font-medium';
+  const defaultStyle = 'font-light hover:text-navbar-hover';
 
   return (
     <Link key={name} className={`text-center ${selected ? selectedStyle : defaultStyle}`} href={href} onClick={onClick}>
