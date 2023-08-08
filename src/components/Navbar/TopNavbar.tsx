@@ -3,7 +3,7 @@ import { NavbarContent } from '.';
 
 const TopNavbar = () => {
   return (
-    <nav className="max-sm:hidden [&>*:not(:last-child)]:mr-5 lg:[&>*:not(:last-child)]:mr-10 font-light">
+    <nav className="max-sm:hidden [&>*:not(:last-child)]:mr-5 lg:[&>*:not(:last-child)]:mr-10">
       <NavbarContent />
     </nav>
   );

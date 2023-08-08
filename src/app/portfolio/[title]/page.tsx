@@ -13,7 +13,7 @@ const page: NextPage<{ params: { title: string } }> = ({ params: { title } }) =>
         vitae, reiciendis
       </p>
       <div>
-        <H3 underline thickness="semibold">
+        <H3 underline thickness="medium">
           Link
         </H3>
         <div>
@@ -22,25 +22,25 @@ const page: NextPage<{ params: { title: string } }> = ({ params: { title } }) =>
         </div>
       </div>
       <div>
-        <H3 underline thickness="semibold">
+        <H3 underline thickness="medium">
           Tools
         </H3>
         <div>do sth</div>
       </div>
       <div>
-        <H3 underline thickness="semibold">
+        <H3 underline thickness="medium">
           담당 역할
         </H3>
         <div>do sth</div>
       </div>
       <div>
-        <H3 underline thickness="semibold">
+        <H3 underline thickness="medium">
           회고 및 후기
         </H3>
         <div>do sth</div>
       </div>
       <div>
-        <H3 underline thickness="semibold">
+        <H3 underline thickness="medium">
           미리 보기
         </H3>
         <div>do sth</div>
