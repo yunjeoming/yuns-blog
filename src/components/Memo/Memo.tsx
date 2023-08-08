@@ -3,6 +3,7 @@ import { PostProps } from '@/types/Post';
 import TimeStamp from '../TimeStamp';
 import Link from 'next/link';
 import { useMDXComponent } from 'next-contentlayer/hooks';
+import { H3 } from '../Title/Title';
 
 const Memo: React.FC<PostProps> = ({
   post: {
@@ -14,7 +15,7 @@ const Memo: React.FC<PostProps> = ({
   return (
     <article className="flex-grow-0 basis-full sm:basis-[48%] border rounded-md p-4">
       <Link href={`/${slug}`}>
-        <h3 className="font-semibold">{title}</h3>
+        <H3 thickness='semibold'>{title}</H3>
         <TimeStamp date={date} />
         {content && (
           <div className="p-2">
