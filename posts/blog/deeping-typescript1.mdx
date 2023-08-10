@@ -1,0 +1,214 @@
+---
+title: 타입스크립트 심화 (1)
+description: 타입스크립트 개념 보충하기 1편
+date: 2023-08-07
+tags: [TypeScript, 타입스크립트]
+imgUrl: deeping-typescript1.jpeg
+isPublished: true
+---
+
+그동안 타입스크립트를 사용하면서 간단한 타입 정의 외에 헷갈렸던 부분이나 자세히 몰랐던 부분 공부하고 정리한 내용이다.
+
+## any 타입
+
+any 타입은 모든 타입의 상위 타입일 수 있고, 하위 타입일 수 있다. 즉, 어디에나 존재하는 치트키 타입이다.  
+any 타입은 다른 타입에 할당할 수 있고, 반대로 다른 타입을 any 타입에도 할당할 수 있다.
+
+단, 유일하게 never 타입에는 할당할 수 없다.
+
+```ts
+let unknownLet: unknown;
+let anyLet:any = unknownLet;             // any <- unknown ⭕️
+let undefinedLet: undefined = anyLet;    // undefined <- any ⭕️
+let neverLet: never = anyLet;            // never <- any ❌
+```
+
+## unknown 타입
+
+unknown은 타입 계층 내 최상위 타입이다. unknown 타입에는 모든 타입을 넣을 수 있다.  
+단, 반대로 unknown 타입을 다른 타입에 넣을 수 없다.
+
+```ts
+let a: unknown = 1;       // unknown <- number ⭕️
+let b: unknown = '123';   // unknown <- string ⭕️
+let c: unknown = false;   // unknown <- boolean ⭕️
+
+let unknownLet: unknown;
+let num: number = 2;
+let str: string = 'abc';
+num = unknownLet;         // number <- unknown ❌
+str = unknownLet;         // string <- unknown ❌
+```
+
+## any, unknown의 차이
+
+any, unknown 타입이 지정된 변수에는 여러 값들을 넣을 수 있다.
+
+```ts
+let anyLet: any;
+let unknownLet: unknown;
+
+anyLet = '123';
+anyLet = 123;
+anyLet = false;
+
+unknownLet = '123';
+unknownLet = 123;
+unknownLet = false;
+```
+
+하지만, 이 값들을 다른 변수에 **할당**할 때 any는 가능한 반면, unknown은 불가능하다. unknown을 넣기 위해서는 타입 검사를 해야한다.
+
+```ts
+let num = 123;
+
+num = anyLet;       // ⭕️
+num = unknownLet;   // ❌
+
+if (typeof unknownLet === 'number'){
+  num = unknownLet; // ⭕️
+}
+```
+
+## void 타입
+
+void는 아무 값이 없음을 뜻한다. 반환 값을 특별히 지정하고 싶지 않을 때 사용한다.
+
+void 타입은 undefined의 상위 타입으로 void 타입에 undefined 타입을 할당할 수 있으나 반대로 undefined 타입에 void 타입을 할당할 수 없다.
+
+```ts
+function voidType: void () {             // void <- undefined ⭕️
+  console.log('hello!');
+  return undefined;
+};
+
+let undefinedLet: undefined = () => {};  // undefined <- void ❌
+```
+
+## never
+
+never 타입은 타입 계층 내 최하위 타입이다.  
+값의 반환이 모순이고 불가능할 때 사용하는 타입으로 함수 내에서 무한루프가 사용되거나 throw new Error와 같이 에러를 던질 때 사용된다.
+
+never 타입을 다른 타입에 할당할 수 있으나, 반대로 어떠한 타입도 never 타입에 할당할 수 없다.
+
+```ts
+let neverFunc:never = () => {
+    while(true){}
+};
+
+let num:number = neverFunc;        // number <- never ⭕️
+let str:string = neverFunc;        // string <- never ⭕️
+let bool:boolean = neverFunc;      // boolean <- never ⭕️
+
+let neverLet: never = 10;          // never <- number ❌
+```
+
+never 타입에는 아무 값도 할당할 수 없기 때문에 어떠한 값도 저장 되어선 안 되는 타입의 변수로 활용할 때 유용하다.
+
+교집합이 없는 각각 다른 타입(주로 기본 타입)을 & 키워드로 새로운 타입을 만들어내면 새로 생성된 타입은 never 타입이다
+
+```ts
+let whichType: number & string;        // never
+```
+
+## const 단언
+
+`as const`를 사용하면 let으로 선언한 변수가 리터럴 타입이 된다. 객체에서 const 단언을 사용할 경우 객체의 모든 프로퍼티들이 자동으로 readonly로 바뀌게 된다.
+
+```ts
+let obj = {
+  name: 'abc',
+  age: 123
+} as const;
+```
+
+위 예시 코드의 경우 obj의 타입은 \{ readonly name: string, readonly age: number \}이다.
+
+## Non Null 단언
+
+undefined 타입이 아니라 실제 타입이 존재한다고 강제로 타입을 주입시키는 것이다. `!` 키워드를 사용한다.
+
+## 함수 오버로딩
+
+오버로딩이란 함수의 인자 개수와 타입이 다를 때 함수의 이름을 같게 작성할 수 있는 것을 말한다. 자바스크립트에서는 함수 오버로딩을 할 수 없지만 타입스크립트에서는 타입을 오버로딩하여 정의할 수 있다.
+
+```ts
+// 오버로드 시그니처
+function func(a: number): void;
+function func(a: number, b: number): void;
+
+// 구현 시그니처
+function func(){}
+
+func();            // ❌
+func(1);           // ⭕️
+func(1,2);         // ❌
+func(1,2,3);       // ⭕️
+```
+
+구현 시그니처에서 특정 매개변수를 정의해버리면 오버로드 시그니처의 의미가 없어진다. 따라서 구현 시그니처를 작성할 때는 `?` 키워드를 사용하여 선택적 매개변수를 사용하고, 함수 내부에선 각 타입에 맞게 인자들이 호출될 수 있도록 해야한다.
+
+```ts
+// 오버로드 시그니처
+function func(a: number): void;
+function func(a: number, b: number): void;
+
+// 구현 시그니처
+function func(a: number, b?: number, c?: number){
+  if (typeof b === 'number' && typeof c === 'number'){
+    return a + b + c;
+  } else {
+    return a * 20;
+  }
+};
+```
+
+## 메서드 오버로딩
+
+한 객체 내에서 메서드 오버로딩을 구현할 때는 호출 시그니처를 활용한다.
+
+```ts
+type WrongPerson = {
+  name: string;
+  say: () => void;              // ❌
+  say: (msg: string) => void;   // ❌
+};
+
+// 호출 시그니처
+type RightPerson = {
+  name: string;
+  say(): void;                  // ⭕️
+  say(msg: string): void;       // ⭕️
+};
+```
+
+## 사용자 정의 타입
+
+함수 리턴 타입에 `매개변수 is T`를 사용하여 리턴 값이 true일 경우 해당 함수의 매개변수는 T 타입을 리턴하도록 한다.
+
+```ts
+type Cat {
+  name: string;
+  isScratch: boolean;
+};
+
+type Dog {
+  name: string;
+  isBark: boolean;
+};
+
+type Animal = Cat | Dog;
+
+// ❗️ 이 함수만으로 리턴값이 Cat 타입인지 Dog 타입인지 알 수 없다.
+function isCatBefore(animal: Animal) {
+  // isScratch가 있으면 고양이, 없으면 강아지
+  return (isCat as Cat).isScratch !== undefined;
+};
+
+// ⭕️ 리턴값이 true이면 특정한 타입이 되도록 리턴 타입을 명시해준다.
+function isCatBefore(animal: Animal): animal is Cat {
+  // isScratch가 있으면 고양이, 없으면 강아지
+  return (isCat as Cat).isScratch !== undefined;
+};
+```

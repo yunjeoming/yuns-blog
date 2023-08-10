@@ -16,12 +16,16 @@ export default function Home() {
           </p>
           <ul className="contact">
             <li>
-              <label htmlFor="">Email</label>
-              <a href="mailto:jjeongsla@gmail.com">jjeongsla@gmail.com</a>
+              <label htmlFor="my-email">Email</label>
+              <a id="my-email" href="mailto:jjeongsla@gmail.com">
+                jjeongsla@gmail.com
+              </a>
             </li>
             <li>
-              <label htmlFor="">Github</label>
-              <a href="https://github.com/yunjeoming" target="_blank">https://github.com/yunjeoming</a>
+              <label htmlFor="my-github">Github</label>
+              <a id="my-github" href="https://github.com/yunjeoming" target="_blank">
+                https://github.com/yunjeoming
+              </a>
             </li>
           </ul>
         </div>
