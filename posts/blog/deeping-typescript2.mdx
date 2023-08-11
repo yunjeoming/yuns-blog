@@ -4,7 +4,7 @@ description: 타입스크립트 개념 보충하기 2편
 date: 2023-08-10
 tags: [TypeScript, 타입스크립트]
 imgUrl: deeping-typescript2.jpeg
-isPublished: false
+isPublished: true
 ---
 
 ## Indexed Access
@@ -155,4 +155,141 @@ type Color = 'red' | 'yellow';
 type ColoredAnimal = `${Color}-${Animal}`;
 ```
 
-## 조건부
+## 단일 조건부 타입
+
+조건에 따라 타입을 결정하는 방법으로 자바스크립트의 삼항 연산자를 사용한다.
+
+```ts
+type A = {
+  a: number
+};
+
+type B = {
+  a: number;
+  b: number;
+};
+
+// 타입 A가 타입 B의 슈퍼 타입일 때 타입 C는 number, 슈퍼 타입이 아닐 때 타입 C는 string
+type C = B extends A ? number : string; // number
+```
+
+제네릭과 사용하면 활용도가 높아진다.
+아래 코드는 타입 T가 string일 경우 StringNumberSwitch\<T\> 타입은 number, 타입 T가 number일 경우 StringNumberSwitch\<T\> 타입은 string이 되도록 하고 있다.
+
+```ts
+type StringNumberSwitch<T> = T extends string ? number : string;
+
+let a: StringNumberSwitch<number>;  // string 타입
+let b: StringNumberSwitch<string>;  // number 타입
+```
+
+아래 예제에서는 인수의 타입에 따라 함수의 결과 타입을 다르게 얻는다. 다만 함수 내부에서는 제네릭 T가 unknown 타입이기 때문에 타입 가드로 타입을 좁히기 어렵다.('특정 타입 \<- unknown' 불가능 하기 때문) 따라서 이 경우에는 리턴값에 any 타입 단언을 사용하거나 함수 오버로딩을 사용하여 타입을 재정의 해야한다.
+
+any를 사용하면 값 자체의 타입이 any가 되어버리기 때문에 string, undefined 외 다른 타입이 return에 사용될 수 있어 함수 자체에서 타입 에러가 발생하지 않는다. 함수 오버로딩을 사용하면 오버로드 시그니처에서 타입이 다를 경우 타입 에러를 발생시키기 때문에 이 경우 any 보다 함수 오버로딩을 사용하는 것이 좋다.
+
+```ts
+// 1) any 사용
+function removeSpaces<T>(text: T): T extends string ? : string : undefined {
+  if (typeof text === 'string') {
+    return text.replaceAll(" ", "") as any;
+  } else {
+    return undefined as any;
+  }
+}
+
+// 2) 함수 오버로딩 사용
+function removeSpaces<T>(text: T): T extends string ? : string : undefined
+function removeSpaces (text: any) {
+  if (typeof text === 'string') {
+    return text.replaceAll(" ", "");
+  } else {
+    return undefined;
+  }
+}
+```
+
+## 분산적 조건부 타입
+
+제네릭 T에 단일 타입이 아닌 유니온 타입이 할당될 경우 삼항 연산자는 위와 다르게 작동한다. 최종 타입은 각각의 유니온 타입의 결과들이 하나의 유니온으로 묶이게 된다.
+
+```ts
+type StringNumberSwitch<T> = T extends string ? number : string;
+
+let a: StringNumberSwitch<number>;  // string 타입
+let b: StringNumberSwitch<string>;  // number 타입
+
+let c: StringNumberSwitch<string | number | boolean>;
+
+// 각각의 유니온 타입의 결과들
+// StringNumberSwitch<string>   : number
+// StringNumberSwitch<number>   : string
+// StringNumberSwitch<boolean>  : string
+
+// 하나의 유니온으로 묶인다.
+// number | string
+```
+
+이를 활용하여 유니온 타입에서 특정 타입만 추출 또는 제거하여 사용할 수 있다.
+
+### 타입 추출
+```ts
+type Extract<T, U> = T extends U ? T : never;
+
+type A = Extract<string | number | boolean, string>;
+// 각각의 유니온 타입의 결과들
+// Extract<string, string>   : string
+// Extract<number, string>   : never
+// Extract<boolean, string>  : never
+
+// 하나의 유니온으로 묶인다.
+// string | never
+
+// 결과에 never가 포함되면 제거 => 공집합이기 때문에
+// string
+```
+
+### 타입 제거
+```ts
+type Exclude<T, U> = T extends U ? never : T;
+
+type A = Exclude<string | number | boolean, string>;
+
+// 각각의 유니온 타입의 결과들
+// Exclude<string, string>   : never
+// Exclude<number, string>   : number
+// Exclude<boolean, string>  : boolean
+
+// 하나의 유니온으로 묶인다.
+// never | number | boolean
+
+// 결과에 never가 포함되면 never 제거
+// number | boolean
+```
+
+### 분산적 조건부 방지
+
+각각의 유니온 타입의 결과를 얻는 것이 아닌, T 자체에 유니온을 넣고 싶을 때는 타입에 대괄호를 씌워준다.
+
+```ts
+type StringNumberSwitch<T> = [T] extends [string] ? number : string;
+
+let a: StringNumberSwitch<string | number | boolean>;  // string
+```
+
+위 예제에서는 [string | number | boolean]은 string의 서브 타입이 아니기 때문에 결과 타입은 항상 string이 된다.
+
+## infer
+
+명확하게 정해진 타입이 아닌 특정 타입을 추론하여 얻어낼 때 사용한다.
+
+```ts
+type ReturnType<T> = T extends () => infer R : R : never;
+
+let a: ReturnType<() => number>;  // number
+let b: ReturnType<() => string>;  // string
+let c: ReturnType<number>;        // never
+```
+
+### 참고
+
+[https://ts.winterlood.com/](https://ts.winterlood.com/)
