@@ -136,7 +136,7 @@ undefined 타입이 아니라 실제 타입이 존재한다고 강제로 타입�
 ```ts
 // 오버로드 시그니처
 function func(a: number): void;
-function func(a: number, b: number): void;
+function func(a: number, b: number, c: number): void;
 
 // 구현 시그니처
 function func(){}
@@ -152,7 +152,7 @@ func(1,2,3);       // ⭕️
 ```ts
 // 오버로드 시그니처
 function func(a: number): void;
-function func(a: number, b: number): void;
+function func(a: number, b: number, c: number): void;
 
 // 구현 시그니처
 function func(a: number, b?: number, c?: number){
