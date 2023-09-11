@@ -1,0 +1,335 @@
+---
+title: 리액트 상태(state)와 컴포넌트 위치의 상관 관계
+description: 리액트에서는 UI tree 구조를 기준으로 컴포넌트를 리렌더링한다.
+date: 2023-08-24
+tags: [리액트, React, state]
+imgUrl: preserve-and-reset-state.jpeg
+isPublished: true
+---
+
+## 서론
+
+> 컴포넌트의 state가 바뀌면 자신을 포함해 자식 컴포넌트까지 같이 리렌더링 된다.
+
+위 리액트 리렌더링 원리는 리액트를 사용하는 사람이라면 모두 알고 있는 내용이 아닐까 싶다. 나 또한 그냥 단순하게 state가 바뀌면 리렌더링 되는 것만 알고 있었지, UI tree 구조에 대해서는 깊게 생각해본 적 없는데 이번에 리액트 공식 홈페이지를 읽어보면서 내가 잘못 알고있고 몰랐던 부분이 있는 것을 알게 되어 공부할 겸 블로그에 기록해보려고 한다.
+
+## Case 1. 하나의 컴포넌트(Counter)가 자식1, 자식2로 렌더링 될 경우
+
+```
+        App
+   ┌─────┴─────┐
+Counter     Counter
+```
+
+부모 컴포넌트인 App이 자식 컴포넌트 Counter를 2개 가지고 있을 때 각각의 Counter 컴포넌트는 독립적인 state를 갖는다. 즉, 버튼을 클릭하면 score는 별개로 증가한다.
+
+```tsx
+function App() {
+  return (
+    <div>
+      <Counter />
+      <Counter />
+    </div>
+  )
+}
+
+function Counter() {
+  const [score, setScore] = useState(0);
+
+  return (
+    <div>
+      <h1>{score}</h1>
+      <button onClick={() => setScore(score + 1)}>
+        Add one
+      </button>
+    </div>
+  );
+}
+```
+
+![case 1](https://github.com/yunjeoming/yuns-blog/assets/76480300/cce3e962-0abe-4d94-b076-86e7b405ecd9)
+
+## Case 2. true or false state에 따라 자식 컴포넌트를 렌더링 또는 제거할 경우
+
+```
+      (true)                    (false)
+        App                       App
+   ┌─────┴─────┐     <=>     ┌─────┘
+Counter     Counter       Counter
+```
+
+App 컴포넌트에서 state 값에 따라 두번째 Counter 컴포넌트를 보여주거나 없앤다. 이 때 1번 Counter 컴포넌트의 score는 제 값을 유지하지만 2번 Counter 컴포넌트는 사라졌다 다시 나타날 경우 score가 항상 0으로 초기화 된다.
+
+```tsx
+function App() {
+  const [showB, setShowB] = useState(true);
+
+  return (
+    <div>
+      <Counter />
+      {showB && <Counter />} 
+      <label>
+        <input
+          type="checkbox"
+          checked={showB}
+          onChange={e => {
+            setShowB(e.target.checked)
+          }}
+        />
+        Render the second counter
+      </label>
+    </div>
+  )
+}
+```
+
+![case 2](https://github.com/yunjeoming/yuns-blog/assets/76480300/ec12f8d8-813b-46c0-b29f-e0df45aeb010)
+
+## Case 3. true or false state에 따라 하나의 자식 컴포넌트를 각각 보여줄 경우
+
+```
+(true)      (false)
+  App         App
+   │    <=>    │
+Counter     Counter
+```
+
+state가 true든, false든 Counter 컴포넌트만 보여준다. 설명이 조금 헷갈릴 수 있지만 아래 코드를 보면 쉽게 이해할 수 있다.
+
+```tsx
+function App() {
+  const [isFancy, setIsFancy] = useState(true);
+
+  return (
+    <div>
+      {isFancy ? (
+        <Counter isFancy={true} /> 
+      ) : (
+        <Counter isFancy={false} /> 
+      )}
+      <label>
+        <input
+          type="checkbox"
+          checked={isFancy}
+          onChange={e => {
+            setIsFancy(e.target.checked)
+          }}
+        />
+        Use fancy styling
+      </label>
+    </div>
+  );
+}
+
+function Counter({ isFancy }) {
+  const [score, setScore] = useState(0);
+  const styles = isFancy ? { border: '2px solid red' } : {};
+
+  return (
+    <div style={styles}>
+      <h1>{score}</h1>
+      <button onClick={() => setScore(score + 1)}>
+        Add one
+      </button>
+    </div>
+  );
+}
+```
+
+위 코드에서 score를 증가시키고 App 컴포넌트의 state를 true에서 false로 바꾸면 어떻게 될까? Counter 컴포넌트의 score는 초기화될까? 아니면 그대로 유지될까?
+
+**정답은 그대로 유지된다.**
+
+state가 바뀌면 컴포넌트는 분명 리렌더링 될텐데 왜 Counter 컴포넌트는 리렌더링 되지 않고 그대로일까?
+
+리액트는 렌더링할 때 컴포넌트 **UI tree 구조**를 비교하기 때문이다. 위에 표현한 컴포넌트 UI tree 구조는 state가 true든 false든 항상 같기 때문에 리액트는 컴포넌트를 리렌더링 하지 않는다.
+
+![case 4](https://github.com/yunjeoming/yuns-blog/assets/76480300/022889de-149d-41fe-811e-b4190ee18ae0)
+
+## Case 4. case 3에서 Counter 컴포넌트를 div, section 태그로 감쌀 경우
+
+```
+(true)         (false)
+  App            App
+   │              │
+ <div>   <=>  <section>
+   │              │
+Counter        Counter
+```
+
+바로 위 케이스인 true or false state 값에서 Counter 컴포넌트를 보여주는 것은 똑같다. 하지만 이 Counter 컴포넌트를 각각 div, section 태그로 감쌀 경우 어떻게 될까?
+
+```tsx
+function App() {
+  const [isFancy, setIsFancy] = useState(true);
+
+  return (
+    <div>
+      {isFancy ? (
+        <div>
+          <Counter isFancy={true} /> 
+        </div>
+      ) : (
+        <section>
+          <Counter isFancy={false} /> 
+        </section>
+      )}
+      <label>
+        <input
+          type="checkbox"
+          checked={isFancy}
+          onChange={e => {
+            setIsFancy(e.target.checked)
+          }}
+        />
+        Use fancy styling
+      </label>
+    </div>
+  );
+}
+
+function Counter({ isFancy }) {
+  const [score, setScore] = useState(0);
+  const styles = isFancy ? { border: '2px solid red' } : {};
+
+  return (
+    <div style={styles}>
+      <h1>
+        {person}'s score: {score}
+      </h1>
+      <button onClick={() => setScore(score + 1)}>
+        Add one
+      </button>
+    </div>
+  );
+}
+```
+
+처음에 Add one을 마구 클릭하여 score를 올려놓고 state를 true에서 false로 변경해보면 Counter의 score가 초기화되는 것을 확인할 수 있다.
+
+바로 이전 케이스와는 달리 컴포넌트가 랜더링되어 score가 초기화 된 것이다. 위에서 리액트는 UI tree 구조를 비교하여 구조가 바뀌었을 때 렌더링 한다고 했다. 여기서 App과 Counter 사이에 각각 div, section이라는 태그가 tree 구조상 다르게 적용되면서 리액트는 이전과 다른 컴포넌트라고 판단하여 리렌더링을 하게 된 것이다.
+
+![case 4](https://github.com/yunjeoming/yuns-blog/assets/76480300/f5850e93-df82-48f6-8e16-d2a1c55081fe)
+
+
+
+## ⭐️ case 3에서 Counter 컴포넌트에 이름을 같이 넘겨보자
+
+```
+(true)      (false)
+  App         App
+   │    <=>    │
+Counter     Counter
+(taylor)     (john)
+```
+
+위 언급했던 케이스 중 하나로 state에 따라 하나의 Counter 컴포넌트만 보여주되 props로 person을 넘겨준다. 
+
+```tsx
+function App() {
+  const [isTaylor, setIsTaylor] = useState(true);
+
+  return (
+    <div>
+      {isTaylor ? (
+        <Counter person="taylor" /> 
+      ) : (
+        <Counter person="john" /> 
+      )}
+      <button onClick={() => setIsTaylor(!isTaylor)}>
+        Next person
+      </button>
+    </div>
+  );
+}
+
+function Counter({ person }) {
+  const [score, setScore] = useState(0);
+
+  return (
+    <div style={styles}>
+      <h1>{person}'s score</h1>
+      <button onClick={() => setScore(score + 1)}>
+        Add one
+      </button>
+    </div>
+  );
+}
+```
+
+위 코드에서 App 컴포넌트의 state에 따라 Counter 컴포넌트의 person이 다르게 출력되지만 score는 변함이 없다. 위에 설명했 듯 UI tree 구조는 변함이 없기 때문에 Counter의 person이 바뀌어도 리액트는 Counter를 동일한 컴포넌트로 처리한다.
+
+하지만, 개념적으로는 person에 따라 각각 다른 Counter 컴포넌트와 state를 가져야하는데 어떻게 해야할까?
+
+![person props](https://github.com/yunjeoming/yuns-blog/assets/76480300/f6bc284f-ec34-483e-9b0b-ac33964c8ce7)
+
+### 1) 컴포넌트에 다른 position 부여
+
+state가 true, false일 때 각각 다른 Counter 컴포넌트를 렌더링 하도록 한다.
+
+초기 상태의 경우 리액트는 첫 번째 child는 있고, 두 번째 child는 없는 것으로 판별한다. Next person 버튼을 클릭하면 반대로 첫 번째 child는 없고, 두 번째 child는 있는 것으로 판별하여 Counter 컴포넌트를 각각 렌더링 한다.
+
+```tsx
+function App() {
+  const [isTaylor, setIsTaylor] = useState(true);
+
+  return (
+    <div>
+      {isTaylor && (
+        <Counter person="taylor" /> 
+      )}
+      {!isTaylor && (
+        <Counter person="john" /> 
+      )}
+      <button onClick={() => setIsTaylor(!isTaylor)}>
+        Next person
+      </button>
+    </div>
+  );
+}
+```
+
+위 코드의 경우 UI tree 구조는 아래와 같다.
+
+```
+      (true)       (false)                 (true)
+        App          App                    App 
+   ┌─────┘     =>     └─────┐    =>    ┌─────┘
+Counter                  Counter    Counter
+
+```
+
+![example 1 - person props](https://github.com/yunjeoming/yuns-blog/assets/76480300/28e70ee4-95a4-44b8-8ff9-c4c12ff03b9a)
+
+
+### 2) 컴포넌트에 key 부여
+
+리액트에서 key를 사용하면 컴포넌트를 구별할 수 있다. 대표적으로 map을 활용하여 하나의 컴포넌트를 여러번 렌더링시킬 때 컴포넌트를 구별하기 위해 key를 사용하는데, 이 경우에도 key를 부여하여 state가 바뀔 때마다 각각 다른 Counter 컴포넌트를 렌더링 하도록 할 수 있다.
+
+```tsx
+function App() {
+  const [isTaylor, setIsTaylor] = useState(true);
+
+  return (
+    <div>
+      {isTaylor ? (
+        <Counter key="taylor" person="taylor" /> 
+      ) : (
+        <Counter key="john" person="john" /> 
+      )}
+      <button onClick={() => setIsTaylor(!isTaylor)}>
+        Next person
+      </button>
+    </div>
+  );
+}
+```
+
+위 코드에서 Counter 컴포넌트에 key를 부여했다. key를 부여하면 리액트는 UI tree 구조 대신 key로 컴포넌트를 위치시키고 구별한다.
+
+따라서 score를 증가시키고 Next person 버튼을 클릭하여 App 컴포넌트의 state를 바꾸면 state가 0으로 초기화 된다.
+
+![example 2 - person props](https://github.com/yunjeoming/yuns-blog/assets/76480300/43c6937e-09c0-408e-8443-aec2f467002c)
+
+## 참고
+[리액트 공식문서 - https://react.dev/learn/preserving-and-resetting-state](https://react.dev/learn/preserving-and-resetting-state)
