@@ -1,8 +1,8 @@
 import React from 'react';
 import { NextPage } from 'next';
 import { PostUtil } from '@/utils/post';
-import { Tags } from '@/components/tag';
-import { Posts } from '@/components/post';
+import { Tags } from '../../components/tag';
+import { Posts } from '../../components/post';
 
 const page: NextPage = () => {
   const issuePosts = PostUtil.getAllIssuePosts();

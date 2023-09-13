@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { Tags } from '@/components/tag';
-import { Posts } from '@/components/post';
+import { Posts } from '../../components/post';
+import { Tags } from '../../components/tag';
 import { PostUtil } from '@/utils/post';
 
 const page: NextPage = () => {
