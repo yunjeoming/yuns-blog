@@ -1,10 +1,10 @@
 import React from 'react';
-import { IPost } from '@/types/Post';
 import { DateUtil } from '@/utils/date';
-import { Tag } from '../Tag';
+import { Tag } from '../tag';
 import { PathUtil } from '@/utils/path';
-import { PostPage } from '@/types/Common';
-import { Comments } from '../Comments';
+import { PostPage } from '@/types/common';
+import { IPost } from '@/types/post';
+import { Comments } from '../comments';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
 interface Props {

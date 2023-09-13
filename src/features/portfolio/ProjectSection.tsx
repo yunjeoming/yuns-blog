@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { ProjectSection } from '@/types/Project';
+import { ProjectSection } from '@/types/portfolio';
 import Project from './Project';
-import { H3 } from '../Title/Title';
+import { H3 } from '../../components/title';
 
 const ProjectSection: FC<ProjectSection> = ({ type, projects }) => {
   return (

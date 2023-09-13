@@ -1,13 +1,12 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { SelectedTagPage } from '@/components/Page';
-import { BasicLayout } from '@/components/Layout';
-import { PageTagProps } from '@/types/Common';
-import { Constants } from '@/constants';
+import { SelectedTagPage } from '@/components/page';
+import { PageTagProps } from '@/types/common';
+import { BasicLayout } from '@/layouts';
 
 const page: NextPage<PageTagProps> = ({ params: { tagName } }) => {
   return (
-    <BasicLayout title={Constants.ISSUE_DESCRIPTION}>
+    <BasicLayout>
       <SelectedTagPage tagName={tagName} pageName="issue" />
     </BasicLayout>
   );

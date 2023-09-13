@@ -3,7 +3,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Menu as MenuIcon } from 'react-feather';
-import { SideNavbar, TopNavbar } from '../Navbar';
+import { SideNavbar, TopNavbar } from '../navbar';
 import ThemeMode from './ThemeMode';
 
 const Header = () => {

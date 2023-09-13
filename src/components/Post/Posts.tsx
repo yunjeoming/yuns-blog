@@ -1,6 +1,6 @@
 import React from 'react';
-import { PostMetasProps } from '@/types/Post';
-import { Post } from '.';
+import { PostMetasProps } from '@/types/post';
+import Post from './Post';
 
 const Posts: React.FC<PostMetasProps> = ({ postMetas }) => {
   return (

@@ -1,9 +1,9 @@
 import React from 'react';
-import { PostProps } from '@/types/Post';
-import TimeStamp from '../TimeStamp';
 import Link from 'next/link';
 import { useMDXComponent } from 'next-contentlayer/hooks';
-import { H3 } from '../Title/Title';
+import { TimeStamp } from '@/components/post';
+import { PostProps } from '@/types/post';
+import { H3 } from '../../components/title';
 
 const Memo: React.FC<PostProps> = ({
   post: {

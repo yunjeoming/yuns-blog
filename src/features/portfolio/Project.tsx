@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, MouseEvent } from 'react';
-import { IProject } from '@/types/Project';
+import { IProject } from '@/types/portfolio';
 import { useRouter } from 'next/navigation';
 
 const Project: FC<IProject> = ({ image, title, description, tools, link }) => {

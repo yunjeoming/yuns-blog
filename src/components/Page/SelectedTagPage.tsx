@@ -1,8 +1,8 @@
 import React from 'react';
 import { PostUtil } from '@/utils/post';
-import { Tags } from '../Tag';
-import { Posts } from '../Post';
-import { PostPage } from '@/types/Common';
+import { PostPage } from '@/types/common';
+import { Tags } from '../tag';
+import { Posts } from '../post';
 
 interface Props {
   tagName: string;
