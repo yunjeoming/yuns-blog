@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavbarProps } from '@/types/Common';
-import { NavbarContent } from '.';
+import { NavbarProps } from '@/types/common';
+import NavbarContent from './NavbarContent';
 
 const SideNavbar: React.FC<NavbarProps> = ({ closeMenu }) => {
   return (

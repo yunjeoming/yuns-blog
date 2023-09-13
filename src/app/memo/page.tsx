@@ -1,8 +1,8 @@
 import React from 'react';
 import { NextPage } from 'next';
 import { PostUtil } from '@/utils/post';
-import { Memos } from '@/components/Memo';
-import PageTitle from '@/components/PageTitle';
+import { Memos } from '@/features/memo';
+import PageTitle from '@/components/title/PageTitle';
 import { Constants } from '@/constants';
 
 const page: NextPage = () => {

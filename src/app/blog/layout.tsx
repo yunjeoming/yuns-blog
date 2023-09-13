@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Constants } from '@/constants';
+import { BasicLayout } from '@/layouts';
 
 export const metadata: Metadata = {
   title: Constants.BLOG_TITLE,
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  return <>{children}</>;
+  return <BasicLayout>{children}</BasicLayout>;
 };
 
 export default layout;

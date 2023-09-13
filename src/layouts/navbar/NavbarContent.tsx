@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import { NavbarProps } from '@/types/Common';
 import { usePathname } from 'next/navigation';
-import { NavbarLink } from '../Link';
+import { NavbarProps } from '@/types/common';
+import NavbarLink from './NavbarLink';
 
 const links = [
   {

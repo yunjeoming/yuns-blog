@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { ISeries } from '@/types/Post';
-import { H3 } from '../Title/Title';
+import { ISeries } from '@/types/post';
+import { H3 } from '@/components/title';
 
 const Series: FC<ISeries> = ({ title, description, total = 0 }) => {
   return (

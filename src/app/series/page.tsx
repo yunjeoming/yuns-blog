@@ -1,4 +1,4 @@
-import { Serieses } from '@/components/Series';
+import { Serieses } from '@/features/series';
 import { SeriesUtil } from '@/utils/series';
 import { NextPage } from 'next';
 import React from 'react';

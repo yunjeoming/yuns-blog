@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Tag } from '.';
 import { ChevronUp, ChevronDown } from 'react-feather';
-import { PostPage } from '@/types/Common';
-import useMoreAndHide from '@/hooks/useMoreAndHide';
+import { PostPage } from '@/types/common';
+import { useMoreAndHide } from '@/hooks';
+import Tag from './Tag';
 
 interface Props {
   tags: string[];

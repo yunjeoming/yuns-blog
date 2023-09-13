@@ -1,5 +1,5 @@
-import Projects from '@/components/Project/Projects';
 import { projectsData } from '@/constants/projectsData';
+import { Projects } from '@/features/portfolio';
 
 const page = () => {
   return <Projects projects={projectsData} />;

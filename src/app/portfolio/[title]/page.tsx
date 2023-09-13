@@ -1,6 +1,6 @@
-import { H1, H3 } from '@/components/Title/Title';
-import { NextPage } from 'next';
 import React from 'react';
+import { H1, H3 } from '@/components/title/Title';
+import { NextPage } from 'next';
 
 const page: NextPage<{ params: { title: string } }> = ({ params: { title } }) => {
   return (

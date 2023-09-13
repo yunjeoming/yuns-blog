@@ -1,4 +1,4 @@
-import { ProjectDataType } from '@/types/Project';
+import { ProjectDataType } from '@/types/project';
 
 const projectsData: ProjectDataType = [
   {

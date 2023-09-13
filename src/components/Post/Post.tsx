@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { Tag } from '../Tag';
-import TimeStamp from '../TimeStamp';
-import { PostMetaProps } from '@/types/Post';
-import { PathUtil } from '@/utils/path';
-import { PostPage } from '@/types/Common';
 import Image from 'next/image';
-import { H3 } from '../Title/Title';
+import { usePathname, useRouter } from 'next/navigation';
+import { Tag } from '@/components/tag';
+import TimeStamp from './TimeStamp';
+import { PostMetaProps } from '@/types/post';
+import { PathUtil } from '@/utils/path';
+import { PostPage } from '@/types/common';
+import { H3 } from '@/components/title/Title';
 
 const Post: React.FC<PostMetaProps> = ({ postMeta: { title, description, date, tags, slug, imgUrl } }) => {
   const pathname = usePathname();

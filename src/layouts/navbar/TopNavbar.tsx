@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavbarContent } from '.';
+import NavbarContent from './NavbarContent';
 
 const TopNavbar = () => {
   return (

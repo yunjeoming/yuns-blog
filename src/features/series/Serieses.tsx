@@ -1,6 +1,6 @@
-import { ISeries } from '@/types/Post';
-import Series from './Series';
 import { FC } from 'react';
+import { ISeries } from '@/types/post';
+import Series from './Series';
 
 interface Props {
   serieses: ISeries[];

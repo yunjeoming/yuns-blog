@@ -1,4 +1,4 @@
-import { ISeries } from '@/types/Post';
+import { ISeries } from '@/types/post';
 import { allPosts } from 'contentlayer/generated';
 import { PostUtil } from './post';
 

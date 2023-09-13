@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ProjectDataType } from '@/types/Project';
+import { ProjectDataType } from '@/types/project';
 import ProjectSection from './ProjectSection';
 
 interface Props {

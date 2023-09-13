@@ -1,5 +1,5 @@
 import React from 'react';
-import { PostsProps } from '@/types/Post';
+import { PostsProps } from '@/types/post';
 import { Memo } from '.';
 
 const Memos: React.FC<PostsProps> = ({ posts }) => {
