@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { Constants } from '@/constants';
-import SubLayout from '@/components/Layout/SubLayout';
+import SubLayout from '@/layouts/SubLayout';
 
 export const metadata: Metadata = {
   title: Constants.PORTFOLIO_TITLE,

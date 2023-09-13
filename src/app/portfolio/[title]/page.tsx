@@ -1,4 +1,4 @@
-import { H1, H3 } from '@/components/Title/Title';
+import { H1, H3 } from '@/components/title';
 import { NextPage } from 'next';
 import React from 'react';
 

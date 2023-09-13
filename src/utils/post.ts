@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { IPostMeta, IPost } from '@/types/Post';
+import { IPostMeta, IPost } from '@/types/post';
 import { allPosts, Post } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
 import { Constants } from '@/constants';

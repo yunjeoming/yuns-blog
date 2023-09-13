@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { PageSlugProps } from '@/types/Common';
-import { MdxPage } from '@/components/Page';
+import { PageSlugProps } from '@/types/common';
+import { MdxPage } from '@/components/page';
 import { PostUtil } from '@/utils/post';
 
 const page: NextPage<PageSlugProps> = ({ params: { slug } }) => {

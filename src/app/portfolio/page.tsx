@@ -1,4 +1,4 @@
-import Projects from '@/components/Project/Projects';
+import Projects from '@/features/portfolio/Projects';
 import { projectsData } from '@/constants/projectsData';
 
 const page = () => {
