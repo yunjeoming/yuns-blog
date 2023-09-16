@@ -48,7 +48,7 @@ export const Child = forWardRef<RefObjType, Props>((props, ref) => {
 
 처음엔 위와 같이 단순하게 "하나의 객체로 묶어내서 보내주면 되겠다" 했는데, **ref**=\{refObj\}에서 타입 에러가 계속 생겼다.
 
-곰곰이 생각해보니 원래 자식 컴포넌트에 하나의 ref를 전달하면, 그 자식 컴포넌트는 forwardRef로 원래의 ref 타입 즉 React.MutableRefObject\<T>을 받기 때문에 ref는 무조건 ref 타입으로 보내야겠다 싶었다.
+생각해보니 원래 자식 컴포넌트에 하나의 ref를 전달하면, 그 자식 컴포넌트는 forwardRef로 원래의 ref 타입 즉 React.MutableRefObject\<T>을 받기 때문에 ref는 무조건 ref 타입으로 보내야겠다 싶었다.
 
 위 방법을 어떻게 적용시켜야 할까.. 하면서 검색해보니 위 방법과 비슷하게 객체 대신 배열로 useRef를 사용하는 방법을 알게됐다. 나는 배열일 경우 순서에 따라 맞게 선언해야 한다는 점이 마음에 들지 않아 배열 대신 객체를 사용하기로 마음 먹었기에 위 코드를 아래와 같이 수정했다.
 
@@ -99,9 +99,9 @@ export const Child = forWardRef<RefObjType, Props>((props, ref) => {
 });
 ```
 
-`as React.MutableRefObject\<RefObjType\>`로 타입 단언을 해주어 current만 구조분해 할당으로 빼오자. 원래의 ref의 value를 가져오기 위해선 ref.current.value를 사용해야 하는 것을 잊지말자.
+`as React.MutableRefObject<RefObjType>`로 타입 단언을 해주어 current만 구조분해 할당으로 빼오자. 원래의 ref의 value를 가져오기 위해선 ref.current.value를 사용해야 하는 것을 잊지말자.
 
-위 ❌의 예시에서 ref에 바로 current.ref1을 넣어주는 것을 볼 수 있는데 이렇게 바로 넣어줄 경우, 아래와 같은 타입 에러가 발생한다.
+위 ❌의 예시에서 ref에 바로 current.ref1을 넣었는데 이렇게 바로 넣어줄 경우, 아래와 같은 타입 에러가 발생한다.
 
 > 'HTMLInputElement | null' 형식은 'LegacyRef\<HTMLInputElement\> | undefined' 형식에 할당할 수 없습니다.
 

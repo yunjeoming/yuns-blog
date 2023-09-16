@@ -11,7 +11,7 @@ imgUrl: add-codeblock-style.jpeg
 
 나는 `rehype-pretty-code`을 사용했는데, 요 아이를 사용하기 위해서는 다른 라이브러리도 추가로 같이 설치해줘야 한다.
 
-### 라이브러리 설치 및 설정 파일 수정
+## 라이브러리 설치 및 설정 파일 수정
 
 ```shell
 > yarn add rehype rehype-pretty-code shiki
@@ -23,23 +23,30 @@ imgUrl: add-codeblock-style.jpeg
 난 highlight.js 대신 rehypePrettyCode를 사용중이었기 때문에 아래와 같이 수정했다.
 
 ```js
+// contentlayer.config.ts
+
 import remarkGfm from 'remark-gfm';
 import rehypePrettyCode from 'rehype-pretty-code';
 
 //...
 
+const rehypeOptions = {
+  theme: 'slack-dark',
+  keepBackground: true,
+};
+
 export default makeSource({
   //..
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [[rehypePrettyCode, rehypeoptions]],
+    rehypePlugins: [[rehypePrettyCode, rehypeOptions]],
   },
 });
 ```
 
 📌 참고로 remarkGfm를 사용하면, mdx에서 table이 적용된다!
 
-나는 코드를 위처럼 수정했을 때 codeblock의 스타일이 적용되지 않았다. 이유를 알 수 없어 별의별 쇼를 다 했는데, 나중에 다른 분들의 코드를 보니 나의 Post는 contentType이 markdown이었던 것...^^... (allPost의 Post 타입을 확인해보니 body가 Markdown 타입이었다.)
+나는 코드를 위처럼 수정했을 때 codeblock의 스타일이 적용되지 않았다. 이유를 알 수 없어 별의별 쇼를 다 했는데, 나중에 다른 개발자 블로거의 contentlayer 코드를 보니 나의 Post는 contentType이 markdown이었던 것...^^... (allPost의 Post 타입을 확인해보니 body가 Markdown 타입이었다.)
 
 markdown -> mdx로 수정하기 위해 contentlayer.config.ts에서 contentType을 추가했다. (기본값은 markdown인 듯 하다.)
 
@@ -64,12 +71,12 @@ export const Post = defineDocumentType(() => ({
 }));
 ```
 
-### 기존 코드 수정
+## 기존 코드 수정
 
 contentType을 mdx로 바꾸면 코드를 수정해야 할 부분이 생긴다.
 
-1. post 내용은 post.body.html가 아닌 post.body.code에서 가져와야 한다.
-2. 이전에는 post.body.html를 일반 \<div\> 태그 내 dangerouslySetInnerHTML=\{\{__html: post.body.html\}\}에 바로 적용시켰다면 mdx 타입은 아래와 같이 적용해야 한다.
+1. post의 content는 post.body.html가 아닌 post.body.code에서 가져와야 한다.
+2. 이전에는 post.body.html를 일반 \<div\> 태그 내 dangerouslySetInnerHTML=\{\{__html: post.body.html\}\}에 바로 적용시켰다면 mdx 타입은 아래와 같이 `useMDXComponent`를 사용해야 한다.
 
 ```tsx
 import { useMDXComponent } from 'next-contentlayer/hooks';
@@ -88,7 +95,7 @@ const Post = ({ post }: Props) => {
 }
 ```
 
-### 바뀐 스타일링 확인
+## 바뀐 스타일링 확인
 
 ![적용 전](../posts/blog/add-codeblock-style/before.png)
 
