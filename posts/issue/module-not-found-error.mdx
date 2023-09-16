@@ -1,0 +1,40 @@
+---
+title: vercel 배포시 Module not found 에러 발생 (feat. 폴더 구조 리팩토링)
+description: 폴더 구조 리팩토링 후 로컬 빌드는 문제 없는데 왜!!! vercel 배포가 안 되는걸까!!!
+date: 2023-09-13
+tags: [vercel, 배포, 배포에러, next.js, vercel배포, vercel배포에러]
+imgUrl: module-not-found-error.jpeg
+isPublished: true
+---
+
+## 상황
+
+블로그의 폴더 구조를 좀 더 깔끔하게 정리하기 위해 리팩토링을 했다. 공통 컴포넌트만 `components` 폴더에 넣고 그 외 페이지와 관련된 컴포넌트는 `features` 폴더에 넣는 과정중.. 몇 개의 폴더･파일명에 대문자와 소문자가 섞여있는 것을 발견했다. 컴포넌트 파일 외 모든 폴더･파일명은 소문자로 변경 후 push를 했는데 vercel 배포 중 build error가 발생했다.
+
+## 문제
+![module not found error](https://github.com/yunjeoming/yuns-blog/assets/76480300/ef785cf8-c3a7-4265-b537-2bb3399965d7)
+
+위와 같이 몇몇 컴포넌트에서 module을 찾을 수 없다는 에러가 발생했다. 로컬에서 빌드 명령어를 실행하면 문제없이 잘 되는데 배포할 때만 문제가 생겼다.
+
+## 원인
+폴더･파일 이름을 ide로 확인했을 때는 대소문자 반영이 잘 되어있었으나, 깃허브에서는 수정된 대소문자가 반영이 안 되어있었다...^^+
+
+## 해결
+[vercel 공식문서](https://vercel.com/guides/how-do-i-resolve-a-module-not-found-error)에서 'module not found' 에러를 해결하는 방법에 대해서 자세하게 설명해주고 있다.
+
+```shell
+> git config core.ignorecase false
+> git rm -r --cached .
+> git add .
+> git commit -m "commit message"
+> git push
+```
+
+위 명령어를 입력하여 대소문자 구분이 가능하도록 옵션을 바꿔주고, 캐시 파일을 지워서 변경된 내용이 깃허브에 제대로 반영되도록 한다.
+
+
+## 생각
+대소문자를 **당연히** 구분하겠거니 했는데 아니었다. 일을 하는데 있어서 당연한 것은 없다는 걸 다시 한 번 느끼게 되는 하루였달까......!?
+
+## 출처
+[https://vercel.com/guides/how-do-i-resolve-a-module-not-found-error](https://vercel.com/guides/how-do-i-resolve-a-module-not-found-error)
