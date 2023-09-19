@@ -1,0 +1,256 @@
+---
+title: web3.js로 간단한 지갑 만들기 (feat. ganache, next.js)
+description: web3.js, ganache, next.js로 간단한 지갑을 만들어보자
+date: 2023-09-16
+tags: [web3.js, ganache, 블록체인, dApp, next.js]
+isPublished: true
+imgUrl: make-wallet-with-web3js.jpeg
+---
+
+web3.js, ganache, next.js로 간단한 지갑을 만들게 되었는데 그 과정을 블로그에 기록해보려고 한다.
+글 제목과 설명에 지갑이라고 적긴 했지만.. 사실 은행 어플과 같이 이더리움을 조회･이체하고, 이체 내역을 조회하는 간단한 어플리케이션이다.
+
+## 시작
+
+ganache를 사용하면 로컬 블록체인 네트워크를 형성할 수 있다.
+
+실제 블록체인 노드와 통신하려면 infura 또는 metamask를 사용하면 되나, 나는 web3.js를 사용해보는 것에 초점을 두었기 때문에 ganache를 사용했다.
+
+`next.js`로 프론트 화면과 api를 구현하여 간단한 지갑을 만들어보자.
+
+## next.js, web3.js, ganache 설치
+
+next.js 프로젝트를 생성하고 web3, ganache 라이브러리를 설치한다.
+
+```shell
+> npx create-next-app@latest web3js
+> cd web3js
+> npm install web3 ganache
+```
+
+ganache를 실행하기 위해서는 명령어를 추가해야 한다. ganache를 따로 실행하든지 아니면 dev에 넣어서 next와 함께 실행되도록 만든다. 코드는 아래와 같다.
+
+```json
+"scripts": {
+  "dev": "ganache --wallet.seed myCustomSeed & next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "ganache": "ganache --wallet.seed myCustomSeed"
+},
+```
+
+ganache를 실행하면 아래와 같이 가상 account와 이더리움이 발급된다. 나는 제공받은 account의 계좌 잔액을 확인하고 다른 계좌로 이더리움을 이체하는 화면과, 이체 내역을 확인하는 화면을 만들 것이다.
+
+![ganache 실행](https://github.com/yunjeoming/yuns-blog/assets/76480300/2c03532b-14ad-47c8-b66f-3637275b532e)
+
+## api 구현
+
+프론트에서는 web3.js를 바로 호출하지 않고 대신에 api를 호출하려고 한다. 따라서, 이에 맞는 api를 만들어야 하는데 next.js에서는 자체 api를 만들 수 있는 기능을 제공한다. web3.js로 api를 어떻게 구현할 것인지에 중점을 둔 글이기 때문에 next.js에서 api를 구현하는 자세한 방법은 생략한다. 만약 자세한 내용이 궁금하다면 아래 공식 문서를 읽어보자😁
+
+📍 Next.js에서 api 만드는 방법 - [Next.js 공식 문서 바로가기](https://nextjs.org/docs/pages/building-your-application/routing/api-routes)
+
+### web3.js 인스턴스 만들기
+
+web3.js를 사용하기 위해서는 인스턴스를 만들고 provider 설정을 해야한다.
+
+ganache를 실행하면 하단에 `RPC Listening on 127.0.0.1:8545`가 출력되며 포트 번호가 나오는데, 이 주소를 기반으로 web3 인스턴스를 아래와 같이 만든다.
+
+```ts
+import Web3 from 'web3';
+
+const BASE_URL = 'http://127.0.0.1:8545';
+
+const web3Instance = new Web3(new Web3.providers.HttpProvider(BASE_URL));
+
+export default web3Instance;
+```
+
+### accounts api
+
+#### ･ 모든 계좌 조회
+
+```shell
+# 모든 계좌 조회
+GET /api/accounts
+```
+
+web3 인스턴스로부터 연결된 주소의 모든 계좌를 가져올 수 있다. 
+
+```ts
+const web3 = web3Instance;
+const accounts = await web3.eth.getAccounts();
+
+res.status(200).json({
+  accounts,
+});
+```
+
+#### ･ 특정 계좌 잔액 조회
+
+```shell
+# 특정 계좌 잔액 조회
+GET /api/accounts/{id}
+```
+
+getBalance로 얻은 잔액은 단위가 wei이다. 프론트에서는 ether 단위로 환전을 진행할 것이기 때문에 `wei -> ether`로 단위를 바꾼다.
+
+weiBalance가 0일 경우 `fromWei`로 변환한 ethBalance는 `0.`이 된다. 이 부분을 고려하여 계좌 잔액을 잘 가공하여 response에 넘겨준다.
+
+```ts
+const weiBalance = await web3.eth.getBalance(id);
+const ethBalance = Web3.utils.fromWei(weiBalance, 'ether');
+
+res.status(200).json({
+  name: id.toString(),
+  balance: ethBalance === '0.' ? '0' : ethBalance,
+});
+```
+
+### transactions api
+
+#### ･ 이체하기 (트랜잭션 생성)
+
+```shell
+# 이체하기 (트랜잭션 생성)
+POST /api/transactions
+
+{
+  fromAccount: 보내는 계좌
+  toAccount: 받는 계좌
+  amount: 이체 금액
+}
+```
+
+body 객체의 프로퍼티는 더 쉽게 알아보기 위해 fromAccount, toAccount, amount로 명명했다.
+
+amount의 단위는 ether이므로 wei로 변환해준다. 트랜잭션 생성에 필요한 gasPrice, gasLimit도 설정해준다.
+
+📍 *gasPrice란? (feat. GPT)*
+```
+gasPrice는 단위 가스당 이더(ETH) 가격을 나타냅니다. 트랜잭션을 처리하기 위해 마이너(블록을 생성하는 노드)에게 지불하는 비용을 결정합니다. 높은 gasPrice를 설정하면 트랜잭션을 처리하는 우선순위가 높아지며, 마이너들은 더 높은 보상을 받기 위해 해당 트랜잭션을 우선적으로 처리하려고 할 것입니다.
+```
+
+📍 *gasLimit란? (feat. GPT)*
+```
+gasLimit는 트랜잭션이 소비할 수 있는 최대 가스 양을 나타냅니다. 이 값은 트랜잭션이 실행되는 동안 필요한 계산 및 스토리지 작업을 수행하는 데 사용 가능한 리소스의 한도를 설정합니다. gasLimit를 높게 설정하면 더 복잡한 연산 또는 계약 실행을 처리할 수 있지만, 높은 gasLimit는 높은 비용을 의미하며, 블록체인 네트워크에서는 트랜잭션 처리에 대한 가스 비용을 지불해야 합니다.
+```
+
+```ts
+const transaction = {
+  to: toAccount,
+  from: fromAccount,
+  value: web3.utils.toWei(amount, 'ether').toString(),
+};
+
+const gasPrice = await web3.eth.getGasPrice();
+const gasLimit = await web3.eth.estimateGas(transaction);
+
+const transactionResult = await web3.eth.sendTransaction({
+  ...transaction,
+  gasLimit: gasLimit.toString(),
+  gasPrice: gasPrice.toString(),
+});
+
+res.status(201).json({
+  ...transaction,
+  txId: transactionResult.transactionHash,
+  value: amount,
+});
+```
+
+#### ･ 특정 트랜잭션 조회
+
+```shell
+# 특정 트랜잭션 조회
+GET /api/transactions/{id}
+```
+
+생성된 트랜잭션들을 조회하는 api이다. id에 해당하는 트랜잭션이 없을 경우에 404 처리한다.
+
+```ts
+const transaction = await web3.eth.getTransaction(id);
+
+if (!transaction) {
+  return res.status(404).json({
+    text: '존재하지 않는 트랜잭션입니다.',
+  });
+}
+
+const transactionResult = {
+  to: transaction.to,
+  from: transaction.from,
+  value: web3.utils.fromWei(transaction.value, 'ether').toString(),
+};
+
+res.status(200).json({
+  ...transactionResult,
+  txId: id,
+});
+```
+
+#### ･ 트랜잭션 수수료 조회
+
+```shell
+# 트랜잭션 수수료 조회
+GET /api/transactions/fee
+```
+
+트랜잭션 생성시 수수료(ether, gas)가 필요한데, 프론트 화면 하단에 조그맣게 보여주기 위해 수수료 조회 api를 따로 만들었다.
+
+수수료는 gasPrice * gasLimit (ether 단위) 만큼 소모되는데, value가 어떠한 값이든 gasLimit은 항상 같길래 value는 0으로 고정시켜 가짜 트랜잭션을 만들어 gasLimit을 구했다.
+
+```ts
+// 임의 주소
+const fakeTransaction = {
+  to: '0xf318EDEe6c856606814C0DC3d971dceA82bF071c',
+  from: '0xf318EDEe6c856606814C0DC3d971dceA82bF071c',
+  value: web3.utils.toWei('0', 'ether').toString(),
+};
+const gasPrice = await web3.eth.getGasPrice();
+const gasLimit = await web3.eth.estimateGas(fakeTransaction);
+
+res.status(200).json({
+  fee: web3.utils.fromWei(gasPrice * gasLimit, 'ether'),
+});
+```
+
+## 화면 구현
+
+web3.js를 사용하는 것에 초점을 둔 글이기 때문에 화면 구현에 대한 자세한 방법과 코드는 생략하고 간략하게 설명하려고 한다.
+
+화면은 2개의 탭으로 나누었고 하나는 Accounts, 하나는 Transactions로 명명했다.
+
+Accounts 탭에서는 ganache로부터 제공받은 모든 계좌와 계좌의 잔액을 보여주고, 다른 계좌를 선택하여 보유 잔액 이내로 이더리움을 이체할 수 있다. Transactions 탭에서는 Accounts 탭에서 생성된 모든 트랜잭션을 조회할 수 있다. 이 때, 생성되는 트랜잭션을 저장하기 위해 redux를 사용했고 또한 새 트랜잭션의 생성 시간이 없어서 트랜잭션 id별 생성 시간을 별도로 저장했다.
+
+redux를 사용하는 김에, api를 호출할 때 이전에 잔액이 조회되었던 계좌의 경우 api를 다시 호출하지 않도록 했다. 트랜잭션 또한 Transactions 탭을 클릭했을 때 이전에 불러온 내용일 경우 다시 불러오지 않도록 했다.
+
+### Accounts 화면
+
+- 메인 화면
+![main screen](https://github.com/yunjeoming/yuns-blog/assets/76480300/9ff87acc-ddd6-454a-81e6-8bdf13128c5f)
+
+- 계좌 선택
+![select account](https://github.com/yunjeoming/yuns-blog/assets/76480300/ad3b3faa-4397-4191-952b-55267f2c7f87)
+
+- 환전 완료
+![exchange](https://github.com/yunjeoming/yuns-blog/assets/76480300/b85d1e0d-dd78-4894-8112-3f05aa6c91a0)
+
+### Transactions 화면
+
+- 거래 내역 확인
+![transactions screen](https://github.com/yunjeoming/yuns-blog/assets/76480300/b6745e83-cf83-44de-8c95-9213496f65c7)
+
+## 마치며
+
+위 코드대로 만든 결과물을 보면 web3.js의 아-주 기본적인 내용만을 다룬 것을 알 수 있다. 
+결과물은 간단하지만 사실, 이 간단한 결과물을 금방 만들어낸 건 아니었다.
+블록체인에 대해 찾아보고 그 개념과 원리를 이해하며 모르는 부분을 검색하는데 쏟은 시간도 적지 않았다.
+그렇기에 결과물이 비록.. 간단해보이고 없어보일지 언정 블록체인을 시간내서 공부하게 된 뜻깊은 시간이 아닐까 싶다.
+
+그리고 공부를 더 해야한다면 위 코드에서 필요한 부분을 추가하면서 살을 덧붙여 가면 되지 않을까😉
+
+(블록체인, web3.js를 공부하는 단계입니다! 잘못된 내용이 있으면 알려주세요 :-D)
+
+## 참고
+[https://web3js-kr.readthedocs.io/ko/latest/index.html](https://web3js-kr.readthedocs.io/ko/latest/index.html)
