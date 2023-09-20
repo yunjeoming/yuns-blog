@@ -42,6 +42,7 @@ module.exports = {
               width: '100%',
               maxWidth: '56rem',
               margin: '2rem auto 4rem',
+              borderRadius: '0.4rem'
             },
           },
         },
