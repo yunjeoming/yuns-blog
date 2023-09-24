@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @font-face {
   font-family: 'NotoSans';
@@ -63,6 +63,8 @@
   --dark-tag-color-selected: #ffffff;
 
   --dark-tag-bgc-selected: #68baee; /* #8f8f8f*/
+
+  --a-color: #3B82F6;
 }
 
 * {

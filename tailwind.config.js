@@ -3,9 +3,7 @@ import defaultTheme from 'tailwindcss/defaultTheme.js';
 
 module.exports = {
   darkMode: 'class',
-  content: [
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     screens: {
       xs: '200px',
@@ -21,6 +19,9 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
+            a: {
+              color: 'var(--a-color)',
+            },
             pre: {
               whiteSpace: 'pre-wrap',
             },
@@ -42,7 +43,7 @@ module.exports = {
               width: '100%',
               maxWidth: '56rem',
               margin: '2rem auto 4rem',
-              borderRadius: '0.4rem'
+              borderRadius: '0.4rem',
             },
           },
         },
