@@ -1,0 +1,238 @@
+---
+title: 인터렉티브 웹 애니메이션 만들기(1) - 초대장
+description: html, css, js로 만드는 인터렉티브 웹 애니메이션. 초대장
+date: 2023-09-20
+tags: [interactive-web, interactive-animation, animation, css-animation]
+imgUrl: make-interactive-web-animation1.jpeg
+isPublished: true
+---
+
+웹 사이트를 구경하다보면 가끔씩 이런건 어떻게 만들었을까 싶은 것들을 몇가지 보곤하는데 그중 대부분이 애니메이션이었다. 
+애니메이션을 만들려고 하면 머리가 새하얘지면서 검색 없이 혼자 구현하는게 어려웠는데(🥲) 이번에 제대로 마음먹고 첫 걸음을 내딛게 되었다.
+
+인터렉티브 웹 애니메이션을 구현하기 위해 간단한 초대장을 만들었다. 
+페이지가 처음 로드되면 초대장이 휘리릭- 날아오고 초대장을 클릭하면 초대장이 펴짐과 동시에 초대장 내부 콘텐트가 확대되어 보여진다. 
+초대장이 펴지면 초대장 우측 상단에 close 버튼이 생기는데 이 close 버튼을 클릭할 경우 초대장이 축소되고 접히며 원래의 모습으로 되돌아간다.
+
+이 인터렉티브 애니메이션을 html, css, js로 만들었는데 오랜만에 순수 css, js 코드를 작성하니 처음엔 살짝 어색했다. 
+특히 css 클래스 이름을 지을 때 힘들었다. (이름 안 지어도 되는 tailwind.css 최고)
+
+아래 이미지가 내가 만든 초대장이다.
+
+![초대장 gif](https://github.com/yunjeoming/yuns-blog/assets/76480300/414db9fa-d77e-412e-8581-f2c1b9df409f)
+
+## 화면에 원근감 주기
+
+```html
+<body>
+  <div class="box">
+  </div>
+</body>
+```
+
+위 예제 코드에서 box 클래스에 `transform: rotateY(45deg)`를 부여해도 원근감이 없어서 회전된 box 클래스가 입체적으로 보이지 않는다. 
+box 클래스를 입체적으로 나타내기 위해\(3d 설정\) 상위 태그에 `perspective` 속성을 추가한다. 
+\(perspective 속성을 부모에게 주어야 자식에게 원근감이 적용된다. box 클래스의 부모인 body에 perspective를 부여했다.\)
+
+perspective에 부여하는 값이 커질수록 box와 나 사이의 간격이 멀어진다. 
+즉, box를 더 멀리서 바라보게 된다. 따라서 숫자가 커질수록 box가 회전하는 정도가 작아보이고, 숫자가 작아질수록 회전하는 정도가 커보인다(움직임이 더 역동적으로 보인다).
+
+```css
+body {
+  perspective: 1000px;
+}
+```
+
+아래 gif 예제를 통해 perspective 속성을 부여하기 전과는 다르게 box가 입체적으로 변한 것을 확인할 수 있다. 
+원활한 비교를 하기 위해 hover 시 rotateY가 되도록 했고 부드러움을 주기 위해 transition도 줬다.
+
+- perspective 부여 전 
+![no-perspective-image](https://github.com/yunjeoming/yuns-blog/assets/76480300/f2de2b39-14f5-4604-827f-4cd36abbf2e8)
+
+- perspective: 1000px 적용
+![perspective-image-1000px](https://github.com/yunjeoming/yuns-blog/assets/76480300/8e12aef4-19d5-4a3f-80f5-0d20b63058f4)
+
+- perspective: 500px 적용
+![perspective-image-500px](https://github.com/yunjeoming/yuns-blog/assets/76480300/f77500d0-a7ea-4fcf-bb32-43c241755e6b)
+
+## 앞･뒤 페이지 만들기
+
+초대장과 초대장을 구성하고 있는 페이지 그리고 페이지의 앞･뒷면을 만들어보자. 
+각 태그에 invitation, page, face-page\(cover, back\) 클래스를 부여했고 초대장이 펼쳐지는 모션을 만들기 위해 invitation에 perspective 속성을 추가했다.
+
+```html
+<body>
+  <div class="invitation">
+    <div class="page">
+      <div class="face-page cover">1 front</div>
+      <div class="face-page back">1 back</div>
+    </div>
+  </div>
+</body>
+```
+
+```css
+.invitation {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  perspective: 1000px;
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: 1s;
+}
+
+.page:hover {
+  transform: rotateY(145deg);
+}
+
+.face-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cover {
+  background-color: gray;
+}
+
+.back {
+  transform: rotateY(180deg);
+  background-color: blue;
+}
+```
+
+page, face-page에 `position: absolute`를 줘서 모든 page와 face-page\(page의 한쪽 면\)가 겹쳐지도록 만든다. 
+face-page의 앞･뒤 표면을 구분하기 위해 background-color를 다르게 주고 back page를 180도 뒤집어 cover page와 back page가 등을 맞대도록 한다.
+
+예상되는 모습은 표면은 gray 컬러, 뒷면은 blue 컬러다. 한 번 page에 마우스를 올려보자.
+
+![기본 hover](https://github.com/yunjeoming/yuns-blog/assets/76480300/c7421d95-1869-402b-88ed-77b8f742c3c4)
+
+예상한 것과 다르게 앞･뒤 모두 blue 컬러고 뒷면만 보인다. 이는 몇 가지 속성이 빠져있기 때문인데 속성을 추가하여 css를 수정해보자.
+
+1. backface-visibility: hidden
+
+`backface-visibility: hidden`을 추가하여 3d 환경에서는 반대쪽 면이 보이지 않도록 해야한다.
+디폴트 값은 visible인데 이 경우 3d 환경에서 면이 뒤집힐 경우 그 내용이 180도 뒤집혀 보이게 된다. 
+면 자체가 뒤집히는 것이기 때문에 이 속성은 face-page에 부여한다. 
+
+```css
+.face-page {
+  backface-visibility: hidden;
+}
+```
+
+이 속성이 적용되면 앞･뒷면의 background-color가 모두 gray로 변경된다. 
+
+2. transform-style: preserve-3d
+
+현재 앞･뒷면의 background-color가 같은 이유는 face-page에는 아직 3d 설정을 하지 않았기 때문이다. 
+perspective\(원근감\)를 invitation에 주었기 때문에 입체 구조에 영향을 받는 것은 invitation의 자식인 page다. 
+page의 자식인 face-page 또한 입체 구조로 만들어야 하는데 이 때 `transform-style: preserve-3d` 속성을 사용한다. 
+이 속성은 부모로부터 전달받은 perspective를 자식에게 물려준다.
+
+```css
+.page {
+  transform-style: preserve-3d;
+}
+```
+
+이 속성이 적용되면 이제 앞면의 background-color는 gray, 뒷면은 blue로 페이지의 앞･뒤가 잘 구분된다.
+
+3. transform-origin: left
+
+추가적으로 해야할 것은 page의 회전축 변경이다. 
+초대장은 책처럼 양쪽 끝 라인을 기준으로 펴지기 때문에 rotateY의 회전축을 변화시켜 해당 모션을 만들어준다. 
+`transform-origin: left`을 적용시켜 왼쪽 축을 기준으로 page가 회전하도록 한다. 
+이 때 hover시 145deg를 회전하는데 책이 뒤로 펴지는 듯한 모션을 보이므로 rotateY\(-145deg\)로 값을 변경하여 앞에서 펴지는 듯한 모션을 준다.
+
+```css
+.page {
+  transform-origin: left;
+}
+
+.page:hover {
+  transform: rotateY(-180deg);
+}
+```
+
+위 속성을 모두 적용시키면 왼쪽 축을 기준으로 초대장이 열리며 초대장 첫 페이지의 앞･뒤가 구분되어있다.
+
+![변경 후 hover](https://github.com/yunjeoming/yuns-blog/assets/76480300/0202655c-9672-4b70-8c5c-95c856784861)
+
+## 확대하기
+
+초대장이 펼쳐지면서 동시에 확대되도록 만들어보자. 
+물체가 가까워지는 듯한 모션을 주기 위해서는 transform: translate3d(x, y, z) 속성을 사용하면 된다.
+초대장 전체가 커져야하기 때문에 invitation에 위 속성을 부여해야 한다.
+translate3d를 적용하기 위해서는 3d 설정을 해야한다. 
+현재 perspective는 invitation에 적용이 되어 있기에 invitation 자체는 아직 3d가 적용되지 않는다.
+
+따라서, invitation의 상위 태그인 body에 perspective를 주고 invitation에는 transform-style: preserve-3d를 주어서 invitation부터 invitation - page - face-page 순으로 3d가 적용되도록 한다.
+
+초대장에 마우스를 올리면 초대장이 확대되는데 이것은 초대장이 내 쪽으로 이동하기 때문이다.
+3차원 x, y, z 중 z값이 커지면 물체는 내 방향으로 이동하고 z값이 작아지면 나와 멀어지는 방향으로 이동한다.
+따라서 움직일 거리만큼 z값을 부여하면 되는데 위에서 perspective를 1000px를 주었기 때문에 1000px 이하의 값을 주면 값에 따라 물체가 커지거나 작아진다.
+\(만약 perspective보다 큰 값을 준다면 물체가 내 화면의 뒤로 이동하는 것이기 때문에 물체가 화면에는 보이지 않지만 커진만큼의 크기를 갖기 때문에 화면의 사이즈가 커지게 된다.\)
+난 적당한 값인 300px를 부여했다.
+
+```css
+body {
+  perspective: 1000px;
+}
+
+.invitation {
+  transform-style: preserve-3d;
+}
+
+.invitation:hover {
+  transform: translate3d(100%, 0, 300px);
+}
+```
+
+![초대장 확대](https://github.com/yunjeoming/yuns-blog/assets/76480300/320221a0-6a97-4fdf-87cc-dc64b8bfe037)
+
+## 날아오는 애니메이션
+
+html 페이지가 처음 로드되면 초대장이 왼쪽 상단에서 휘리릭- 날아오는 애니메이션을 만들어보자.
+초대장의 처음 위치는 화면에서 보이지 않게 숨겨놓고\(-100%, -100%\) 최종 위치는 기존 위치다\(0, 0\).
+또한, rotate를 추가하여 빙글빙글- 회전하며 날아오게 만들었다.
+rotate의 각도가 점점 커질수록 빙글빙글 돌아가는 회전수가 더 많아진다.
+
+```css
+.invitation {
+  animation: show-invitation 1s;
+}
+
+@keyframes show-invitation {
+  0% {
+    transform: translate(-100%, -100%) rotate(480deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+}
+```
+
+![초대장 회전](https://github.com/yunjeoming/yuns-blog/assets/76480300/b2b2ecd3-d5ad-45ad-aab5-23f7baba51ec)
+
+## 마무리
+
+제목은 *인터렉티브 웹 애니메이션 만들기*인데 사실.. css 구현 위주로 글을 적었다. 
+js 작성 방법을 생략했기 때문에 위 내용들로만 봐서는 인터렉티브하다고 말할 수는 없지만 위 내용에서 클릭 이벤트만 추가하고, 초대장 내용을 작성한 게 전부여서 이 부분은 생략하기로 했다.
+
+그래도 이 초대장을 만들면서 `requestAnimationFrame()`을 제대로 사용하는 애니메이션을 만들어보고 싶다는 생각도 들었고,
+예전에 three.js 공부할 때 처음 만들었던 달 - 지구 - 태양의 자전과 공전 애니메이션도 html, css, js로 만들어보고 싶다는 생각도 들었다.
+이번 초대장 말고도 다른 애니메이션을 꼭! 구현할 것을 다짐하는 의미로 글 제목에 \(1\)을 붙였다.
+
+열심히 공부해서 멋진 인터렉티브 애니메이션 구현해야지..!!🥳
