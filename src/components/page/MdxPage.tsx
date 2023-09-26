@@ -19,22 +19,22 @@ const MdxPage = ({ post }: Props) => {
 
   return (
     <>
-      <div className="flex flex-col flex-grow w-full prose max-w-post dark:prose-invert dark:prose-pre:bg-main-dark dark:prose-pre:border">
-        <h1 className="text-center my-6 max-md:mb-4">{title}</h1>
+      <div className="flex flex-col flex-grow w-full max-w-post dark:[&>hr]:border-[#374151]">
+        <h1 className="text-center font-medium my-4 break-keep text-2xl md:text-4xl">{title}</h1>
         <time dateTime={date} className="text-sm text-stone-500 text-center">
           {DateUtil.convertDateFormat(date)}
         </time>
         {description && <p className="text-center xs:m-1">{description}</p>}
-        <hr className="xs:mt-3 xs:mb-6 md:mt-6 md:mb-8" />
-        <div className="max-sm:prose-base lg:prose-lg prose-pre:not-prose [&>*]:mb-3 [&>*:last-child]:mb-0">
+        <hr className="my-6" />
+        <div className="max-w-full prose dark:prose-invert dark:prose-pre:bg-main-dark dark:prose-pre:border prose-pre:not-prose [&>*]:mb-3 [&>*:last-child]:mb-0">
           <MDXContent />
         </div>
         {tags && (
           <>
-            <hr className="xs:mt-12 xs:mb-6 max-xl:mt-12 max-xl: mb-6" />
-            <div className="not-prose">
+            <hr className="mt-12 mb-6" />
+            <div className="flex flex-wrap gap-1">
               {tags.map((t) => (
-                <Tag key={t} name={t} size="md" className="mr-2" pageName={rootName} />
+                <Tag key={t} name={t} pageName={rootName} />
               ))}
             </div>
           </>
