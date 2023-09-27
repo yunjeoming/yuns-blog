@@ -1,0 +1,187 @@
+---
+title: 디자인 패턴 - 생성 패턴 (2) (feat. 팩토리 메서드, 추상 팩토리)
+description: 생성 패턴의 팩토리 메서드 패턴, 추상 팩토리 패턴 학습하기
+date: 2023-09-24
+tags: [디자인패턴, 생성, 팩토리 메서드 패턴, 추상 팩토리 패턴, design pattern, factory method, abstract factory]
+imgUrl: design-pattern-creational2.jpeg
+isPublished: true
+---
+
+이전 편 \) [디자인 패턴 - 생성 패턴 (1) (feat. 싱글톤, 빌더, 프로토타입)](./design-pattern-creational1)
+
+이어서 팩토리 메서드 패턴, 추상 팩토리 패턴에 대해 알아보자.
+
+## 팩토리 메서드 패턴 \(Factory Method Pattern\)
+
+팩토리 메서드 패턴은 인스턴스를 생성하는 책임을 추상 메서드로 감싸고 구체적으로 어떤 인스턴스를 만들지는 서브 클래스가 정하도록 한다.
+팩토리 역할을 하는 인터페이스를 하나 만들고 구현이 필요한 것은 하위 클래스에서 구체적으로 만든다.
+이 때, 기존 코드는 건드리지 않고 팩토리에서 새로운 공정\(확장에는 열려 있어야 함\)을 추가할 수 있어야 한다.
+
+### 장점과 단점
+
+팩토리 메서드 패턴은 객체지향 원칙 중 개방 폐쇄 원칙을 만족하는 패턴이다.
+팩토리 메서드의 장점은 인스턴스를 생성하는 기존 로직을 건드리지 않고 새로운 인스턴스를 여러 방법으로 생성하여 확장할 수 있다.
+
+반면에 단점은 각 역할이 증가하여 관리해야할 클래스가 많아진다.
+
+> 개방 폐쇄 원칙이란? 확장에는 열려 있고 변경에는 닫혀 있다는 의미로, 기존 코드를 수정하지 않으면서 필요한 기능을 추가해 가는 것
+
+### 예제 코드
+
+```ts
+class Ship {
+  constructor(private name: string, private logo: string, private color: string) {
+    this.name = name;
+    this.logo = logo;
+    this.color = color;
+  }
+}
+
+class WhiteShip extends Ship {
+  constructor() {
+    super("white ship", "🚢", "white");
+  }
+}
+
+// 구현과 추상화를 같이 사용하기 위해 abstract class로 작성
+abstract class ShipFactory {
+  orderShip(name: string, email: string): Ship {
+    this.validate(name, email);     // 이름, 이메일 유효성 검사
+    this.prepareFor(name);          // 준비
+    const ship = this.createShip(); // 제작중
+    this.sendEmail(email);          // 완료 알림
+    return ship;
+  }
+
+  private validate(name: string, email: string) {
+    if (!name) {
+      throw new Error("이름이 없습니다.");
+    }
+    if (!email) {
+      throw new Error("이메일 주소가 없습니다.");
+    }
+  }
+
+  private prepareFor(name: string) {
+    console.log(`${name} 만들고 있습니다..`)
+  }
+  
+  private sendEmail(email: string) {
+    console.log(`${email} 이메일 전송`)
+  }
+
+  // 하위 클래스에서 구현하도록 함
+  abstract createShip(): Ship;
+}
+
+class WhiteShipFactory extends ShipFactory {
+  createShip(): Ship {
+    return new WhiteShip();
+  }
+}
+
+const shipFactory = new WhiteShipFactory();
+const ship = shipFactory.orderShip("whiteShip", "abc@example.com");
+```
+
+위 예제 코드에서 팩토리 메서드 패턴을 사용하여 `어떠한 컬러의 배(Ship)를 만들지 팩토리 클래스(FactoryShip)에 위임`하여 배의 컬러를 다양하게 만들어 낼 수 있다.
+팩토리 메서드 패턴은 이처럼 객체 생성을 추상화하여 클라이언트 코드가 구체적인 클래스에 의존하지 않도록 한다.
+
+## 추상 팩토리 패턴
+
+추상 팩토리 패턴은 서로 관련있는 여러 객체를 하나로 묶어 추상화하고 이를 팩토리 객체에서 사용하는 것이다.
+팩토리 객체에서 특정 객체에 대한 구현부를 감추기 때문에 클라이언트 관점에서는 팩토리 객체를 더 중점적으로 바라보게 된다.
+
+### 장점과 단점
+
+추상 팩토리 패턴의 장점은 제품\(부품\)을 하나로 묶어내기 때문에 이 제품의 관리와 확장이 용이하다.
+또한, 객체 지향 원칙에서 기능이 추가될 때 기존 코드를 수정하지 않아도 되는 개방 폐쇄 원칙을 지키며
+관련 클래스를 하나로 묶어놨기 때문에 단일 책임 원칙을 지킨다고도 볼 수 있다.
+
+단점으로는 기능이 추가될 때마다 관리할 클래스가 많아지는 것이다. 
+
+### 예제 코드
+
+```ts
+interface Anchor {}
+
+interface Deck {}
+
+// 모든 부품을 하나로 묶어낸 인터페이스
+interface ShipPartsFactory {
+  createAnchor(): Anchor;
+  createDeck(): Deck;
+}
+
+class WhiteAnchor implements Anchor {}
+
+class WhiteDeck implements Deck {}
+
+class WhiteShipPartsFactory implements ShipPartsFactory {
+  createAnchor(): Anchor {
+    return new WhiteAnchor();
+  }
+
+  createDeck(): Deck {
+    return new WhiteDeck();
+  }
+}
+
+class WhiteShipFactory extends ShipFactory {
+  constructor(private shipPartsFactory: ShipPartsFactory) {
+    this.shipPartsFactory = shipPartsFactory
+  }
+
+  createShip(): Ship {
+    const ship = new WhiteShip();
+    ship.setAnchor(this.shipPartsFactory.createAnchor());
+    ship.setDeck(this.shipPartsFactory.createDeck());
+
+    // ship.setAnchor(new WhiteAnchor());
+    // ship.setDeck(new WhiteDeck());
+    
+    return ship;
+  }
+}
+
+class Ship {
+  private anchor: Anchor | null = null;
+  private deck: Deck | null = null;
+
+  constructor(private name: string, private logo: string, private color: string) {
+    this.name = name;
+    this.logo = logo;
+    this.color = color;
+  }
+
+  // 구체 클래스 WhiteAnchor 대신 인터페이스 Anchor에 의존
+  setAnchor(anchor: Anchor) {
+    this.anchor = anchor;
+  }
+
+  // 구체 클래스 WhiteDeck 대신 인터페이스 Deck에 의존
+  setDeck(deck: Deck) {
+    this.deck = deck;
+  }
+}
+
+const shipFactory = new WhiteShipFactory(new WhiteShipPartsFactory());
+const ship = shipFactory.createShip();
+```
+
+`createShip()`에서 닻과 갑판을 만들 때 특정 구현체를 주입하는 대신 인터페이스 `ShipPartsFactory`의 구현체를 직접 주입한다.
+
+## 팩토리 메서드 패턴 vs 추상 팩토리 패턴
+
+두 패턴 모두 구체적인 객체 생성 과정을 추상화한 인터페이스를 제공하는 것은 같지만 초점과 목적이 다르다.
+
+`팩토리 메서드 패턴`은 팩토리를 `구현(inheritance)`하는 방법에 초점을 두고 객체 생성 과정을 하위 클래스 또는 구체적인 클래스에 위임하는 것이 목적이다.
+원하는 객체를 하위 클래스 또는 구체적인 클래스가 만들어 하나의 제품을 구현하는 것에 중점을 둔다.
+
+`추상 팩토리 패턴`은 팩토리를 `사용(composition)`하는 방법에 초점을 두고 관련있는 여러 객체들을 구체적인 클래스에 의존하지 않고 만들 수 있게 하는 것이 목적이다.
+제품 자체보단 제품을 구성하고 있는 종속품을 추상화하고 구현하는 것에 중점을 둔다.
+
+### 참고
+
+[코딩으로 학습하는 GoF의 디자인 패턴 - 백기선](https://www.inflearn.com/course/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4)<br/>
+[팩토리 메서드 패턴 vs 추상 팩토리 패턴 - 스택오버플로우](https://stackoverflow.com/questions/5739611/what-are-the-differences-between-abstract-factory-and-factory-design-patterns)
