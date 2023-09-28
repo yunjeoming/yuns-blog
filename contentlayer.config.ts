@@ -11,6 +11,7 @@ export const Post = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     description: { type: 'string', required: false },
+    category: { type: 'string', required: false },
     tags: { type: 'list', of: { type: 'string' }, required: false },
     date: { type: 'date', required: true },
     isPublished: { type: 'boolean', required: true },
@@ -32,12 +33,6 @@ export default makeSource({
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      [
-        rehypePrettyCode,
-        rehypeoptions,
-      ],
-      rehypeSlug
-    ],
+    rehypePlugins: [[rehypePrettyCode, rehypeoptions], rehypeSlug],
   },
 });
