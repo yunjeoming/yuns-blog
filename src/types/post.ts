@@ -6,11 +6,18 @@ export interface IPost {
 export interface IPostMeta {
   title: string;
   description?: string;
+  category?: string;
   date: string;
   tags: string[];
   slug: string;
   imgUrl: string;
 }
+
+export interface ICategory {
+  [key: string]: IPostMeta[];
+}
+
+export type CategoryType = [string, IPostMeta[]];
 
 export interface ISeries {
   title: string;
@@ -20,6 +27,8 @@ export interface ISeries {
 
 export interface PostMetasProps {
   postMetas: IPostMeta[];
+  selectedTitle?: string;
+  isTag?: boolean;
 }
 
 export interface PostMetaProps {
