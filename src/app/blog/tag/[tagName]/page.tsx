@@ -1,13 +1,19 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { SelectedTagPage } from '@/components/page';
 import { BasicLayout } from '@/layouts';
 import { PageTagProps } from '@/types/common';
+import { PostUtil } from '@/utils/post';
+import { Posts } from '@/components/post';
+import { Aside } from '@/layouts/aside';
 
 const page: NextPage<PageTagProps> = ({ params: { tagName } }) => {
+  const decodedTag = decodeURIComponent(tagName);
+  const postMetas = PostUtil.getBlogPostMetasByTag(decodedTag);
+
   return (
     <BasicLayout>
-      <SelectedTagPage tagName={tagName} pageName="blog" />
+      <Aside />
+      <Posts postMetas={postMetas} selectedTitle={decodedTag} isTag={true} />
     </BasicLayout>
   );
 };
