@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata, NextPage } from 'next';
-import { MdxPage } from '@/components/page';
+import { MdxPage } from '@/components/mdx';
 import { PageSlugProps } from '@/types/common';
 import { PostUtil } from '@/utils/post';
 
