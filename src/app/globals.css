@@ -101,7 +101,7 @@
 }
 
 .tag {
-  @apply rounded-md px-2 py-1 max-sm:text-xs dark:text-tag-dark;
+  @apply rounded-md px-2 py-1 max-sm:text-xs;
 }
 
 .opened-tags.tags {
