@@ -3,11 +3,6 @@ import { Constants } from '@/constants';
 import { PostUtil } from '@/utils/post';
 
 const Aside = () => {
-  // const categories = PostUtil.getAllCategories();
-  // const allPostMetas = PostUtil.getAllPostMetas();
-  // const sortedCategories = SortUtil.sortCategoryName(Object.entries(categories));
-  // const allInfo: CategoryType = [Constants.CATEGORY_ALL, allPostMetas];
-  // const allCategories = [allInfo, ...sortedCategories];
   const tags = PostUtil.getAllBlogTags();
   const allTags = [Constants.TAG_ALL, ...tags];
 

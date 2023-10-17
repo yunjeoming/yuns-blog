@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
-import { IPostMeta, IPost, ICategory } from '@/types/post';
+import { IPostMeta, IPost, ISeries } from '@/types/post';
 import { allPosts, Post } from 'contentlayer/generated';
 import { Constants } from '@/constants';
 
 let posts = allPosts.filter((p) => p.isPublished);
 let blogPosts: Post[] | null = null;
 let memoPosts: Post[] | null = null;
-let categories: ICategory | null = null;
+let serieses: ISeries | null = null;
 let blogTags: string[] | null = null;
 let allPostMetas: IPostMeta[] = [];
 
@@ -43,13 +43,13 @@ export const PostUtil = {
   },
 
   /**
-   * 모든 카테고리 불러오기
+   * 모든 시리즈 불러오기
    */
-  getAllCategories() {
-    if (!categories) {
-      categories = this.getCategoryInfo().categories;
+  getAllSerieses() {
+    if (!serieses) {
+      serieses = this.getSeriesInfo().serieses;
     }
-    return categories;
+    return serieses;
   },
 
   /**
@@ -74,14 +74,14 @@ export const PostUtil = {
   },
 
   /**
-   * 카테고리 정보 가져오기
+   * 시리즈 정보 가져오기
    */
-  getCategoryInfo() {
-    if (categories && allPostMetas.length) {
-      return { categories, allPostMetas };
+  getSeriesInfo() {
+    if (serieses && allPostMetas.length) {
+      return { serieses, allPostMetas };
     }
 
-    const categoryMap = {} as ICategory;
+    const seriesMap = {} as ISeries;
     const postMetas = [];
 
     const blogPosts = this.getAllBlogPosts();
@@ -89,17 +89,17 @@ export const PostUtil = {
       const postMeta = this.getPostMetaByOnePost(post);
       postMetas.push(postMeta);
 
-      if (post.category) {
-        const category = post.category;
-        const upperedCategory = category.charAt(0).toUpperCase() + category.slice(1);
-        categoryMap[upperedCategory] = categoryMap[upperedCategory]
-          ? [...categoryMap[upperedCategory], postMeta]
+      if (post.series) {
+        const series = post.series;
+        const upperedCategory = series.charAt(0).toUpperCase() + series.slice(1);
+        seriesMap[upperedCategory] = seriesMap[upperedCategory]
+          ? [...seriesMap[upperedCategory], postMeta]
           : [postMeta];
       }
     }
 
     return {
-      categories: categoryMap,
+      serieses: seriesMap,
       allPostMetas: postMetas,
     };
   },
@@ -203,12 +203,12 @@ export const PostUtil = {
   },
 
   /**
-   * 카테고리에 해당하는 블로그 게시물들의 메타 정보 가져오기
-   * @param category 카테고리
+   * 시리즈에 해당하는 게시물들의 메타 정보 가져오기
+   * @param series 시리즈
    */
-  getBlogPostMetasByCategory(category: string) {
-    const categories = this.getAllCategories();
-    return categories?.[category] || [];
+  getPostMetasBySeries(series: string) {
+    const serieses = this.getAllSerieses();
+    return serieses?.[series] || [];
   },
 
   /**
