@@ -20,6 +20,10 @@ const links = [
   //   name: 'Resume',
   //   href: '/resume',
   // },
+  {
+    name: 'Series',
+    href: '/series',
+  },
 ];
 
 const NavbarContent: React.FC<NavbarProps> = ({ closeMenu }) => {

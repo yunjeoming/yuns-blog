@@ -13,17 +13,11 @@ export interface IPostMeta {
   imgUrl: string;
 }
 
-export interface ICategory {
+export interface ISeries {
   [key: string]: IPostMeta[];
 }
 
-export type CategoryType = [string, IPostMeta[]];
-
-export interface ISeries {
-  title: string;
-  description: string;
-  total?: number;
-}
+export type SeriesType = [string, IPostMeta[]];
 
 export interface PostMetasProps {
   postMetas: IPostMeta[];

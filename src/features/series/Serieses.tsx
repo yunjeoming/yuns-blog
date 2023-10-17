@@ -1,16 +1,16 @@
 import { FC } from 'react';
-import { ISeries } from '@/types/post';
+import { SeriesType } from '@/types/post';
 import Series from './Series';
 
 interface Props {
-  serieses: ISeries[];
+  serieses: SeriesType[];
 }
 
 const Serieses: FC<Props> = ({ serieses }) => {
   return (
-    <div className="w-full flex flex-wrap justify-between gap-8">
+    <div className="w-full grid gap-6 sm:grid-cols-2 md:grid-cols-3">
       {serieses.map((series) => (
-        <Series key={series.title} {...series} />
+        <Series key={series[0]} name={series[0]} total={series[1].length} />
       ))}
     </div>
   );
