@@ -19,7 +19,7 @@ const H2: FC<Props> = ({ children, styles, underline = false, thickness = 'mediu
   return <h2 className={`text-2xl ${getCommonStyles(thickness, underline, styles)}`}>{children}</h2>;
 };
 
-const H3: FC<Props> = ({ children, styles, underline = false, thickness = 'medium' }) => {
+const H3: FC<Props> = ({ children, styles, underline = false, thickness = 'normal' }) => {
   return <h3 className={`text-xl ${getCommonStyles(thickness, underline, styles)}`}>{children}</h3>;
 };
 
