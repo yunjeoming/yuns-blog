@@ -6,6 +6,7 @@ export interface IPost {
 export interface IPostMeta {
   title: string;
   description?: string;
+  category?: string;
   date: string;
   tags: string[];
   slug: string;
@@ -13,13 +14,15 @@ export interface IPostMeta {
 }
 
 export interface ISeries {
-  title: string;
-  description: string;
-  total?: number;
+  [key: string]: IPostMeta[];
 }
+
+export type SeriesType = [string, IPostMeta[]];
 
 export interface PostMetasProps {
   postMetas: IPostMeta[];
+  selectedTitle?: string;
+  isTag?: boolean;
 }
 
 export interface PostMetaProps {

@@ -13,6 +13,9 @@ export const Constants = {
   SERIES_DESCRIPTION: '같은 주제의 글을 하나의 시리즈로 묶어냈어요',
   PORTFOLIO_DESCRIPTION: '프로젝트들을 한 눈에 확인하는 공간',
 
+  CATEGORY_ALL: '전체',
+  TAG_ALL: '전체',
+
   BLOG_PATH: 'blog',
   MEMO_PATH: 'memo',
   ISSUE_PATH: 'issue',

@@ -1,17 +1,16 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { Tags } from '@/components/tag';
 import { Posts } from '@/components/post';
 import { PostUtil } from '@/utils/post';
 import { BasicLayout } from '@/layouts';
+import { Aside } from '@/layouts/aside';
 
 const page: NextPage = () => {
-  const blogPosts = PostUtil.getAllBlogPosts();
-  const postMetas = PostUtil.getPostMetasByPosts(blogPosts);
-  const tags = PostUtil.getAllBlogTags();
+  const postMetas = PostUtil.getAllPostMetas();
+
   return (
     <BasicLayout>
-      <Tags tags={tags} selectedTag="ALL" pageName="blog" />
+      <Aside />
       <Posts postMetas={postMetas} />
     </BasicLayout>
   );

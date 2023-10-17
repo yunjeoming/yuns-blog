@@ -1,8 +1,6 @@
 import React from 'react';
 import { DateUtil } from '@/utils/date';
 import { Tag } from '../tag';
-import { PathUtil } from '@/utils/path';
-import { PostPage } from '@/types/common';
 import { IPost } from '@/types/post';
 import { Comments } from '../comments';
 import { useMDXComponent } from 'next-contentlayer/hooks';
@@ -13,8 +11,7 @@ interface Props {
 
 const MdxPage = ({ post }: Props) => {
   const { meta, content } = post;
-  const { title, description, date, tags, slug } = meta;
-  const rootName = PathUtil.getRootNameBySlug(slug) as PostPage;
+  const { title, description, date, tags } = meta;
   const MDXContent = useMDXComponent(content);
 
   return (
@@ -34,7 +31,7 @@ const MdxPage = ({ post }: Props) => {
             <hr className="mt-12 mb-6" />
             <div className="flex flex-wrap gap-1">
               {tags.map((t) => (
-                <Tag key={t} name={t} pageName={rootName} />
+                <Tag key={t} name={t} />
               ))}
             </div>
           </>

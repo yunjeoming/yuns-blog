@@ -12,14 +12,18 @@ const links = [
   //   name: 'Memo',
   //   href: '/memo',
   // },
-  {
-    name: 'Issue',
-    href: '/issue',
-  },
+  // {
+  //   name: 'Issue',
+  //   href: '/issue',
+  // },
   // {
   //   name: 'Resume',
   //   href: '/resume',
   // },
+  {
+    name: 'Series',
+    href: '/series',
+  },
 ];
 
 const NavbarContent: React.FC<NavbarProps> = ({ closeMenu }) => {

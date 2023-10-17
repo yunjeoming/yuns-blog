@@ -1,7 +1,6 @@
-import Footer from '../layouts/footer/Footer';
-import './globals.css';
-import { Header } from '../layouts/header';
 import { Metadata } from 'next';
+import { Footer, Header } from '@/layouts';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: {
@@ -23,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="flex flex-col justify-center items-center min-h-screen text-stone-800 dark:text-main-dark dark:bg-main-dark">
           <Header />
-          <main className="flex-grow flex flex-col items-center w-full px-6">{children}</main>
+          <main className="flex-grow flex flex-col items-center w-full px-5">{children}</main>
           <Footer />
         </div>
         <script

@@ -11,8 +11,11 @@ const ThemeMode = () => {
   }, []);
 
   return (
-    <div className="cursor-pointer" onClick={changeTheme}>
-      <Sun color="red" className="dark:hidden" />
+    <div
+      className="cursor-pointer rounded-full p-2"
+      onClick={changeTheme}
+    >
+      <Sun color="red" size={22} className="dark:hidden" />
       <Moon color="yellow" className="hidden dark:block" />
     </div>
   );

@@ -1,16 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
 import { TagProps } from '@/types/common';
+import { Constants } from '@/constants';
 
-const Tag: React.FC<TagProps> = ({ name, className = '', size = 'sm', pageName, selected = false }) => {
-  const href = name === 'ALL' ? `/${pageName}` : `/${pageName}/tag/${name}`;
-  const defaultStyle = 'border border-tag hover:text-tag-hover';
-  const selectedStyle =
-    'bg-tag bg-tag-selected text-tag-selected dark:bg-tag-selected-dark dark:text-tag-selected-dark';
-  const styles = selected ? selectedStyle : defaultStyle;
+const Tag: React.FC<TagProps> = ({ name, className = '', size = 'sm', selected = false }) => {
+  const selectedStyle = 'text-tag-selected bg-tag-selected border-none hover:text-tag-selected';
+  const url = name === Constants.TAG_ALL ? `./blog` : `./blog/tag/${name}`;
 
   return (
-    <Link href={href} className={`tag text-${size} ${styles} ${className}`}>
+    <Link
+      href={url}
+      className={`tag text-${size} border border-stone-300 hover:text-tag-hover ${className} ${
+        selected && selectedStyle
+      }`}
+    >
       {name}
     </Link>
   );

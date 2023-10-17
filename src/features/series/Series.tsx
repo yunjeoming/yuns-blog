@@ -1,13 +1,28 @@
 import { FC } from 'react';
-import { ISeries } from '@/types/post';
-import { H3 } from '../../components/title';
+import Link from 'next/link';
+import { H5 } from '@/components/title/Title';
+import { CommonUtil } from '@/utils/common';
 
-const Series: FC<ISeries> = ({ title, description, total = 0 }) => {
+interface Props {
+  name: string;
+  total: number;
+}
+
+const Series: FC<Props> = ({ name, total }) => {
+  const randomBgc = CommonUtil.getRandomBackgroundColor();
+
   return (
-    <div className="w-48 h-56 flex flex-col items-center p-4 py-8 border rounded-md cursor-pointer">
-      <H3 thickness='medium' styles="flex-shrink-0 basis-1/2 flex items-center">{title}</H3>
-      <p className="flex-grow text-sm">{description}</p>
-    </div>
+    <Link href={`/series/${name}`}>
+      <div className="w-full flex flex-col items-center gap-2 cursor-pointer p-2">
+        <div className={`w-full pb-[75%] relative md:h-56 border rounded-md hover:opacity-70 transition-all ${randomBgc}`}>
+          <div className="flex justify-center items-center w-full h-full absolute top-0 left-0">
+            <H5 thickness="medium">
+              {name} ({total.toString()})
+            </H5>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 };
 

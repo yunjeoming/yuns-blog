@@ -21,6 +21,7 @@ module.exports = {
           css: {
             a: {
               color: 'var(--a-color)',
+              fontWeight: 400,
             },
             pre: {
               whiteSpace: 'pre-wrap',
@@ -61,6 +62,10 @@ module.exports = {
       textColor: {
         'main-dark': '#ececec',
         'navbar-hover': '#8f8f8f',
+        aside: '#78716C',
+        'aside-selected': '#57534E',
+        'aside-selected-dark': '#D6D3D1',
+        'aside-hover': '#A8A29E',
         tag: 'var(--tag-color)',
         'tag-dark': 'var(--dark-tag-color)',
         'tag-selected': 'var(--tag-color-selected)',

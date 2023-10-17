@@ -10,10 +10,22 @@ export interface PageTagProps {
   };
 }
 
+export interface PageCategoryProps {
+  params: {
+    categoryName: string;
+  }
+}
+
 export interface PageSlugProps {
   params: {
     slug: string;
   };
+}
+
+export interface PageSeriesProps {
+  params: {
+    title: string;
+  }
 }
 
 export type Theme = 'dark' | 'light';
@@ -23,12 +35,9 @@ export interface HeaderProps {
   changeTheme: () => void;
 }
 
-export type PostPage = 'blog' | 'issue';
-
 export interface TagProps {
   name: string;
   className?: string;
   size?: 'xs' | 'sm' | 'md' | '0.5em';
   selected?: boolean;
-  pageName: PostPage;
 }
