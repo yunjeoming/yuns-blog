@@ -1,27 +1,7 @@
-import { ISeries } from '@/types/post';
 import { allPosts } from 'contentlayer/generated';
 import { PostUtil } from './post';
 
 let seriesPosts = allPosts.filter((p) => p.series);
-
-const mySerieses: ISeries[] = [
-  {
-    title: 'Next.js 블로그',
-    description: 'Next.js로 블로그 만들기',
-  },
-  {
-    title: 'CSS',
-    description: 'CSS 지식 다지기',
-  },
-  {
-    title: 'Issue',
-    description: '해결한 이슈들 모음집',
-  },
-  {
-    title: 'TypeScript 심화',
-    description: '타입스크립트 심화편',
-  },
-];
 
 export const SeriesUtil = {
   /**
@@ -30,14 +10,6 @@ export const SeriesUtil = {
    */
   getAllSeriesPosts: () => {
     return seriesPosts;
-  },
-
-  /**
-   * 나의 시리즈들
-   * @returns serieses: ISeries[]
-   */
-  getMySerieses: () => {
-    return mySerieses;
   },
 
   /**

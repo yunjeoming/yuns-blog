@@ -4,10 +4,10 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import CategoryItem from './CategoryItem';
 import { Constants } from '@/constants';
-import { CategoryType } from '@/types/post';
+import { SeriesType } from '@/types/post';
 
 interface Props {
-  categories: CategoryType[];
+  categories: SeriesType[];
 }
 
 const Categories: React.FC<Props> = ({ categories }) => {

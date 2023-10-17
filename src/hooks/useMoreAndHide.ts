@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-const useMoreAndHide = (selectedTag: string) => {
+const useMoreAndHide = () => {
   const openedTag = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem('tag-state') ? true : false;
