@@ -9,6 +9,8 @@ interface Props {
 }
 
 const Series: FC<Props> = ({ name, total }) => {
+  const encodedFileName = encodeURIComponent(name);
+
   return (
     <Link href={`/series/${name}`}>
       <div className="w-full flex flex-col items-center gap-2 cursor-pointer p-2">
@@ -17,13 +19,13 @@ const Series: FC<Props> = ({ name, total }) => {
             <Image
               className="w-full h-full hover:scale-110 transition-all"
               alt={`${name} 썸네일`}
-              src={`/series/${name}.png`}
+              src={`/series/${encodedFileName}.png`}
               width={400}
               height={400}
             ></Image>
           </div>
         </div>
-        <H5 styles='pb-0' thickness="medium">
+        <H5 styles="pb-0" thickness="medium">
           {name} ({total.toString()})
         </H5>
       </div>
