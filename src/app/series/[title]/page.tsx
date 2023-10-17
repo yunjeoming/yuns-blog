@@ -16,7 +16,7 @@ const page: React.FC<PageSeriesProps> = ({ params: { title } }) => {
         <Link href={`/series`} className='hover:text-stone-500'>
           <ArrowLeft />
         </Link>
-        <H4 styles="max-md:text-base pb-0">{decodedTitle}</H4>
+        <H4 styles="max-md:text-base max-xl:pb-0 lg:pb-0">{decodedTitle}</H4>
       </div>
       <Posts postMetas={postMetas} />
     </div>
