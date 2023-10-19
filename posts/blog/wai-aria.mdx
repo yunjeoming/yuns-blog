@@ -1,0 +1,101 @@
+---
+title: WAI-ARIA에 관하여
+description: w3c 문서를 읽고 정리한 글
+date: 2023-10-10
+tags: [WAI-ARIA, 웹 접근성]
+isPublished: true
+imgUrl: wai-aria.jpeg
+---
+
+이 글은 [w3c 문서에 정의된 WAI-ARIA](https://www.w3.org/TR/wai-aria-1.2/)를 읽고 정리해놓은 글입니다.
+
+# WAI-ARIA
+
+전 세계 사람들은 웹 브라우저를 통해 다양한 경험을 할 수 있다.
+이러한 다양한 사용자 경험을 만족시키기 위해 나타난 용어가 RIA\(Rich Internet Application\)이다.
+웹 브라우저는 단순한 문서가 아닌 하나의 어플리케이션으로써 모든 사용자에게 동일한 사용감을 제공해야한다.
+사용자의 특정 신체가 불편하더라도 차별 없이 모두가 웹을 사용할 수 있도록 W3C에서 내놓은 기술 명세가 바로 WAI-ARIA(Web Accessibility Initiative - Web Accessible Rich Internet Applications)이다.
+
+WAI-ARIA는 스크린 리더와 보조 도구가 웹 접근성과 상호 운용성을 가능하도록 도우며 html 태그에 역할\(Role\), 속성\(Property\), 상태\(State\)를 부여함으로써 지원된다.
+WAI-ARIA를 작성하면 해당 attribute에 맞게 접근성 API로 변환이 되고 스크린 리더 및 보조 도구는 이 접근성 API를 통해 웹 문서에 접근하고 사용자와 상호 작용을 가능하게 한다.
+
+## 역할\(Role\), 속성\(Property\), 상태\(State\)
+
+WAI-ARIA는 역할\(Role\), 속성\(Property\), 상태\(State\)를 제공하는데 각각의 정의는 아래와 같다.
+
+### 역할\(Role\)
+
+역할\(Role\)은 태그 자체의 역할을 정의하는 것이다.
+
+태그는 banner, navigation, main, complementary, form, search, presentation\(none\)등의 다양한 역할이 있다.
+특정 의미가 없는 \<div\>, \<span\> 태그에 어떠한 역할을 부여할 때 `role="역할"`를 부여함으로써 보조 도구에게 역할 정보를 제공한다.
+너무나도 많은 role이 있는데 각각 역할과 해당 설명은 [여기](https://www.w3.org/TR/wai-aria-1.2/#role_definitions)에서 확인할 수 있다.
+
+#### 역할\(Role\)과 시맨틱 태그
+
+html의 태그가 시맨틱 태그로 작성이 되어있다면 시맨틱 태그 대신 \<div\>, \<span\>등 특정 의미가 없는 태그에 role을 부여하는 것을 권장한다.
+
+| Role          | Html5 관련 태그 |
+| ------------- | --------------- |
+| banner        | \<header\>      |
+| navigation    | \<nav\>         |
+| main          | \<main\>        |
+| complementary | \<aside\>       |
+| form          | \<form\>        |
+
+#### role="presentation" or role="none"
+
+태그 자체에 특정 역할이 없는 것을 나타낼 때 `role="presentation"`을 사용하는데 이 것은 state인 `aria-hidden="true"`와 다른 의미를 갖는다.
+
+`role="presentation"`은 해당 태그를 사용자에게 보여주지만 태그의 정보를 전달하지 않기 위해 사용하고, `aria-hidden="true"`는 사용자에게 태그 자체를 보여주지 않기 위해 사용하며 `display: none`과 같은 style이 적용된 태그에 적용한다.
+
+### 속성\(Property\)과 상태\(State\)
+
+속성\(Property\)은 태그의 attribute와 해당 값을 표현한 정적 속성이고 상태\(State\)는 사용자와의 상호 작용에 따라 변경될 수 있는 태그의 특징을 표현하는 동적 속성이며 둘 다 `aria-` 접두사를 사용한다.
+속성\(Property\)과 상태\(State\)에 관한 자세한 내용은 [여기](https://www.w3.org/TR/wai-aria-1.2/#states_and_properties)에서 확인할 수 있다.
+
+태그의 attribute가 제대로 표현이 되었을 경우 WAI-ARIA 속성 attribute를 중복해서 작성할 필요가 없다. 아래와 같이 checkbox에 required attribute가 포함되어 있으면 보조 도구는 해당 태그가 필수 입력 필드임을 알아서 감지한다.
+
+```html
+<input type="checkbox" required />
+```
+
+#### aria-expanded, aria-invalid, aria-pressed
+
+위 속성들은 태그의 특정 속성과 일치하지 않는 고유한 WAI-ARIA 속성이다.
+따라서 html 특정 태그 속성과 직접적으로 연결되는 것이 아니라 접근성을 개선하거나 특정 상호작용을 설명하는 데 사용된다.
+
+- aria-expanded: 아코디언, 드롭다운과 같은 토글 가능한 태그의 확장 또는 축소 상태를 나타낸다.
+- aria-invalid: 입력 필드의 데이터가 유효한지 판단한다. 데이터가 유효하지 않을 때 true, 유효할 때 false 값을 부여한다.
+- aria-pressed: 토글 버튼의 누름 상태를 나타낸다.
+
+#### aria-label or aria-labelledby
+
+사용자 상호 작용이 발생하는 태그\(ex. \<input\>\)를 사용할 경우 해당 태그를 가리키는 레이블\(\<label\> 외에도 \<div\>, \<span\> 태그를 레이블로 사용할 수 있다.\)을 사용해야 한다.
+`aria-label` or `aria-labelledby`를 사용하여 상호 작용 태그가 어떠한 레이블을 가리키는지 나타낸다.
+
+```html
+<!-- 1 -->
+<label for="name">이름</label>
+<input type="text" id="name" />
+
+<!-- 2 -->
+<div id="name">이름</div>
+<input type="text" aria-label="name" />
+```
+
+위의 두 방법 모두 상호 작용 태그와 레이블이 연결이 되어있다.
+1번의 \<label\> 태그를 사용하면 aria-label을 다시 사용할 필요가 없지만 레이블이 시각적으로 숨겨져있거나 아이콘 버튼에 대한 접근성을 향상 시킬 경우 aria-label을 대신 사용하기도 한다.
+
+#### tabindex
+
+\<div\> 태그에 role="button"을 부여해보자. 스크린 리더기는 이 태그를 버튼으로 인식하지만 키보드와 상호작용할 수 없다. 특정 태그에 역할을 부여하는 것 뿐만 아니라 키보드와도 상호 작용이 가능하도록 해야하는데 이 때 tabindex 속성을 사용한다.
+\<button\> 태그는 키보드의 탭 사용시 자동으로 포커싱이 되는데 \<div\>, \<span\>에 role="button"을 부여하면 태그는 버튼 역할을 하지만 키보드 탭 포커싱이 되지 않는다. tabindex 값에 숫자를 부여할 수 있으며 0 이상부터 탭 포커싱이 작동된다.
+
+```html
+<div role="button" tabindex="0">버튼</div>
+```
+
+### 참고
+
+[w3c 문서에 정의된 WAI-ARIA - https://www.w3.org/TR/wai-aria-1.2/](https://www.w3.org/TR/wai-aria-1.2/)
