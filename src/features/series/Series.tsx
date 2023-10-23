@@ -14,7 +14,7 @@ const Series: FC<Props> = ({ name, total }) => {
   return (
     <Link href={`/series/${name}`}>
       <div className="w-full flex flex-col items-center gap-2 cursor-pointer p-2">
-        <div className={`w-full pt-[60%] relative md:h-56`}>
+        <div className={`w-full pt-[60%] relative`}>
           <div className="flex justify-center items-center w-full h-full absolute top-0 left-0 rounded-md overflow-hidden">
             <Image
               className="w-full h-full hover:scale-110 transition-all"

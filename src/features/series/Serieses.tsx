@@ -8,7 +8,7 @@ interface Props {
 
 const Serieses: FC<Props> = ({ serieses }) => {
   return (
-    <div className="w-full grid gap-6 sm:grid-cols-2">
+    <div className="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3">
       {serieses.map((series) => (
         <Series key={series[0]} name={series[0]} total={series[1].length} />
       ))}
