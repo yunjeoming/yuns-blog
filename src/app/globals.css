@@ -53,7 +53,7 @@
   --tag-color: #6a6a6a;
   --tag-color-selected: #ffffff;
   --tag-color-hover: #8f8f8f;
-  
+
   --tag-bgc-selected: #68baee; /* #3c3c3c*/
   --tag-bgc-hover: #dadada;
 
@@ -64,7 +64,7 @@
 
   --dark-tag-bgc-selected: #68baee; /* #8f8f8f*/
 
-  --a-color: #3B82F6;
+  --a-color: #3b82f6;
 }
 
 * {
@@ -93,11 +93,11 @@
 }
 
 .contact a {
-  @apply text-blue-500
+  @apply text-blue-500;
 }
 
 .contact a:hover {
-  @apply underline
+  @apply underline;
 }
 
 .tag {
@@ -107,3 +107,104 @@
 .opened-tags.tags {
   max-height: fit-content;
 }
+
+[data-rehype-pretty-code-figure] pre {
+  overflow-x: auto;
+  padding: 1rem 0;
+  border: 1px solid #8b8b8b;
+  margin-top: 0;
+}
+
+[data-rehype-pretty-code-figure] pre [data-line] {
+  padding: 0 1.3rem;
+}
+
+/* 제목 title */
+[data-rehype-pretty-code-title] {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border: 1px solid #8b8b8b;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+  border-bottom-style: none;
+}
+
+[data-rehype-pretty-code-title] + pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* 모든 span에 라인 넘버 부여 */
+[data-rehype-pretty-code-figure] code {
+  counter-reset: line;
+}
+
+[data-rehype-pretty-code-figure] [data-line]::before {
+  counter-increment: line;
+}
+
+/* showLineNumbers 사용시 라인 넘버 보이도록 */
+[data-line-numbers] > [data-line]::before {
+  content: counter(line);
+
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: gray;
+}
+
+[data-line-numbers-max-digits='2'] > [data-line]::before {
+  width: 1rem;
+}
+
+[data-line-numbers-max-digits='3'] > [data-line]::before {
+  width: 2rem;
+}
+
+/* 라인 강조 data-highlighted-line */
+[data-highlighted-line] {
+  background-color: #b3c0de40;
+}
+
+/* id 라인 강조 */
+[data-highlighted-line-id='minus'] {
+  position: relative;
+  background-color: #834444;
+}
+
+[data-highlighted-line-id='minus']::before {
+  content: '-';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 500;
+  padding-left: 0.3rem;
+  color: #fb8585;
+}
+
+[data-highlighted-line-id='plus'] {
+  position: relative;
+  background-color: #3c6c49;
+  /* background-color: #86f1a0; */
+}
+
+[data-highlighted-line-id='plus']::before {
+  content: '+';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 500;
+  padding-left: 0.3rem;
+  color: #43ac5c;
+}
+
+/* 특정 단어 강조 */
+[data-highlighted-chars] {
+  padding: 0.1rem 0;
+  border-radius: 0.2rem;
+  background-color: #698eb870;
+}
+
+/* yellow #ffff007d */

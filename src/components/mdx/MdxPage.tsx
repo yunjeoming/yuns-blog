@@ -23,7 +23,7 @@ const MdxPage = ({ post }: Props) => {
         </time>
         {description && <p className="text-center xs:m-1">{description}</p>}
         <hr className="my-6" />
-        <div className="max-w-full prose dark:prose-invert dark:prose-pre:bg-main-dark dark:prose-pre:border prose-pre:not-prose [&>*]:mb-3 [&>*:last-child]:mb-0">
+        <div className="max-w-full prose dark:prose-invert prose-pre:not-prose [&>*:last-child]:mb-0">
           <MDXContent />
         </div>
         {tags && (

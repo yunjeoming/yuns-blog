@@ -16,7 +16,7 @@ module.exports = {
       sans: ['NotoSans', 'NotoSans-KR', ...defaultTheme.fontFamily.sans],
     },
     extend: {
-      typography: {
+      typography: (theme) => ({
         DEFAULT: {
           css: {
             a: {
@@ -27,9 +27,8 @@ module.exports = {
               whiteSpace: 'pre-wrap',
             },
             code: {
-              color: '#d83707',
               fontWeight: 400,
-              backgroundColor: '#e4e4e4',
+              backgroundColor: theme('colors.gray.100'),
               borderRadius: '0.4rem',
               padding: '0.2rem 0.4rem',
               marginRight: '0.1rem',
@@ -43,12 +42,24 @@ module.exports = {
             img: {
               width: '100%',
               maxWidth: '56rem',
-              margin: '2rem auto 4rem',
+              margin: '1rem auto 2rem',
               borderRadius: '0.4rem',
             },
           },
         },
-      },
+        invert: {
+          css: {
+            code: {
+              backgroundColor: '#343434',
+            },
+            pre: {
+              '& code': {
+                backgroundColor: 'transparent',
+              },
+            },
+          },
+        },
+      }),
       maxWidth: {
         header: 'var(--max-width-header)',
         post: 'var(--max-width-post)',
@@ -89,6 +100,9 @@ module.exports = {
         tag: 'var(--tag-border-color)',
       },
     },
+  },
+  variants: {
+    typography: ['dark'],
   },
   plugins: [require('@tailwindcss/typography')],
 };

@@ -23,7 +23,7 @@ export const Post = defineDocumentType(() => ({
   },
 }));
 
-const rehypeoptions = {
+const rehypeOptions = {
   theme: 'slack-dark',
   keepBackground: true,
 };
@@ -33,6 +33,6 @@ export default makeSource({
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [[rehypePrettyCode, rehypeoptions], rehypeSlug],
+    rehypePlugins: [[rehypePrettyCode as any, rehypeOptions], rehypeSlug],
   },
 });
