@@ -8,14 +8,16 @@ imgUrl: pass-properties-with-camel-case.jpeg
 isPublished: true
 ---
 
-> React does not recognize the `useBold` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `usebold` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+> React does not recognize the `useBold` prop on a DOM element. 
+> If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `usebold` instead. 
+> If you accidentally passed it from a parent component, remove it from the DOM element.
 
 Mui의 tooltip을 커스텀하여 사용하려고 하는데, 커스텀을 쉽게 하기 위해 Mui에서 제공하는 `styled`를 활용하여 styled-components 형식으로 css를 작성하려고 한다.
 내가 만든 커스텀 tooltip에 필요한 props를 사용자 정의 형식으로 만들고 이 props 값에 의해 css 가 변하도록 아래와 같이 코드를 작성했다.
 
 ## 예제 코드
 
-```jsx {19} showLineNumbers
+```jsx
 import { ReactElement, type FC, useState } from 'react';
 import MuiTooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Image from 'next/image';
@@ -43,18 +45,19 @@ const StyledTooltip = styled(MuiTooltip)<Props>`
 export default Tooltip;
 ```
 
-위처럼 커스텀 StyledTooltip 컴포넌트를 만들어서 적용시키면 Dom element의 attribute를 소문자로 작성하라며 글 상단의 에러가 발생한다. 
+그러나, 위처럼 커스텀 StyledTooltip 컴포넌트를 만들어서 적용시키면 Dom element의 attribute를 소문자로 작성하라며 글 상단의 에러가 발생한다.
 물론 에러가 생겨도 위 코드가 작동은 하지만 콘솔창 에러가 매우 거슬리기에 해결 방법을 찾아보았다.
 
 ## 해결 방법
 
-우선 위 코드에서 문제가 되는 부분은 `styled(MuiTooltip)<Props>` 라인이다. 
-Mui에서 만들어놓은 MuiTooltip 컴포넌트에 내가 정의한 Props라는 타입을 넣다보니 MuiTooltip 컴포넌트에 존재하지 않는 useBold라는 프로퍼티가 강제로 주입이 되고, 
+우선 위 코드에서 문제가 되는 부분은 `styled(MuiTooltip)<Props>` 라인이다.
+Mui에서 만들어놓은 MuiTooltip 컴포넌트에 내가 정의한 Props라는 타입을 넣다보니 MuiTooltip 컴포넌트에 존재하지 않는 useBold라는 프로퍼티가 강제로 주입이 되고,
 이 컴포넌트가 Dom element로 변환될 때 "useBold" 자체로 들어가기 때문에 에러가 생기게 된다.
 
 따라서 기존 styled-components 사용 방법 대신 함수형으로 컴포넌트를 작성하여 Props의 구조 분해 할당을 통해 MuiTooltip 컴포넌트에 useBold를 제외한 나머지 프로퍼티만을 할당해준다.
 
-```jsx {1}
+```jsx {1}#minus {2}#plus
+const StyledTooltip = styled(MuiTooltip)<Props>`
 const StyledTooltip = styled(({ useBold, ...others }: Props) => <MuiTooltip {...others} />)`
   & .${tooltipClasses.tooltip} {
     font-weight: ${(props) => (props.useBold ? '700' : '400')};
