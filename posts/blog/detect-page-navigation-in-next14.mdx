@@ -11,9 +11,9 @@ imgUrl: detect-page-navigation-in-next14.jpeg
 처음에는 `next/router`의 `useRouter`를 사용하려고 했으나 `Uncaught Error: NextRouter was not mounted.` 에러가 발생했고, 해당 에러를 찾아보니 Next 13버전부터는 `next/router`의 `useRouter`를 사용할 수 없으며 `next/navigation`의 `useRouter`를 사용해야 했다.
 그러나 이 `useRouter`에는 events가 없기 때문에 기존의 `events.on('routeChangeStart', () => {})`또한 사용할 수 없었다.
 
-## window 이벤트 활용하기
+## window 이벤트를 활용한 페이지 이동 감지
 
-우선 생각해낸 방법은 window.addEventListener를 활용하여 이벤트를 감지하는 것이었다. 페이지 이동 외에도 새로고침, 뒤로 가기를 함께 확인해줘야 하는데 세 이벤트를 한번에 묶어서 하나의 커스텀 훅으로 만들었다.
+window.addEventListener를 활용하면 이동 이벤트를 감지할 수 있다. 페이지 이동 외에도 새로고침, 뒤로 가기를 함께 확인해줘야 하는데 세 이벤트를 한번에 묶어서 하나의 커스텀 훅으로 만들었다.
 
 ### 1. 새로고침, 페이지 닫기
 
@@ -21,7 +21,7 @@ imgUrl: detect-page-navigation-in-next14.jpeg
 
 확인 문구를 추가하기 위해 기본 이벤트를 방지하면 _e.preventDefault()_ 브라우저 자체 창이 뜨며 새로고침 진행 여부를 물어본다. 단, legacy 브라우저의 경우 `e.returnValue`에 truthy 값을 넣어야 창이 뜬다.
 
-```
+```jsx
 const handleBeforeUnload = useCallback(
   (e: BeforeUnloadEvent) => {
     if (!isSaved) {
@@ -47,7 +47,9 @@ useEffect(() => {
 
 뒤로 가기 감지는 `popstate` 이벤트를 사용했다.
 
-popstate 이벤트는 브라우저의 기록을 탐지하는 이벤트로 페이지의 뒤로 가기, 앞으로 가기 등을 탐지한다. 브라우저의 History API로 페이지의 이동을 조절하고 상태를 관리할 수 있다.
+popstate 이벤트는 브라우저의 기록을 탐지하는 이벤트로 페이지의 뒤로 가기, 앞으로 가기 등을 탐지한다. 
+브라우저의 History API 또한 페이지의 이동을 조절하고 상태를 관리하기 때문에
+두 개를 함께 써서 뒤로 가기를 탐지할 수 있다.
 
 - 상태 추가: `history.pushState(null, "", "")`
 - 뒤로 가기: `history.go(-1)`, `history.back()`
@@ -60,15 +62,19 @@ popstate 이벤트는 브라우저의 기록을 탐지하는 이벤트로 페이
 
 처음 컴포넌트가 렌더링 될 때 useEffect의 `history.pushState(null, "", "")`로 현재 페이지 정보를 의도적으로 저장한다.
 
-Next 13.5버전인가(정확하게는 기억이 안 나지만 13.4, 13.5, 13.6 버전 중 하나)부터 컴포넌트가 초기 렌더링될 때 strict mode에 의해 강제로 2번씩 렌더링 된다. 따라서 위의 `history.pushState(null, "", "")` 또한 2번 실행되어 현재 경로가 2번 추가되는 이슈가 있기 때문에 플래그를 추가하여 한 번만 실행되도록 했다.
+Next 13.5버전인가(정확하게는 기억이 안 나지만 13.4, 13.5, 13.6 버전 중 하나)부터 컴포넌트가 초기 렌더링될 때 strict mode에 의해 강제로 2번씩 렌더링 된다. 
+따라서 위의 `history.pushState(null, "", "")` 또한 2번 실행되어 현재 경로가 2번 추가되는 이슈가 있기 때문에 플래그를 추가하여 한 번만 실행되도록 했다.
 
-뒤로 가기를 클릭하면 `handlePopState`가 실행되는데 뒤로 가기 클릭과 동시에 history는 하나 뒤로 이동한다. **따라서 `useEffect`에서 추가된 현재 경로는 state 스택에서 제거되고 스택 최상단에는 이전 경로가 포함되어있다.** 이 상태에서 뒤로 가기를 한 번 더 클릭하면 스택 최상단인 이전 경로로 이동하기 때문에 만약 뒤로 갈 수 없는 상황(변경 사항이 있는 상태 = !isSaved)에서는 현재 경로를 한 번 더 추가하여 history 스택에 현재 경로를 다시 추가해야 한다.
+뒤로 가기를 클릭하면 `handlePopState` 핸들러가 실행되는데 뒤로 가기 클릭과 동시에 history는 하나 뒤로 이동한다. 
+**따라서 `useEffect`에서 추가된 현재 경로는 state 스택에서 제거되고 스택 최상단에는 이전 경로가 포함되어있다.** 
+이 상태에서 뒤로 가기를 한 번 더 클릭하면 스택 최상단인 이전 경로로 이동하기 때문에 
+만약 뒤로 갈 수 없는 상황(변경 사항이 있는 상태 = !isSaved)에서는 현재 경로를 한 번 더 추가하여 history 스택에 현재 경로를 다시 추가해야 한다.
 
-```
+```jsx showLineNumbers {16}
 const isClickedFirst = useRef(false);
 
 const handlePopState = useCallback(() => {
-  // 1. 뒤로 가기를 클릭한 순간 useEffect에서 실행된 ✨ 가 바로 제거된다.
+  // 1. 뒤로 가기를 클릭한 순간 16라인이 바로 제거된다.
   if (!isSaved) {
     history.pushState(null, "", "");  // 현재 경로를 다시 추가
     // do sth
@@ -80,7 +86,7 @@ const handlePopState = useCallback(() => {
 // 최초 한 번 실행
 useEffect(() => {
   if (!isClickedFirst) {
-    history.pushState(null, "", "");  // ✨
+    history.pushState(null, "", ""); // 처음 렌더링될 때 추가되고 뒤로 가기 클릭 시 제거된다.
     isClickedFirst.current = true;
   }
 }, []);
@@ -98,11 +104,15 @@ useEffect(() => {
 
 ### 3. 페이지 이동
 
-페이지 이동은 처음엔 click 이벤트를 사용했으나 클릭할 때마다 리스너가 실행되기 때문에 페이지 이동이라는 목적과 맞지 않는다 판단하여 새로운 방법을 찾아냈다. Vercel에서 알려준 usePathname은 페이지 렌더링 이후 실행되기 때문에 소용이 없었고 next.js github discussion에서 [https://github.com/vercel/next.js/discussions/41934](https://github.com/vercel/next.js/discussions/41934)에 달린 댓글을 참고하여 만들었더니 문제 없이 잘 되었다!
+페이지 이동은 처음엔 click 이벤트를 사용했으나 클릭할 때마다 리스너가 실행되기 때문에 페이지 이동이라는 목적과 맞지 않는다 판단하여 새로운 방법을 찾아냈다. 
+Vercel에서 알려준 usePathname은 페이지 렌더링 이후 실행되기 때문에 소용이 없었고 next.js github discussion에서 
+[https://github.com/vercel/next.js/discussions/41934](https://github.com/vercel/next.js/discussions/41934)에 달린 댓글을 참고하여 만들었더니 문제 없이 잘 되었다!
 
-여기서, newPush 라는 새로운 함수를 만들어 router.push를 새로운 함수로 대체하여 페이지 이동을 다룬다. 기존의 router.push 대신 새로운 함수가 실행되기에 함수 로직 내에 특정 조건에 해당할 경우 모달을 띄우도록 할 수 있다. 만약 업데이트된 상태가 아니라면 기존 router.push로 페이지 이동을 하도록 한다.
+여기서, newPush 라는 새로운 함수를 만들어 router.push를 새로운 함수로 대체하여 페이지 이동을 다룬다. 
+기존의 router.push 대신 새로운 함수(newPush)가 실행되기에 함수 로직 내에 특정 조건에 해당할 경우 모달을 띄울 수 있다. 
+만약 업데이트된 상태가 아니라면 기존 router.push를 실행하여 페이지가 이동된다.
 
-```
+```jsx {5-15}
 const router = useRouter();
 
 useEffect(() => {
@@ -130,7 +140,7 @@ useEffect(() => {
 
 위의 3개 이벤트를 하나로 합치면 아래와 같다.
 
-```
+```jsx {21} {45}
 import { useRouter } from 'next/navigation';
 
 ...

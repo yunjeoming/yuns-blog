@@ -7,13 +7,16 @@ imgUrl: passing-obj-ref-prop-to-child-component.jpeg
 isPublished: true
 ---
 
-input 태그의 value를 state 대신 ref.current.value로 관리하고 있는 프로젝트가 있다. 원래는 하나의 컴포넌트에서 모든 작업을 전부 수행했기 때문에 각각의 input 태그에 맞는 useRef\<RefElemType\>(null)를 선언하고 ref에 할당하면 그만이었으나 컴포넌트의 사이즈가 커지면서 결국 컴포넌트를 분리하기로 했다.
+input 태그의 value를 state 대신 ref.current.value로 관리하고 있는 프로젝트가 있다. 
+원래는 하나의 컴포넌트에서 모든 작업을 전부 수행했기 때문에 각각의 input 태그에 맞는 useRef\<RefElemType\>(null)를 선언하고 
+ref에 할당하면 그만이었으나 컴포넌트의 사이즈가 커지면서 결국 컴포넌트를 분리하기로 했다.
 
-모든 input 태그들을 하나의 공통 컴포넌트로 만들고 상위 컴포넌트에서 이 공통 컴포넌트를 자식 컴포넌트로 갖게 되면서, 어떻게 해야 상위 컴포넌트에서 총 6개의 ref를 하나로 묶어서 자식에게 전달시켜줘야 할지 생각해보기로 했다.
+모든 input 태그들을 하나의 공통 컴포넌트로 만들고 상위 컴포넌트에서 이 공통 컴포넌트를 자식 컴포넌트로 갖게 되면서, 
+어떻게 해야 상위 컴포넌트에서 총 6개의 ref를 하나로 묶어서 자식에게 전달시켜줘야 할지 생각해보기로 했다.
 
-```tsx
+```tsx title="잘못된 예제"
 // Parent.tsx
-type RefObjType = {
+type RefObj = {
   ref1: React.RefObject<HTMLInputElement>
   ref2: React.RefObject<HTMLSelectElement>
   ref3: React.RefObject<HTMLInputElement>
@@ -40,7 +43,7 @@ export const Parent = () => {
 };
 
 // Child.tsx
-export const Child = forWardRef<RefObjType, Props>((props, ref) => {
+export const Child = forWardRef<RefObj, Props>((props, ref) => {
   const { ref1, ref2, ref3, ref4, ref5, ref6 } = ref;
   // ..
 })
@@ -48,13 +51,12 @@ export const Child = forWardRef<RefObjType, Props>((props, ref) => {
 
 처음엔 위와 같이 단순하게 "하나의 객체로 묶어내서 보내주면 되겠다" 했는데, **ref**=\{refObj\}에서 타입 에러가 계속 생겼다.
 
-생각해보니 원래 자식 컴포넌트에 하나의 ref를 전달하면, 그 자식 컴포넌트는 forwardRef로 원래의 ref 타입 즉 React.MutableRefObject\<T>을 받기 때문에 ref는 무조건 ref 타입으로 보내야겠다 싶었다.
+생각해보니 원래 자식 컴포넌트에 하나의 ref를 전달하면, 그 자식 컴포넌트는 forwardRef로 원래의 ref 타입 
+즉 React.MutableRefObject\<T>을 받기 때문에 ref는 무조건 ref 타입으로 보내도록 코드를 수정했다.
 
-위 방법을 어떻게 적용시켜야 할까.. 하면서 검색해보니 위 방법과 비슷하게 객체 대신 배열로 useRef를 사용하는 방법을 알게됐다. 나는 배열일 경우 순서에 따라 맞게 선언해야 한다는 점이 마음에 들지 않아 배열 대신 객체를 사용하기로 마음 먹었기에 위 코드를 아래와 같이 수정했다.
-
-```tsx
+```tsx title="적용 예제"
 // Parent.tsx
-type RefObjType = {
+type RefObj = {
   ref1: HTMLInputElement | null;
   ref2: HTMLSelectElement | null;
   ref3: HTMLInputElement | null;
@@ -64,7 +66,7 @@ type RefObjType = {
 };
 
 export const Parent = () => {
-  const refObj = useRef<RefObjType>({
+  const refObj = useRef<RefObj>({
     ref1: null,
     ref2: null,
     ref3: null,
@@ -81,8 +83,8 @@ export const Parent = () => {
 };
 
 // Child.tsx
-export const Child = forWardRef<RefObjType, Props>((props, ref) => {
-  const { current } = ref as React.MutableRefObject<RefObjType>;
+export const Child = forWardRef<RefObj, Props>((props, ref) => {
+  const { current } = ref as React.MutableRefObject<RefObj>;
   // ..
 
   // ⭕️
@@ -99,7 +101,7 @@ export const Child = forWardRef<RefObjType, Props>((props, ref) => {
 });
 ```
 
-`as React.MutableRefObject<RefObjType>`로 타입 단언을 해주어 current만 구조분해 할당으로 빼오자. 원래의 ref의 value를 가져오기 위해선 ref.current.value를 사용해야 하는 것을 잊지말자.
+`as React.MutableRefObject<RefObj>`로 타입 단언을 해주어 current만 구조분해 할당으로 빼오자. 원래의 ref의 value를 가져오기 위해선 ref.current.value를 사용해야 하는 것을 잊지말자.
 
 위 ❌의 예시에서 ref에 바로 current.ref1을 넣었는데 이렇게 바로 넣어줄 경우, 아래와 같은 타입 에러가 발생한다.
 
