@@ -1,9 +1,12 @@
-import React from 'react';
+'use client';
+
+import React, { useRef } from 'react';
 import { DateUtil } from '@/utils/date';
 import { Tag } from '../tag';
 import { IPost } from '@/types/post';
 import { Comments } from '../comments';
 import { useMDXComponent } from 'next-contentlayer/hooks';
+import { Toc } from '../toc';
 
 interface Props {
   post: IPost;
@@ -11,8 +14,9 @@ interface Props {
 
 const MdxPage = ({ post }: Props) => {
   const { meta, content } = post;
-  const { title, description, date, tags } = meta;
+  const { title, description, date, tags, slug } = meta;
   const MDXContent = useMDXComponent(content);
+  const contentRef = useRef(null);
 
   return (
     <>
@@ -23,10 +27,14 @@ const MdxPage = ({ post }: Props) => {
         </time>
         {description && <p className="text-center xs:m-1">{description}</p>}
         <hr className="my-6" />
-        <div className="max-w-full prose dark:prose-invert prose-pre:not-prose [&>*:last-child]:mb-0">
+        <div
+          className="relative max-w-full prose dark:prose-invert prose-pre:not-prose [&>*:last-child]:mb-0"
+          ref={contentRef}
+        >
+          <Toc slug={slug} contentRef={contentRef} />
           <MDXContent />
         </div>
-        {tags && (
+        {tags.length > 0 && (
           <>
             <hr className="mt-12 mb-6" />
             <div className="flex flex-wrap gap-1">
