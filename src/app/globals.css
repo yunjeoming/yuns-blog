@@ -44,6 +44,18 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Light.woff2') format('woff2');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Medium.woff2') format('woff2');
+  font-weight: 500;
+}
+
 :root {
   --height-header-pc: 4rem;
   --height-header-mo: 3.5rem;

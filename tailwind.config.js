@@ -13,7 +13,8 @@ module.exports = {
       xl: '1280px',
     },
     fontFamily: {
-      sans: ['NotoSans', 'NotoSans-KR', ...defaultTheme.fontFamily.sans],
+      Pretendard: ['Pretendard', ...defaultTheme.fontFamily.sans],
+      Sans: ['NotoSans', 'NotoSans-KR', ...defaultTheme.fontFamily.sans],
     },
     extend: {
       typography: (theme) => ({
